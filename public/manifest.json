@@ -16,6 +16,10 @@
   "browser_action": {
     "default_icon": "logo192.png"
   },
-  "permissions": ["activeTab", "storage"],
+  "content_scripts": [{
+    "matches": ["https://roll20.net/"],
+    "js": ["inject_sidebar.js"]
+  }],
+  "permissions": ["storage"],
   "web_accessible_resources": ["index.html"]
 }
