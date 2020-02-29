@@ -1,9 +1,10 @@
 import React from 'react';
-import './App.css';
+import './Overlay.css';
+import Character from './character/Character'
 
-function App() {
+function Overlay() {
   return (
-    <div className="App">
+    <div className="Overlay">
       <Selections />
       <Character />
     </div>
@@ -12,7 +13,7 @@ function App() {
 
 function Selections() {
   return (
-    <div className="selections">
+    <div className="row Selections">
       <SelectCampaign />
       <SelectCharacter />
     </div>
@@ -31,10 +32,4 @@ function SelectCharacter() {
   );
 }
 
-function Character() {
-  return (
-    <h1>Character</h1>
-  );
-}
-
-export default App;
+export default Overlay;

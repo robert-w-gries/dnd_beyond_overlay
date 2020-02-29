@@ -1,0 +1,44 @@
+.StatBlock {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
+    padding: 10px;
+}
+  
+.Stat {
+    background-color: white;
+    border-color: red;
+    border-style: solid;
+    color: black;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.SavingThrow > div {
+    background-color: white;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.SavingThrowTitle {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.SavingThrowStat {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.row.Selections {
+    justify-content: space-evenly;
+}
+
+.row.CharacterHeader {
+    padding: 10px;
+    justify-content: space-between;
+}

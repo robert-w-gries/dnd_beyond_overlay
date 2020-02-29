@@ -17,10 +17,9 @@ iframe.src = chrome.extension.getURL("index.html")
 document.body.appendChild(iframe);
 
 function toggle(){
-    if(iframe.style.width == "0px"){
-        iframe.style.width="400px";
-    }
-    else{
+    if (iframe.style.width == "0px") {
+        iframe.style.width="33%";
+    } else {
         iframe.style.width="0px";
     }
 }
