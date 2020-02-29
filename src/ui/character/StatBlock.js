@@ -2,7 +2,7 @@ import React from 'react';
 
 function StatBlock() {
     return (
-      <div className="StatBlock">
+      <div className="grid StatBlock">
         <Stat name="STR" />
         <Stat name="DEX" />
         <Stat name="CON" />
