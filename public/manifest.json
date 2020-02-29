@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "DnD B20",
+  "name": "DnD Beyond Overlay",
   "author": "Rob Gries",
   "version": "0.1",
-  "description": "Use the DnD Beyond character sheet from the comfort of your Roll20 session.",
+  "description": "Use the power of DnD Beyond from the comfort of your Roll20 session.",
   "icons": {
     "16": "logo192.png",
     "48": "logo192.png",
@@ -20,6 +20,5 @@
     "matches": ["https://roll20.net/"],
     "js": ["inject_sidebar.js"]
   }],
-  "permissions": ["storage"],
   "web_accessible_resources": ["index.html"]
 }
