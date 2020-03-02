@@ -3,24 +3,37 @@ import React, { useState } from 'react';
 function Tabs(props) {
     const [currentTab, setCurrentTab] = useState(props.default);
 
-    const tabs = React.Children.map(props.children, (content) => {
+    React.Children.forEach(props.children, child => {
+        if (child.type !== Tab) throw new Error(`Children of Tabs must be of type Tab, instead received a ${child.type}`);
+    });
+
+    const tabs = React.Children.map(props.children, (tab) => {
         return (
-            <button onClick={() => setCurrentTab(content.props.tabTitle)}>
-                {content.props.tabTitle}
+            <button className="Tab" onClick={() => setCurrentTab(tab.props.title)}>
+                {tab.props.title}
             </button>
         );
     });
 
-    const content = React.Children.toArray(props.children).filter((child) => {
-        return currentTab === child.props.tabTitle;
+    const content = React.Children.toArray(props.children).find((tab) => {
+        return currentTab === tab.props.title;
     });
 
     return (
         <div>
-            {tabs}
+            <div className="row Tabs">
+                {tabs}
+            </div>
             {content}
         </div>
     );
 }
 
-export default Tabs;
+function Tab(props) {
+    return props.children;
+}
+
+export {
+    Tabs,
+    Tab
+};
