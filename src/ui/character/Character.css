@@ -15,11 +15,11 @@
 .Character {
     display: flex;
     flex-flow: column;
+    height: 850px;
     justify-content: space-between;
 }
 
 .Character > div {
-    flex: 1;
     margin: 5px;
 }
 
@@ -44,6 +44,10 @@
 
 .Skills {
     font-size: 16px;
+}
+
+.Tabs {
+    flex: 10;
 }
 
 .Tab {

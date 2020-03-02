@@ -12,7 +12,7 @@
 }
 
 .Overlay > div {
-  flex: 1;
+  flex: 1 1 auto;
 }
 
 .row {
@@ -20,5 +20,6 @@
 }
 
 .row.Selections {
+  align-items: center;
   justify-content: space-evenly;
 }
