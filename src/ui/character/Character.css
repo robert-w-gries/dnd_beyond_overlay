@@ -15,10 +15,12 @@
 .Character {
     display: flex;
     flex-flow: column;
+    justify-content: space-between;
 }
 
 .Character > div {
     flex: 1;
+    margin: 5px;
 }
 
 .SavingThrow > div {
@@ -26,8 +28,6 @@
     border-color: black;
     border-style: solid;
     color: black;
-    padding-top: 5px;
-    padding-bottom: 5px;
     text-align: center;
 }
 
@@ -46,10 +46,6 @@
     font-size: 16px;
 }
 
-.Tabs {
-    padding: 5px;
-}
-
 .Tab {
     border: none;
     cursor: pointer;
@@ -64,7 +60,10 @@
 
 .block {
     border: 2px solid red;
-    margin: 5px;
+}
+
+.block > div {
+    padding: 5px;
 }
 
 .blockHeader {
@@ -72,10 +71,6 @@
     margin: 0;
     padding-bottom: 5px;
     user-select: none;
-}
-
-.block > div {
-    padding: 5px;
 }
 
 .box {
@@ -99,7 +94,6 @@
 }
 
 .row.CharacterHeader {
-    padding: 5px;
     justify-content: space-between;
 }
 
@@ -107,6 +101,6 @@
     justify-content: space-between;
 }
 
-.row.Tabs {
+.row.TabsRow {
     justify-content: space-evenly;
 }

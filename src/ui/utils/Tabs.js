@@ -20,8 +20,8 @@ function Tabs(props) {
     });
 
     return (
-        <div>
-            <div className="row Tabs">
+        <div className="Tabs">
+            <div className="row TabsRow">
                 {tabs}
             </div>
             {content}

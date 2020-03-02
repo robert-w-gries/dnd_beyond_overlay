@@ -18,7 +18,7 @@ document.body.appendChild(iframe);
 
 function toggle(){
     if (iframe.style.width == "0px") {
-        iframe.style.width="33%";
+        iframe.style.width="300px";
     } else {
         iframe.style.width="0px";
     }
