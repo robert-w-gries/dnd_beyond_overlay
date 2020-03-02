@@ -1,7 +1,24 @@
 .Actions {
-    padding: 10px;
     justify-content: space-evenly;
     width: 100%;
+}
+
+.Attribute {
+    background-color: white;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 10px;
+    text-align: center;
+}
+
+.Character {
+    display: flex;
+    flex-flow: column;
+}
+
+.Character > div {
+    flex: 1;
 }
 
 .SavingThrow > div {
@@ -14,31 +31,30 @@
     text-align: center;
 }
 
-.SavingThrowTitle {
-    flex-grow: 2;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
 .SavingThrowStat {
     padding-left: 5px;
     padding-right: 5px;
 }
-  
-.Stat {
-    background-color: white;
-    border-color: red;
-    border-style: solid;
-    color: black;
-    padding: 20px 0;
-    text-align: center;
+
+.SavingThrowTitle {
+    flex-grow: 2;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.Skills {
+    font-size: 16px;
+}
+
+.Tabs {
+    padding: 5px;
 }
 
 .Tab {
     border: none;
     cursor: pointer;
     outline: none;
-    padding: 10px;
+    padding: 2px;
     width: 33%;
 }
 
@@ -46,11 +62,20 @@
     background-color: #777;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-gap: 10px;
-    padding: 10px;
+.block {
+    border: 2px solid red;
+    margin: 5px;
+}
+
+.blockHeader {
+    font-size: 16px;
+    margin: 0;
+    padding-bottom: 5px;
+    user-select: none;
+}
+
+.block > div {
+    padding: 5px;
 }
 
 .box {
@@ -67,16 +92,19 @@
     text-align: start;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
+}
+
 .row.CharacterHeader {
-    padding: 10px;
+    padding: 5px;
     justify-content: space-between;
 }
 
 .row.Skill {
-    display: flex;
     justify-content: space-between;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 .row.Tabs {

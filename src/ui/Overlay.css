@@ -1,10 +1,10 @@
 .Overlay {
-  text-align: center;
   background-color: #282c34;
-  font-size: calc(10px + 2vmin);
   color: white;
+  font-size: calc(10px + 2vmin);
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
+  text-align: center;
 }
 
 .row {
@@ -13,8 +13,4 @@
 
 .row.Selections {
   justify-content: space-evenly;
-}
-
-h1 {
-  user-select: none;
 }

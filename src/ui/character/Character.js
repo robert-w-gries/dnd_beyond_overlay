@@ -1,17 +1,20 @@
 import React from 'react';
 import './Character.css';
 import Actions from './Actions'
-import StatBlock from './StatBlock';
-import SavingThrowsBlock from './SavingThrowsBlock';
+import {Attributes, SavingThrows, StatBlock} from './Stats';
 import Skills from './Skills'
 import {Tabs, Tab} from '../utils/Tabs'
 
 function Character() {
   return (
-    <div>
+    <div className="Character">
       <CharacterHeader />
-      <StatBlock />
-      <SavingThrowsBlock />
+      <StatBlock>
+        <Attributes />
+      </StatBlock>
+      <StatBlock>
+        <SavingThrows />
+      </StatBlock>
       <Tabs default="Skills">
         <Tab title="Skills">
           <Skills />
