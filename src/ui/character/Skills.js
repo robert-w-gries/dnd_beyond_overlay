@@ -3,24 +3,24 @@ import React from 'react';
 function Skills() {
     return (
         <div className="Skills">
-            <Skill name="Acrobatics" />
-            <Skill name="Animal Handling" />
-            <Skill name="Arcana" />
-            <Skill name="Athletics" />
-            <Skill name="Deception" />
-            <Skill name="History" />
-            <Skill name="Insight" />
-            <Skill name="Intimidation" />
-            <Skill name="Investigation" />
-            <Skill name="Medicine" />
-            <Skill name="Nature" />
-            <Skill name="Perception" />
-            <Skill name="Performance" />
-            <Skill name="Persuasion" />
-            <Skill name="Religion" />
-            <Skill name="Sleight of Hand" />
-            <Skill name="Stealth" />
-            <Skill name="Survival" />
+            <Skill name="Acrobatics" attribute="DEX" />
+            <Skill name="Animal Handling" attribute="WIS" />
+            <Skill name="Arcana" attribute="INT" />
+            <Skill name="Athletics" attribute="STR" />
+            <Skill name="Deception" attribute="CHA" />
+            <Skill name="History" attribute="INT" />
+            <Skill name="Insight" attribute="WIS" />
+            <Skill name="Intimidation" attribute="CHA" />
+            <Skill name="Investigation" attribute="INT" />
+            <Skill name="Medicine" attribute="WIS" />
+            <Skill name="Nature" attribute="INT" />
+            <Skill name="Perception" attribute="WIS" />
+            <Skill name="Performance" attribute="CHA" />
+            <Skill name="Persuasion" attribute="CHA" />
+            <Skill name="Religion" attribute="INT" />
+            <Skill name="Sleight of Hand" attribute="DEX" />
+            <Skill name="Stealth" attribute="DEX" />
+            <Skill name="Survival" attribute="WIS" />
         </div>
     );
 }
@@ -28,8 +28,8 @@ function Skills() {
 function Skill(props) {
     return (
         <div className="row Skill">
-            <div className="box">Prof</div>
-            <div className="box">Mod</div>
+            <div className="box">o</div>
+            <div className="box attribute">{props.attribute}</div>
             <div className="box name">{props.name}</div>
             <div className="box">+0</div>
         </div>

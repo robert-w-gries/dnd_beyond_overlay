@@ -42,11 +42,16 @@
 }
 
 .box {
+    flex: 1;
     padding: 5px;
 }
 
+.box.attribute {
+    font-family: "Courier New";
+}
+
 .box.name {
-    flex-grow: 100;
+    flex: 10;
     text-align: start;
 }
 
