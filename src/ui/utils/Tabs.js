@@ -24,7 +24,9 @@ function Tabs(props) {
             <div className="row TabsRow">
                 {tabs}
             </div>
-            {content}
+            <div className="TabContent">
+                {content}
+            </div>
         </div>
     );
 }

@@ -24,6 +24,9 @@ function Character() {
         </Tab>
         <Tab title="Spells">
           <div>Spells</div>
+          <div>Spells</div>
+          <div>Spells</div>
+          <div>Spells</div>
         </Tab>
       </Tabs>
     </div>

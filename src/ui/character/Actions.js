@@ -10,6 +10,8 @@ function Actions() {
                 <th>Damage</th>
             </tr>
             <Action title="Example Action" />
+            <Action title="Example Action" />
+            <Action title="Example Action" />
         </table>
     );
 }
