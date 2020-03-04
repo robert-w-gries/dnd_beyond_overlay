@@ -1,25 +1,26 @@
-chrome.runtime.onMessage.addListener(function(msg, sender){
-    if(msg == "toggle"){
-        toggle();
-    }
-})
+/* eslint-disable no-param-reassign */
+function toggle(iframe) {
+  if (iframe.style.width === '0px') {
+    iframe.style.width = '300px';
+  } else {
+    iframe.style.width = '0px';
+  }
+}
 
-var iframe = document.createElement('iframe');
-iframe.style.height = "100%";
-iframe.style.width = "0px";
-iframe.style.position = "fixed";
-iframe.style.top = "0px";
-iframe.style.right = "0px";
-iframe.style.zIndex = "9000000000000000000";
-iframe.frameBorder = "none"; 
-iframe.src = chrome.extension.getURL("index.html")
+const iframe = document.createElement('iframe');
+iframe.style.height = '100%';
+iframe.style.width = '0px';
+iframe.style.position = 'fixed';
+iframe.style.top = '0px';
+iframe.style.right = '0px';
+iframe.style.zIndex = '9000000000000000000';
+iframe.frameBorder = 'none';
+iframe.src = chrome.extension.getURL('index.html');
+
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg === 'toggle') {
+    toggle(iframe);
+  }
+});
 
 document.body.appendChild(iframe);
-
-function toggle(){
-    if (iframe.style.width == "0px") {
-        iframe.style.width="300px";
-    } else {
-        iframe.style.width="0px";
-    }
-}

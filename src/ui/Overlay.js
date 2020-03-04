@@ -1,6 +1,6 @@
 import React from 'react';
 import './Overlay.css';
-import Character from './character/Character'
+import Character from './character/Character';
 
 function Overlay() {
   return (
@@ -17,7 +17,7 @@ function Selections() {
       <SelectCampaign />
       <SelectCharacter />
     </div>
-  )
+  );
 }
 
 function SelectCampaign() {

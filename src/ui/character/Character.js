@@ -1,9 +1,9 @@
 import React from 'react';
 import './Character.css';
-import Actions from './Actions'
-import {Attributes, SavingThrows, StatBlock} from './Stats';
-import Skills from './Skills'
-import {Tabs, Tab} from '../utils/Tabs'
+import Actions from './Actions';
+import { Attributes, SavingThrows, StatBlock } from './Stats';
+import Skills from './Skills';
+import { Tabs, Tab } from '../utils/Tabs';
 
 function Character() {
   return (
@@ -15,7 +15,7 @@ function Character() {
       <StatBlock>
         <SavingThrows />
       </StatBlock>
-      <Tabs default="Skills">
+      <Tabs defaultTab="Skills">
         <Tab title="Skills">
           <Skills />
         </Tab>
