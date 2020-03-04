@@ -50,6 +50,18 @@
     flex-flow: column;
 }
 
+.Tab {
+    flex: 1;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0.5em 1em;
+}
+
+.Tab:hover {
+    background-color: #777;
+}
+
 .TabContent {
     flex: 1;
     display: flex;
@@ -61,18 +73,6 @@
     display: flex;
     flex-flow: column;
     justify-content: space-between;
-}
-
-.Tab {
-    border: none;
-    cursor: pointer;
-    outline: none;
-    padding: 2px;
-    width: 33%;
-}
-
-.Tab:hover {
-    background-color: #777;
 }
 
 .block {

@@ -8,8 +8,10 @@ function Tabs(props) {
     });
 
     const tabs = React.Children.map(props.children, (tab) => {
+        const selectedColor = currentTab === tab.props.title ? "yellow" : null;
+
         return (
-            <button className="Tab" onClick={() => setCurrentTab(tab.props.title)}>
+            <button className="Tab" style={{background: selectedColor}} onClick={() => setCurrentTab(tab.props.title)}>
                 {tab.props.title}
             </button>
         );
