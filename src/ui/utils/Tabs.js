@@ -14,10 +14,14 @@ function Tabs(props) {
   });
 
   const tabs = React.Children.map(children, (tab) => {
-    const selectedColor = currentTab === tab.props.title ? 'yellow' : null;
+    const selectedStyle = {
+      background: 'red',
+      color: 'white',
+      fontWeight: 'bold',
+    };
 
     return (
-      <button type="button" className="Tab" style={{ background: selectedColor }} onClick={() => setCurrentTab(tab.props.title)}>
+      <button type="button" className="Tab" style={currentTab === tab.props.title ? selectedStyle : null} onClick={() => setCurrentTab(tab.props.title)}>
         {tab.props.title}
       </button>
     );

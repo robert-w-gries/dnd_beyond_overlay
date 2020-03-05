@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function Actions() {
   return (
-    <table className="Actions">
+    <table className="table Actions">
       <tr>
         <th>Action</th>
         <th>Range</th>
@@ -20,7 +20,7 @@ function Actions() {
 function Action(props) {
   const { title } = props;
   return (
-    <tr>
+    <tr className="action">
       <td>{title}</td>
       <td>30</td>
       <td>+10</td>

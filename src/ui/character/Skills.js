@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 
 function Skills() {
   return (
-    <div className="Skills">
+    <table className="table Skills">
+      <tr>
+        <th>Prof</th>
+        <th>Attr</th>
+        <th>Skill</th>
+        <th>Bonus</th>
+      </tr>
       <Skill title="Acrobatics" attribute="DEX" />
       <Skill title="Animal Handling" attribute="WIS" />
       <Skill title="Arcana" attribute="INT" />
@@ -22,19 +28,19 @@ function Skills() {
       <Skill title="Sleight of Hand" attribute="DEX" />
       <Skill title="Stealth" attribute="DEX" />
       <Skill title="Survival" attribute="WIS" />
-    </div>
+    </table>
   );
 }
 
 function Skill(props) {
   const { attribute, title } = props;
   return (
-    <div className="row Skill">
-      <div className="box">o</div>
-      <div className="box attribute">{attribute}</div>
-      <div className="box name">{title}</div>
-      <div className="box">+0</div>
-    </div>
+    <tr className="check">
+      <td>&#10687;</td>
+      <td className="attr">{attribute}</td>
+      <td>{title}</td>
+      <td className="bonus">+0</td>
+    </tr>
   );
 }
 

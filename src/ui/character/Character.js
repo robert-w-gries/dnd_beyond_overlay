@@ -12,7 +12,7 @@ function Character() {
       <StatBlock>
         <Attributes />
       </StatBlock>
-      <StatBlock>
+      <StatBlock header="Saving Throws">
         <SavingThrows />
       </StatBlock>
       <Tabs defaultTab="Skills">

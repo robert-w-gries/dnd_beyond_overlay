@@ -17,7 +17,10 @@ function Attributes() {
 function Attribute(props) {
   const { title } = props;
   return (
-    <div className="Attribute">{title}</div>
+    <div className="check Attribute">
+      <div className="attr AttributeTitle">{title}</div>
+      <div className="AttributeBonus">+0</div>
+    </div>
   );
 }
 
@@ -27,16 +30,13 @@ Attribute.propTypes = {
 
 function SavingThrows() {
   return (
-    <div className="SavingThrows">
-      <h1 className="blockHeader">Saving Throws</h1>
-      <div className="grid">
-        <SavingThrow title="STR" />
-        <SavingThrow title="DEX" />
-        <SavingThrow title="CON" />
-        <SavingThrow title="INT" />
-        <SavingThrow title="WIS" />
-        <SavingThrow title="CHA" />
-      </div>
+    <div className="grid SavingThrows">
+      <SavingThrow title="STR" />
+      <SavingThrow title="DEX" />
+      <SavingThrow title="CON" />
+      <SavingThrow title="INT" />
+      <SavingThrow title="WIS" />
+      <SavingThrow title="CHA" />
     </div>
   );
 }
@@ -44,9 +44,9 @@ function SavingThrows() {
 function SavingThrow(props) {
   const { title } = props;
   return (
-    <div className="row SavingThrow">
-      <div className="SavingThrowTitle">{title}</div>
-      <div className="SavingThrowStat">+0</div>
+    <div className="check SavingThrow">
+      <div className="attr SavingThrowTitle">{title}</div>
+      <div className="bonus SavingThrowStat">+0</div>
     </div>
   );
 }
@@ -56,9 +56,13 @@ SavingThrow.propTypes = {
 };
 
 function StatBlock(props) {
-  const { children } = props;
+  const { children, header } = props;
+  const h = (
+    <h1 className="StatBlockHeader">{header}</h1>
+  );
   return (
-    <div className="block">
+    <div className="StatBlock">
+      { header ? h : null }
       {children}
     </div>
   );
@@ -66,6 +70,11 @@ function StatBlock(props) {
 
 StatBlock.propTypes = {
   children: PropTypes.element.isRequired,
+  header: PropTypes.string,
+};
+
+StatBlock.defaultProps = {
+  header: '',
 };
 
 export {
