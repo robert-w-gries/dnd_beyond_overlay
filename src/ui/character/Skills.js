@@ -34,9 +34,16 @@ function Skills() {
 
 function Skill(props) {
   const { attribute, title } = props;
+  const proficiencyChars = {
+    half: String.fromCharCode(9680),
+    proficient: String.fromCharCode(9679),
+    expertise: String.fromCharCode(10687),
+    none: String.fromCharCode(9675),
+  };
+
   return (
     <tr className="check">
-      <td>&#10687;</td>
+      <td>{proficiencyChars.expertise}</td>
       <td className="attr">{attribute}</td>
       <td>{title}</td>
       <td className="bonus">+0</td>
