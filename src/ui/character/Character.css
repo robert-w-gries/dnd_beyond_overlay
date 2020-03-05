@@ -116,6 +116,12 @@
   gap: 5px;
 }
 
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .row.CharacterHeader {
   justify-content: space-between;
 }
