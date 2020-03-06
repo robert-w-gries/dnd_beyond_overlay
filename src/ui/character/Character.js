@@ -1,5 +1,4 @@
 import React from 'react';
-import './Character.css';
 import Actions from './Actions';
 import { Attributes, SavingThrows, StatBlock } from './Stats';
 import Skills from './Skills';

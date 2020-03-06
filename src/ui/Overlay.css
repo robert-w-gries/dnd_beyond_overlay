@@ -6,3 +6,154 @@
   overflow: hidden;
   text-align: center;
 }
+
+.Attribute {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  background-color: white;
+  border-color: black;
+  border-style: solid;
+  color: #000000;
+  padding: 10px;
+  text-align: center;
+}
+
+.AttributeTitle {
+  border-bottom: 1px solid black;
+  flex: 1;
+}
+
+.Character {
+    min-height: 100%;
+}
+
+.Character > div:not(.CharacterHeader) {
+  margin: 10px;
+}
+
+.CharacterHeader {
+  margin: 5px;
+}
+
+.SavingThrow {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  border-color: black;
+  border-style: solid;
+  color: black;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.SavingThrowTitle {
+  flex: 1;
+  border-right: 1px solid black;
+}
+
+.SavingThrow > div {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.StatBlock {
+  border: 2px solid red;
+  padding: 5px;
+}
+
+.StatBlockHeader {
+  font-size: 16px;
+  margin: 0;
+  padding-bottom: 5px;
+  user-select: none;
+}
+
+.Tab {
+  flex: 1;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0.5em 1em;
+}
+
+.Tab:hover {
+  background-color: #777;
+}
+
+.TabContent {
+  background-color: white;
+  color: black;
+}
+
+.action {
+  cursor: pointer;
+  user-select: none;
+}
+
+.action:hover {
+  background-color: rgb(207, 207, 207);
+}
+
+.attr {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.bonus {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.check {
+  cursor: pointer;
+  user-select: none;
+}
+
+.check:hover {
+  background-color: rgb(207, 207, 207);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.grid.Attributes {
+  gap: 5px;
+}
+
+.grid.SavingThrows {
+  gap: 5px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.row.CharacterHeader {
+  justify-content: space-between;
+}
+
+.row.Skill {
+  justify-content: space-between;
+}
+
+.row.TabsRow {
+  justify-content: space-evenly;
+}
+
+.table {
+  border-collapse: collapse;
+  text-align: left;
+  width: 100%;
+}
+
+td {
+  padding: 3px;
+}
+
+th {
+  font-size: 12px;
+}

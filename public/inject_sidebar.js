@@ -17,9 +17,11 @@ iframe.style.zIndex = '9000000000000000000';
 iframe.frameBorder = 'none';
 iframe.src = chrome.extension.getURL('index.html');
 
-chrome.runtime.onMessage.addListener((msg) => {
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg === 'toggle') {
     toggle(iframe);
+  } else if (msg === 'isAlive') {
+    sendResponse({ isAlive: 'true' });
   }
 });
 
