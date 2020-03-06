@@ -2,8 +2,8 @@
 // StackOverflow: https://stackoverflow.com/a/23895822
 function ensureSendMessage(tabId, message, callback) {
   // Check if tab is ready for sidebar injection
-  chrome.tabs.sendMessage(tabId, { ping: true }, (response) => {
-    if (response && response.pong) {
+  chrome.tabs.sendMessage(tabId, 'isAlive', (response) => {
+    if (response && response.isAlive) {
       chrome.tabs.sendMessage(tabId, message, callback);
     } else {
       // No listener on the other end; manually attempt to execute the sidebar injection
