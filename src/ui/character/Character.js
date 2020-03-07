@@ -5,9 +5,10 @@ import Skills from './Skills';
 import { Tabs, Tab } from '../utils/Tabs';
 
 function Character(props) {
+  const { name, health } = props.sheet;
   return (
     <div className="Character">
-      <CharacterHeader name={props.sheet.name} />
+      <CharacterHeader name={name} health={health} />
       <StatBlock>
         <Attributes />
       </StatBlock>
@@ -36,7 +37,7 @@ function CharacterHeader(props) {
   return (
     <div className="row CharacterHeader">
       <div>{props.name}</div>
-      <div>Health</div>
+      <div>{props.health} HP</div>
     </div>
   );
 }

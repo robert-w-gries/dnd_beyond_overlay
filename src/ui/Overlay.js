@@ -4,7 +4,7 @@ import BeyondFrame from './BeyondFrame';
 import Character from './character/Character';
 
 function Overlay() {
-  const [data, setData] = useState({ name: '' });
+  const [data, setData] = useState({ name: '', health: '' });
   return (
     <div className="Overlay">
       <BeyondFrame setData={(newData) => { setData(newData); }} />
