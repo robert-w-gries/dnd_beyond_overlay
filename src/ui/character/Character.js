@@ -7,7 +7,7 @@ import { Tabs, Tab } from '../utils/Tabs';
 function Character(props) {
   return (
     <div className="Character">
-      <CharacterHeader name={props.name} />
+      <CharacterHeader name={props.sheet.name} />
       <StatBlock>
         <Attributes />
       </StatBlock>
