@@ -4,16 +4,10 @@ import { Attributes, SavingThrows, StatBlock } from './Stats';
 import Skills from './Skills';
 import { Tabs, Tab } from '../utils/Tabs';
 
-function Character() {
-  // const name = document.getElementsByClassName('ct-character-tidbits__name');
-  const url = 'https://www.dndbeyond.com/characters/20359926';
-  const xframe = (
-    <iframe title="charSheet" is="x-frame-bypass" src={url} style={{ height: '100%', width: '100%', left: '0', top: '0', position: 'absolute' }} />
-  );
+function Character(props) {
   return (
     <div className="Character">
-      {xframe}
-      <CharacterHeader />
+      <CharacterHeader name={props.name} />
       <StatBlock>
         <Attributes />
       </StatBlock>
@@ -38,10 +32,10 @@ function Character() {
   );
 }
 
-function CharacterHeader() {
+function CharacterHeader(props) {
   return (
     <div className="row CharacterHeader">
-      <div>CharacterName</div>
+      <div>{props.name}</div>
       <div>Health</div>
     </div>
   );

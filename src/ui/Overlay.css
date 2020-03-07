@@ -150,6 +150,15 @@
   width: 100%;
 }
 
+iframe[title='charSheet'] {
+  height: 4000px;
+  width: 4000px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
 td {
   padding: 3px;
 }
