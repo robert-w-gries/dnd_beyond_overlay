@@ -16,15 +16,14 @@
   "browser_action": {
     "default_icon": "logo192.png"
   },
-  "content_security_policy": "script-src-elem 'self' 'unsafe-eval' 'unsafe-inline' https://unpkg.com/x-frame-bypass https://*;",
+  "content_security_policy": "script-src-elem 'self' 'unsafe-inline' https://unpkg.com/x-frame-bypass https://media.dndbeyond.com;",
   "content_scripts": [{
     "matches": ["*://app.roll20.net/editor/"],
     "js": ["inject_sidebar.js"]
   }],
   "permissions": [
     "*://app.roll20.net/editor/",
-    "*://*.dndbeyond.com/*",
-    "*://cors.io/*://www.dndbeyond.com/characters/*"
+    "*://*.dndbeyond.com/characters/*"
   ],
   "web_accessible_resources": ["index.html"]
 }
