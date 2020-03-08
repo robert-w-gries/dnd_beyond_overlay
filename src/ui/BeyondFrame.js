@@ -1,9 +1,11 @@
 import React from 'react';
 
 const fields = {
+  attributes: 'ct-ability-summary',
   characterName: 'ct-character-tidbits__name',
   health: 'ct-health-summary__hp-number',
   loaded: 'ct-character-sheet-desktop',
+  savingThrows: 'ct-saving-throws-summary__ability',
 };
 
 function formData(iframeDoc) {
@@ -11,11 +13,27 @@ function formData(iframeDoc) {
     return iframeDoc.querySelector(`.${className}`);
   };
 
-  const name = getElement(fields.characterName).textContent;
-  const health = getElement(fields.health).textContent;
+  const attributes = {};
+  iframeDoc.querySelectorAll(`.${fields.attributes}`).forEach((element) => {
+    const attr = element.querySelector('.ct-ability-summary__label').textContent;
+    const sign = element.querySelector('.ct-signed-number__sign').textContent;
+    const num = element.querySelector('.ct-signed-number__number').textContent;
+    attributes[attr] = `${sign}${num}`;
+  });
+
+  const savingThrows = {};
+  iframeDoc.querySelectorAll(`.${fields.savingThrows}`).forEach((element) => {
+    const attr = element.querySelector('.ct-saving-throws-summary__ability-name').textContent;
+    const sign = element.querySelector('.ct-signed-number__sign').textContent;
+    const num = element.querySelector('.ct-signed-number__number').textContent;
+    savingThrows[attr] = `${sign}${num}`;
+  });
+
   return {
-    name,
-    health,
+    attributes,
+    name: getElement(fields.characterName).textContent,
+    health: getElement(fields.health).textContent,
+    savingThrows,
   };
 }
 
