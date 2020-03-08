@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+.ActionNameCol {
+  text-align: left;
+}
+
 .Attribute {
   display: flex;
   flex-flow: column;
@@ -93,7 +97,7 @@
 
 .Tab {
   flex: 1;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   cursor: pointer;
   outline: none;
   padding: 0.5em 1em;

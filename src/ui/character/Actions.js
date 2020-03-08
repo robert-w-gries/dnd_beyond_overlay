@@ -5,7 +5,7 @@ function Actions() {
   return (
     <table className="table Actions">
       <tr>
-        <th>Action</th>
+        <th className="ActionNameCol">Action</th>
         <th>Range</th>
         <th>Hit</th>
         <th>Damage</th>
@@ -21,7 +21,7 @@ function Action(props) {
   const { title } = props;
   return (
     <tr className="action">
-      <td>{title}</td>
+      <td className="ActionNameCol">{title}</td>
       <td>30</td>
       <td>+10</td>
       <td>1d6+5</td>
