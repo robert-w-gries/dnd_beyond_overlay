@@ -24,15 +24,17 @@
 }
 
 .Character {
-    min-height: 100%;
+  min-height: 100%;
 }
 
-.Character > div:not(.CharacterHeader) {
+.Character > div {
   margin: 10px;
 }
 
-.CharacterHeader {
-  margin: 10px;
+.CharacterTabs > .TabContent {
+  background-color: white;
+  color: black;
+  padding: 10px;
 }
 
 .SavingThrow {
@@ -58,7 +60,19 @@
 }
 
 .SelectCharacter {
-  padding-left: 10px;
+  margin: 10px;
+}
+
+.SkillsAttrCol {
+  padding-right: 3px;
+}
+
+.SkillsBonusCol {
+  text-align: right;
+}
+
+.SkillsNameCol {
+  text-align: left;
 }
 
 .SkillsProfCol {
@@ -87,11 +101,6 @@
 
 .Tab:hover {
   background-color: #777;
-}
-
-.CharacterTabs > .TabContent {
-  background-color: white;
-  color: black;
 }
 
 .action {
@@ -171,8 +180,12 @@
 
 .table {
   border-collapse: collapse;
-  text-align: left;
+  text-align: center;
   width: 100%;
+}
+
+.underline {
+  border-bottom: 1px solid rgba(255, 0, 0, 0.4);
 }
 
 h1 {
@@ -187,7 +200,8 @@ iframe[title='charSheet'] {
 }
 
 td {
-  padding: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 th {

@@ -12,10 +12,10 @@ function Skills(props) {
   return (
     <table className="table Skills">
       <tr>
-        <th className="SkillsProfCol">Prof</th>
+        <th>Prof</th>
         <th>Attr</th>
-        <th>Skill</th>
-        <th>Bonus</th>
+        <th className="SkillsNameCol">Skill</th>
+        <th className="SkillsBonusCol">Bonus</th>
       </tr>
       <Skill title="Acrobatics" attribute="DEX" stat={getSkill('Acrobatics')} />
       <Skill title="Animal Handling" attribute="WIS" stat={getSkill('Animal Handling')} />
@@ -51,9 +51,9 @@ function Skill(props) {
   return (
     <tr className="check">
       <td className="SkillsProfCol">{proficiencyChars[stat.prof]}</td>
-      <td className="attr">{attribute}</td>
-      <td>{title}</td>
-      <td className="bonus">{`${stat.sign}${stat.num}`}</td>
+      <td className="attr SkillsAttrCol">{attribute}</td>
+      <td className="underline SkillsNameCol">{title}</td>
+      <td className="bonus SkillsBonusCol underline">{`${stat.sign}${stat.num}`}</td>
     </tr>
   );
 }
