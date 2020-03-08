@@ -11,7 +11,7 @@ function Overlay() {
       <BeyondFrame setData={(newData) => { setData(newData); }} />
       <Tabs defaultTab="Character Sheet" className="OverlayTabs">
         <Tab title="Character Sheet">
-          { data ? <Character sheet={data} /> : null }
+          { data ? <Character sheet={data} /> : <Loading /> }
         </Tab>
         <Tab title="Select A Character">
           <SelectCharacter />
@@ -19,6 +19,10 @@ function Overlay() {
       </Tabs>
     </div>
   );
+}
+
+function Loading() {
+  return (<div className="loader" />);
 }
 
 function SelectCharacter() {
