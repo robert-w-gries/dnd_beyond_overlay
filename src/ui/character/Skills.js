@@ -45,7 +45,7 @@ function Skill(props) {
     'Half Proficiency': String.fromCharCode(9680),
     Proficiency: String.fromCharCode(9679),
     Expertise: String.fromCharCode(10687),
-    none: String.fromCharCode(9675),
+    'Not Proficient': String.fromCharCode(9675),
   };
 
   return (

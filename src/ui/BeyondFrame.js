@@ -47,7 +47,6 @@ function formData(iframeDoc) {
 
   const skills = getStats(fields.skills, (skillObj, element) => {
     skillObj['prof'] = element.querySelector(`.${fields.skills.prof}`).getAttribute('data-original-title');
-    console.log(skillObj.prof);
   });
 
   return {
@@ -61,6 +60,7 @@ function formData(iframeDoc) {
 
 function BeyondFrame(props) {
   const url = 'https://www.dndbeyond.com/characters/20359926';
+  const erwin = 'https://www.dndbeyond.com/profile/JivesMcRibbz/characters/20976116';
 
   let iframeLoaded = false;
   const checkSheetLoaded = (iframeDoc) => {
@@ -78,7 +78,7 @@ function BeyondFrame(props) {
 
   let xframeRef = null;
   return (
-    <iframe title="charSheet" is="x-frame-bypass" src={url} onLoad={() => { iframeLoaded = false; setTimeout(checkSheetLoaded, 500, xframeRef.contentDocument); }} ref={(e) => { xframeRef = e; }} />
+    <iframe title="charSheet" is="x-frame-bypass" src={erwin} onLoad={() => { iframeLoaded = false; setTimeout(checkSheetLoaded, 500, xframeRef.contentDocument); }} ref={(e) => { xframeRef = e; }} />
   );
 }
 
