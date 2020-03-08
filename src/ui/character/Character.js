@@ -5,7 +5,7 @@ import Skills from './Skills';
 import { Tabs, Tab } from '../utils/Tabs';
 
 function Character(props) {
-  const { attributes, name, health, savingThrows} = props.sheet;
+  const { attributes, name, health, savingThrows, skills } = props.sheet;
   return (
     <div className="Character">
       <CharacterHeader name={name} health={health} />
@@ -17,7 +17,7 @@ function Character(props) {
       </StatBlock>
       <Tabs defaultTab="Skills">
         <Tab title="Skills">
-          <Skills />
+          <Skills skills={skills} />
         </Tab>
         <Tab title="Actions">
           <Actions />

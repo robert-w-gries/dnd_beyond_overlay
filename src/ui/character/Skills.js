@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Skills() {
+function Skills(props) {
+  const getSkill = (name) => {
+    if (props.skills) {
+      console.log(props.skills[name]);
+      return props.skills[name];
+    }
+  };
+
   return (
     <table className="table Skills">
       <tr>
@@ -10,43 +17,43 @@ function Skills() {
         <th>Skill</th>
         <th>Bonus</th>
       </tr>
-      <Skill title="Acrobatics" attribute="DEX" />
-      <Skill title="Animal Handling" attribute="WIS" />
-      <Skill title="Arcana" attribute="INT" />
-      <Skill title="Athletics" attribute="STR" />
-      <Skill title="Deception" attribute="CHA" />
-      <Skill title="History" attribute="INT" />
-      <Skill title="Insight" attribute="WIS" />
-      <Skill title="Intimidation" attribute="CHA" />
-      <Skill title="Investigation" attribute="INT" />
-      <Skill title="Medicine" attribute="WIS" />
-      <Skill title="Nature" attribute="INT" />
-      <Skill title="Perception" attribute="WIS" />
-      <Skill title="Performance" attribute="CHA" />
-      <Skill title="Persuasion" attribute="CHA" />
-      <Skill title="Religion" attribute="INT" />
-      <Skill title="Sleight of Hand" attribute="DEX" />
-      <Skill title="Stealth" attribute="DEX" />
-      <Skill title="Survival" attribute="WIS" />
+      <Skill title="Acrobatics" attribute="DEX" stat={getSkill('Acrobatics')} />
+      <Skill title="Animal Handling" attribute="WIS" stat={getSkill('Animal Handling')} />
+      <Skill title="Arcana" attribute="INT" stat={getSkill('Arcana')} />
+      <Skill title="Athletics" attribute="STR" stat={getSkill('Athletics')} />
+      <Skill title="Deception" attribute="CHA" stat={getSkill('Deception')} />
+      <Skill title="History" attribute="INT" stat={getSkill('History')} />
+      <Skill title="Insight" attribute="WIS" stat={getSkill('Insight')} />
+      <Skill title="Intimidation" attribute="CHA" stat={getSkill('Intimidation')} />
+      <Skill title="Investigation" attribute="INT" stat={getSkill('Investigation')} />
+      <Skill title="Medicine" attribute="WIS" stat={getSkill('Medicine')} />
+      <Skill title="Nature" attribute="INT" stat={getSkill('Nature')} />
+      <Skill title="Perception" attribute="WIS" stat={getSkill('Perception')} />
+      <Skill title="Performance" attribute="CHA" stat={getSkill('Performance')} />
+      <Skill title="Persuasion" attribute="CHA" stat={getSkill('Persuasion')} />
+      <Skill title="Religion" attribute="INT" stat={getSkill('Religion')} />
+      <Skill title="Sleight of Hand" attribute="DEX" stat={getSkill('Sleight of Hand')} />
+      <Skill title="Stealth" attribute="DEX" stat={getSkill('Stealth')} />
+      <Skill title="Survival" attribute="WIS" stat={getSkill('Survival')} />
     </table>
   );
 }
 
 function Skill(props) {
-  const { attribute, title } = props;
+  const { attribute, stat, title } = props;
   const proficiencyChars = {
-    half: String.fromCharCode(9680),
-    proficient: String.fromCharCode(9679),
-    expertise: String.fromCharCode(10687),
+    'Half Proficiency': String.fromCharCode(9680),
+    Proficiency: String.fromCharCode(9679),
+    Expertise: String.fromCharCode(10687),
     none: String.fromCharCode(9675),
   };
 
   return (
     <tr className="check">
-      <td>{proficiencyChars.expertise}</td>
+      <td>{proficiencyChars[stat.prof]}</td>
       <td className="attr">{attribute}</td>
       <td>{title}</td>
-      <td className="bonus">+0</td>
+      <td className="bonus">{`${stat.sign}${stat.num}`}</td>
     </tr>
   );
 }

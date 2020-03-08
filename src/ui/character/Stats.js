@@ -6,26 +6,25 @@ function Attributes(props) {
     if (props.attributes) {
       return props.attributes[attribute];
     }
-    return null;
   };
   return (
     <div className="grid Attributes">
-      <Attribute title="STR" score={getAttribute('Strength')} />
-      <Attribute title="DEX" score={getAttribute('Dexterity')} />
-      <Attribute title="CON" score={getAttribute('Constitution')} />
-      <Attribute title="INT" score={getAttribute('Intelligence')} />
-      <Attribute title="WIS" score={getAttribute('Wisdom')} />
-      <Attribute title="CHA" score={getAttribute('Charisma')} />
+      <Attribute title="STR" stat={getAttribute('Strength')} />
+      <Attribute title="DEX" stat={getAttribute('Dexterity')} />
+      <Attribute title="CON" stat={getAttribute('Constitution')} />
+      <Attribute title="INT" stat={getAttribute('Intelligence')} />
+      <Attribute title="WIS" stat={getAttribute('Wisdom')} />
+      <Attribute title="CHA" stat={getAttribute('Charisma')} />
     </div>
   );
 }
 
 function Attribute(props) {
-  const { score, title } = props;
+  const { stat, title } = props;
   return (
     <div className="check Attribute">
       <div className="attr AttributeTitle">{title}</div>
-      <div className="AttributeBonus">{score}</div>
+      <div className="AttributeBonus">{`${stat.sign}${stat.num}`}</div>
     </div>
   );
 }
@@ -43,22 +42,22 @@ function SavingThrows(props) {
   };
   return (
     <div className="grid SavingThrows">
-      <SavingThrow title="STR" score={getSavingThrow('str')} />
-      <SavingThrow title="DEX" score={getSavingThrow('dex')} />
-      <SavingThrow title="CON" score={getSavingThrow('con')} />
-      <SavingThrow title="INT" score={getSavingThrow('int')} />
-      <SavingThrow title="WIS" score={getSavingThrow('wis')} />
-      <SavingThrow title="CHA" score={getSavingThrow('cha')} />
+      <SavingThrow title="STR" stat={getSavingThrow('str')} />
+      <SavingThrow title="DEX" stat={getSavingThrow('dex')} />
+      <SavingThrow title="CON" stat={getSavingThrow('con')} />
+      <SavingThrow title="INT" stat={getSavingThrow('int')} />
+      <SavingThrow title="WIS" stat={getSavingThrow('wis')} />
+      <SavingThrow title="CHA" stat={getSavingThrow('cha')} />
     </div>
   );
 }
 
 function SavingThrow(props) {
-  const { score, title } = props;
+  const { stat, title } = props;
   return (
     <div className="check SavingThrow">
       <div className="attr SavingThrowTitle">{title}</div>
-      <div className="bonus SavingThrowStat">{score}</div>
+      <div className="bonus SavingThrowStat">{`${stat.sign}${stat.num}`}</div>
     </div>
   );
 }
