@@ -89,7 +89,7 @@
   background-color: #777;
 }
 
-.TabContent {
+.CharacterTabs > .TabContent {
   background-color: white;
   color: black;
 }

@@ -15,7 +15,7 @@ function Character(props) {
       <StatBlock header="Saving Throws">
         <SavingThrows savingThrows={savingThrows} />
       </StatBlock>
-      <Tabs defaultTab="Skills">
+      <Tabs defaultTab="Skills" className="CharacterTabs">
         <Tab title="Skills">
           <Skills skills={skills} />
         </Tab>

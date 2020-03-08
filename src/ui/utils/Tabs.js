@@ -30,7 +30,7 @@ function Tabs(props) {
   const content = React.Children.toArray(children).find((tab) => currentTab === tab.props.title);
 
   return (
-    <div className="Tabs">
+    <div className={`Tabs ${props.className}`}>
       <div className="row TabsRow">
         {tabs}
       </div>
