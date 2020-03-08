@@ -12,7 +12,7 @@ function Skills(props) {
   return (
     <table className="table Skills">
       <tr>
-        <th>Prof</th>
+        <th className="SkillsProfCol">Prof</th>
         <th>Attr</th>
         <th>Skill</th>
         <th>Bonus</th>
@@ -43,14 +43,14 @@ function Skill(props) {
   const { attribute, stat, title } = props;
   const proficiencyChars = {
     'Half Proficiency': String.fromCharCode(9680),
-    Proficiency: String.fromCharCode(9679),
+    Proficiency: String.fromCharCode(11044),
     Expertise: String.fromCharCode(10687),
     'Not Proficient': String.fromCharCode(9675),
   };
 
   return (
     <tr className="check">
-      <td>{proficiencyChars[stat.prof]}</td>
+      <td className="SkillsProfCol">{proficiencyChars[stat.prof]}</td>
       <td className="attr">{attribute}</td>
       <td>{title}</td>
       <td className="bonus">{`${stat.sign}${stat.num}`}</td>

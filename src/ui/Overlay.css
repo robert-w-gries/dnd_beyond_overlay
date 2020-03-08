@@ -61,6 +61,10 @@
   padding-left: 10px;
 }
 
+.SkillsProfCol {
+  text-align: center;
+}
+
 .StatBlock {
   border: 2px solid red;
   padding: 5px;
