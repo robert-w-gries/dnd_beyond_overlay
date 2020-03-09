@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
 const fields = {
@@ -72,45 +72,49 @@ function formData(iframeDoc) {
   };
 }
 
-function BeyondFrame(props) {
-  const { charId, setData, setIsLoading } = props;
+function BeyondLoader(props) {
+  const { charId, onBeyondLoaded } = props;
   if (!charId) {
     return null;
   }
 
   const url = `https://www.dndbeyond.com/characters/${charId}`;
+  return <BeyondFrame url={url} onBeyondLoaded={onBeyondLoaded} />;
+}
+
+BeyondLoader.propTypes = {
+  charId: PropTypes.number.isRequired,
+  onBeyondLoaded: PropTypes.func.isRequired,
+};
+
+function BeyondFrame(props) {
+  const { onBeyondLoaded, url } = props;
+
+  const frameRef = useRef();
 
   let isBeyondLoaded = false;
-  let xframeRef = null;
-  const checkSheetLoaded = (iframeDoc) => {
+  const checkSheetLoaded = (frameDocument) => {
     if (isBeyondLoaded) {
       return;
     }
 
-    if (iframeDoc.querySelector(`.${fields.loaded}`)) {
-      const data = formData(iframeDoc);
-      setData(data);
+    if (frameDocument.querySelector(`.${fields.loaded}`)) {
+      const data = formData(frameDocument);
       isBeyondLoaded = true;
-      setIsLoading(false);
+      onBeyondLoaded(data);
       return;
     }
-    setTimeout(checkSheetLoaded, 500, iframeDoc);
-  };
-
-  const handleLoad = () => {
-    isBeyondLoaded = false;
-    setTimeout(checkSheetLoaded, 500, xframeRef.contentDocument);
+    setTimeout(checkSheetLoaded, 500, frameDocument);
   };
 
   return (
-    <iframe is="x-frame-bypass" title="charSheet" src={url} onLoad={handleLoad} ref={(e) => { xframeRef = e; }} />
+    <iframe is="x-frame-bypass" title="charSheet" src={url} ref={frameRef} onLoad={() => setTimeout(checkSheetLoaded, 500, frameRef.current.contentDocument)} />
   );
 }
 
 BeyondFrame.propTypes = {
-  charId: PropTypes.number.isRequired,
-  setData: PropTypes.func.isRequired,
-  setIsLoading: PropTypes.func.isRequired,
+  onBeyondLoaded: PropTypes.func.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
-export default BeyondFrame;
+export default BeyondLoader;

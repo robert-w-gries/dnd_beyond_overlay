@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Overlay.css';
-import BeyondFrame from './BeyondFrame';
+import BeyondLoader from './BeyondLoader';
 import Character from './character/Character';
 import CharacterSelection from './CharacterSelection';
 import { Tabs, Tab } from './utils/Tabs';
@@ -32,10 +32,15 @@ function Overlay() {
     setCharId(id);
   };
 
+  const onBeyondLoaded = (data) => {
+    setSheet(data);
+    setIsLoading(false);
+  };
+
   const defaultTab = charId ? 'Character Sheet' : 'Select Character';
   return (
     <div className="Overlay">
-      <BeyondFrame charId={charId} setData={setSheet} setIsLoading={setIsLoading} />
+      <BeyondLoader charId={charId} onBeyondLoaded={onBeyondLoaded} />
       <Tabs defaultTab={defaultTab} className="OverlayTabs">
         <Tab title="Select Character">
           <CharacterSelection savedProfiles={savedProfiles} selectCharacter={selectCharacter} />
