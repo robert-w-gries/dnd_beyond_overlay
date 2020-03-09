@@ -35,6 +35,10 @@
   margin: 10px;
 }
 
+.CharacterProfile {
+  margin: 10px;
+}
+
 .CharacterTabs > .TabContent {
   background-color: white;
   color: black;

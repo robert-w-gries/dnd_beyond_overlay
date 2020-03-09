@@ -11,6 +11,10 @@ const fields = {
   characterName: 'ct-character-tidbits__name',
   health: 'ct-health-summary__hp-number',
   loaded: 'ct-character-sheet-desktop',
+  profile: {
+    avatar: 'ct-character-tidbits__avatar',
+    level: 'ct-character-tidbits__xp-level',
+  },
   savingThrows: {
     element: 'ct-saving-throws-summary__ability',
     name: 'ct-saving-throws-summary__ability-name',
@@ -61,6 +65,7 @@ function formData(iframeDoc) {
   return {
     attributes: getStats(fields.attributes),
     health: getElement(fields.health).textContent,
+    level: getElement(fields.profile.level).textContent,
     name: getElement(fields.characterName).textContent,
     savingThrows: getStats(fields.savingThrows),
     skills,
