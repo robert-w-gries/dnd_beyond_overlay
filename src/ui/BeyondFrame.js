@@ -59,18 +59,23 @@ function formData(iframeDoc) {
 }
 
 function BeyondFrame(props) {
-  const url = 'https://www.dndbeyond.com/characters/20359926';
-  const erwin = 'https://www.dndbeyond.com/profile/JivesMcRibbz/characters/20976116';
+  if (!props.charId) {
+    return null;
+  }
+
+  const url = `https://www.dndbeyond.com/characters/${props.charId}`;
 
   let iframeLoaded = false;
   const checkSheetLoaded = (iframeDoc) => {
     if (iframeLoaded) {
       return;
     }
+
     if (iframeDoc.querySelector(`.${fields.loaded}`)) {
       const data = formData(iframeDoc);
       props.setData(data);
       iframeLoaded = true;
+      props.setIsLoading(false);
       return;
     }
     setTimeout(checkSheetLoaded, 500, iframeDoc);
@@ -78,7 +83,7 @@ function BeyondFrame(props) {
 
   let xframeRef = null;
   return (
-    <iframe title="charSheet" is="x-frame-bypass" src={erwin} onLoad={() => { iframeLoaded = false; setTimeout(checkSheetLoaded, 500, xframeRef.contentDocument); }} ref={(e) => { xframeRef = e; }} />
+    <iframe is="x-frame-bypass" title="charSheet" src={url} onLoad={() => { iframeLoaded = false; setTimeout(checkSheetLoaded, 500, xframeRef.contentDocument); }} ref={(e) => { xframeRef = e; }} />
   );
 }
 

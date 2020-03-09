@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 function Skills(props) {
   const getSkill = (name) => {
     if (props.skills) {
-      console.log(props.skills[name]);
       return props.skills[name];
     }
   };

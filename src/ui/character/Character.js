@@ -5,6 +5,10 @@ import Skills from './Skills';
 import { Tabs, Tab } from '../utils/Tabs';
 
 function Character(props) {
+  if (!props.sheet) {
+    return null;
+  }
+
   const { attributes, name, health, savingThrows, skills } = props.sheet;
   return (
     <div className="Character">

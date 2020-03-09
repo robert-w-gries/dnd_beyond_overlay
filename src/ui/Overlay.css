@@ -54,8 +54,11 @@
 }
 
 .SavingThrowTitle {
-  flex: 1;
   border-right: 1px solid black;
+}
+
+.SavingThrowStat {
+  flex: 1;
 }
 
 .SavingThrow > div {
@@ -133,7 +136,12 @@
   background-color: rgb(207, 207, 207);
 }
 
-.grid {
+.grid.twocol {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.grid.threecol {
   display: grid;
   grid-template-columns: auto auto auto;
 }

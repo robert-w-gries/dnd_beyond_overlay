@@ -8,7 +8,7 @@ function Attributes(props) {
     }
   };
   return (
-    <div className="grid Attributes">
+    <div className="grid threecol Attributes">
       <Attribute title="STR" stat={getAttribute('Strength')} />
       <Attribute title="DEX" stat={getAttribute('Dexterity')} />
       <Attribute title="CON" stat={getAttribute('Constitution')} />
@@ -41,7 +41,7 @@ function SavingThrows(props) {
     return null;
   };
   return (
-    <div className="grid SavingThrows">
+    <div className="grid threecol SavingThrows">
       <SavingThrow title="STR" stat={getSavingThrow('str')} />
       <SavingThrow title="DEX" stat={getSavingThrow('dex')} />
       <SavingThrow title="CON" stat={getSavingThrow('con')} />
