@@ -1,15 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Actions from './Actions';
 import { Attributes, SavingThrows, StatBlock } from './Stats';
 import Skills from './Skills';
 import { Tabs, Tab } from '../utils/Tabs';
 
 function Character(props) {
-  if (!props.sheet) {
+  const { sheet } = props;
+  if (!sheet) {
     return null;
   }
 
-  const { attributes, name, health, savingThrows, skills } = props.sheet;
+  const {
+    attributes, health, name, savingThrows, skills,
+  } = sheet;
   return (
     <div className="Character">
       <CharacterHeader name={name} health={health} />
@@ -37,13 +41,29 @@ function Character(props) {
   );
 }
 
+Character.propTypes = {
+  sheet: PropTypes.shape({
+    attributes: PropTypes.array.isRequired,
+    health: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    savingThrows: PropTypes.array.isRequired,
+    skills: PropTypes.array.isRequired,
+  }).isRequired,
+};
+
 function CharacterHeader(props) {
+  const { health, name } = props;
   return (
     <div className="row CharacterHeader">
-      <div>{props.name}</div>
-      <div>{props.health} HP</div>
+      <div>{name}</div>
+      <div>{`${health} HP`}</div>
     </div>
   );
 }
+
+CharacterHeader.propTypes = {
+  health: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 export default Character;

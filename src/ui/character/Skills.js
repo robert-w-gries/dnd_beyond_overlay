@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Skills(props) {
-  const getSkill = (name) => {
-    if (props.skills) {
-      return props.skills[name];
-    }
-  };
-
+  const { skills } = props;
+  const skillElements = skills.map((skillObj) => {
+    const {
+      attr, name, num, prof, sign,
+    } = skillObj;
+    return <Skill key={name} attribute={attr} bonus={`${sign}${num}`} name={name} prof={prof} />;
+  });
   return (
     <table className="table Skills">
       <tr>
@@ -16,30 +17,26 @@ function Skills(props) {
         <th className="SkillsNameCol">Skill</th>
         <th className="SkillsBonusCol">Bonus</th>
       </tr>
-      <Skill title="Acrobatics" attribute="DEX" stat={getSkill('Acrobatics')} />
-      <Skill title="Animal Handling" attribute="WIS" stat={getSkill('Animal Handling')} />
-      <Skill title="Arcana" attribute="INT" stat={getSkill('Arcana')} />
-      <Skill title="Athletics" attribute="STR" stat={getSkill('Athletics')} />
-      <Skill title="Deception" attribute="CHA" stat={getSkill('Deception')} />
-      <Skill title="History" attribute="INT" stat={getSkill('History')} />
-      <Skill title="Insight" attribute="WIS" stat={getSkill('Insight')} />
-      <Skill title="Intimidation" attribute="CHA" stat={getSkill('Intimidation')} />
-      <Skill title="Investigation" attribute="INT" stat={getSkill('Investigation')} />
-      <Skill title="Medicine" attribute="WIS" stat={getSkill('Medicine')} />
-      <Skill title="Nature" attribute="INT" stat={getSkill('Nature')} />
-      <Skill title="Perception" attribute="WIS" stat={getSkill('Perception')} />
-      <Skill title="Performance" attribute="CHA" stat={getSkill('Performance')} />
-      <Skill title="Persuasion" attribute="CHA" stat={getSkill('Persuasion')} />
-      <Skill title="Religion" attribute="INT" stat={getSkill('Religion')} />
-      <Skill title="Sleight of Hand" attribute="DEX" stat={getSkill('Sleight of Hand')} />
-      <Skill title="Stealth" attribute="DEX" stat={getSkill('Stealth')} />
-      <Skill title="Survival" attribute="WIS" stat={getSkill('Survival')} />
+      {skillElements}
     </table>
   );
 }
 
+Skills.propTypes = {
+  skills: PropTypes.arrayOf(PropTypes.shape({
+    attr: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    sign: PropTypes.string.isRequired,
+    num: PropTypes.string.isRequired,
+    prof: PropTypes.string.isRequired,
+  })).isRequired,
+};
+
 function Skill(props) {
-  const { attribute, stat, title } = props;
+  const {
+    attribute, bonus, name, prof,
+  } = props;
+
   const proficiencyChars = {
     'Half Proficiency': String.fromCharCode(9680),
     Proficiency: String.fromCharCode(11044),
@@ -49,17 +46,19 @@ function Skill(props) {
 
   return (
     <tr className="check">
-      <td className="SkillsProfCol">{proficiencyChars[stat.prof]}</td>
+      <td className="SkillsProfCol">{proficiencyChars[prof]}</td>
       <td className="attr SkillsAttrCol">{attribute}</td>
-      <td className="underline SkillsNameCol">{title}</td>
-      <td className="bonus SkillsBonusCol underline">{`${stat.sign}${stat.num}`}</td>
+      <td className="underline SkillsNameCol">{name}</td>
+      <td className="bonus SkillsBonusCol underline">{bonus}</td>
     </tr>
   );
 }
 
 Skill.propTypes = {
   attribute: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  bonus: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  prof: PropTypes.string.isRequired,
 };
 
 export default Skills;

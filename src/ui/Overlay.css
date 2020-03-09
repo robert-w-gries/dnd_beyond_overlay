@@ -121,6 +121,7 @@
 
 .attr {
   font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
 }
 
 .bonus {

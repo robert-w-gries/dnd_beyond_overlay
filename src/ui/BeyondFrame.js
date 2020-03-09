@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const fields = {
   attributes: {
@@ -18,6 +19,7 @@ const fields = {
   },
   skills: {
     element: 'ct-skills__item',
+    attr: 'ct-skills__col--stat',
     name: 'ct-skills__col--skill',
     sign: 'ct-signed-number__sign',
     num: 'ct-signed-number__number',
@@ -26,65 +28,84 @@ const fields = {
 };
 
 function formData(iframeDoc) {
-  const getElement = (className) => {
-    return iframeDoc.querySelector(`.${className}`);
-  };
+  const getElement = (className) => iframeDoc.querySelector(`.${className}`);
 
   const getStats = (fieldsObj, extraFieldsCallback) => {
-    const obj = {};
+    if (iframeDoc == null) {
+      return [];
+    }
+
+    const array = [];
     iframeDoc.querySelectorAll(`.${fieldsObj.element}`).forEach((element) => {
-      const attr = element.querySelector(`.${fieldsObj.name}`).textContent;
-      obj[attr] = {
+      const name = element.querySelector(`.${fieldsObj.name}`).textContent;
+      const stat = {
+        name,
         sign: element.querySelector(`.${fieldsObj.sign}`).textContent,
         num: element.querySelector(`.${fieldsObj.num}`).textContent,
       };
       if (extraFieldsCallback) {
-        extraFieldsCallback(obj[attr], element);
+        extraFieldsCallback(stat, element);
       }
+      array.push(stat);
     });
-    return obj;
+    return array;
   };
 
   const skills = getStats(fields.skills, (skillObj, element) => {
-    skillObj['prof'] = element.querySelector(`.${fields.skills.prof}`).getAttribute('data-original-title');
+    // eslint-disable-next-line no-param-reassign
+    skillObj.prof = element.querySelector(`.${fields.skills.prof}`).getAttribute('data-original-title');
+    // eslint-disable-next-line no-param-reassign
+    skillObj.attr = element.querySelector(`.${fields.skills.attr}`).textContent;
   });
 
   return {
     attributes: getStats(fields.attributes),
-    name: getElement(fields.characterName).textContent,
     health: getElement(fields.health).textContent,
+    name: getElement(fields.characterName).textContent,
     savingThrows: getStats(fields.savingThrows),
     skills,
   };
 }
 
 function BeyondFrame(props) {
-  if (!props.charId) {
+  const { charId, setData, setIsLoading } = props;
+  if (!charId) {
     return null;
   }
 
-  const url = `https://www.dndbeyond.com/characters/${props.charId}`;
+  const url = `https://www.dndbeyond.com/characters/${charId}`;
 
-  let iframeLoaded = false;
+  let isBeyondLoaded = false;
+  let xframeRef = null;
   const checkSheetLoaded = (iframeDoc) => {
-    if (iframeLoaded) {
+    if (isBeyondLoaded) {
       return;
     }
 
     if (iframeDoc.querySelector(`.${fields.loaded}`)) {
       const data = formData(iframeDoc);
-      props.setData(data);
-      iframeLoaded = true;
-      props.setIsLoading(false);
+      setData(data);
+      isBeyondLoaded = true;
+      setIsLoading(false);
       return;
     }
     setTimeout(checkSheetLoaded, 500, iframeDoc);
   };
 
-  let xframeRef = null;
+  const handleLoad = () => {
+    isBeyondLoaded = false;
+    setTimeout(checkSheetLoaded, 500, xframeRef.contentDocument);
+  };
+
   return (
-    <iframe is="x-frame-bypass" title="charSheet" src={url} onLoad={() => { iframeLoaded = false; setTimeout(checkSheetLoaded, 500, xframeRef.contentDocument); }} ref={(e) => { xframeRef = e; }} />
+    <iframe is="x-frame-bypass" title="charSheet" src={url} onLoad={handleLoad} ref={(e) => { xframeRef = e; }} />
   );
 }
+
+BeyondFrame.propTypes = {
+  charId: PropTypes.number.isRequired,
+  setData: PropTypes.func.isRequired,
+  setIsLoading: PropTypes.func.isRequired,
+};
 
 export default BeyondFrame;
