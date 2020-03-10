@@ -25,6 +25,12 @@ function Overlay() {
         name: 'Erwin Mossfoot',
         level: '16',
       }),
+      Profile({
+        avatar: 'https://media-waterdeep.cursecdn.com/avatars/thumbnails/8965/197/240/150/637186813156282102.jpeg',
+        id: 21275516,
+        name: 'Lilia',
+        level: '17',
+      }),
     ]);
   }, []);
 

@@ -12,7 +12,7 @@ function Character(props) {
   }
 
   const {
-    attributes, health, name, savingThrows, skills,
+    actions, attributes, health, name, savingThrows, skills,
   } = sheet;
   return (
     <div className="Character">
@@ -28,7 +28,7 @@ function Character(props) {
           <Skills skills={skills} />
         </Tab>
         <Tab title="Actions">
-          <Actions />
+          <Actions actions={actions} />
         </Tab>
         <Tab title="Spells">
           <div>Spells</div>
@@ -43,6 +43,7 @@ function Character(props) {
 
 Character.propTypes = {
   sheet: PropTypes.shape({
+    actions: PropTypes.array.isRequired,
     attributes: PropTypes.array.isRequired,
     health: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
