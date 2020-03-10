@@ -3,11 +3,10 @@
   color: white;
   font-size: calc(10px + 2vmin);
   min-height: 100vh;
-  overflow: hidden;
 }
 
 .OverlayTabs > .TabContent {
-  margin: 10px;
+  margin: 5px;
 }
 
 .OverlayTabs > .TabContent > div > * {
@@ -19,13 +18,13 @@
 }
 
 .Actions > tr > td {
+  border-bottom: 1px solid rgba(255, 0, 0, 0.2);
   vertical-align: middle;
   word-break: break-word;
 }
 
 .ActionName {
-  border-bottom: 1px solid rgba(255, 0, 0, 0.4);
-  font-size: 14px;
+  font-size: medium;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -33,10 +32,6 @@
 
 .ActionNameCol {
   text-align: left;
-}
-
-.ActionRange {
-  border-bottom: 1px solid rgba(255, 0, 0, 0.4);
 }
 
 .Attribute {
