@@ -30,12 +30,6 @@ function Character(props) {
         <Tab title="Actions">
           <Actions actions={actions} />
         </Tab>
-        <Tab title="Spells">
-          <div>Spells</div>
-          <div>Spells</div>
-          <div>Spells</div>
-          <div>Spells</div>
-        </Tab>
       </Tabs>
     </div>
   );

@@ -52,7 +52,6 @@ function Overlay() {
     setLoadStatus('done');
   };
 
-  const defaultTab = selectedProfile.id ? 'Character Sheet' : 'Select Character';
   return (
     <div className="Overlay">
       <BeyondLoader
@@ -60,7 +59,7 @@ function Overlay() {
         onBeyondLoaded={onBeyondLoaded}
         onBeyondError={() => setLoadStatus('error')}
       />
-      <Tabs defaultTab={defaultTab} className="OverlayTabs">
+      <Tabs defaultTab="Select Character" className="OverlayTabs">
         <Tab title="Select Character">
           <CharacterSelection
             savedProfiles={savedProfiles}
@@ -69,10 +68,9 @@ function Overlay() {
           />
         </Tab>
         <Tab title="Character Sheet">
-          <Character sheet={sheet} />
+          {loadStatus === 'loading' ? <Loading /> : <Character sheet={sheet} /> }
         </Tab>
       </Tabs>
-      {loadStatus === 'loading' ? <Loading /> : null}
       {loadStatus === 'error' ? <div>Failed to load character</div> : null}
     </div>
   );
