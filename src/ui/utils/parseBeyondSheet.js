@@ -56,11 +56,11 @@ function findFields(element, field) {
 }
 
 function findField(element, field) {
+  if (!field) throw new Error('findField(): invalid field provided');
   return findFields(element, field)[0] || null;
 }
 
 function getFieldValue(element, field) {
-  //return findField(element, field).childNodes[0].nodeValue;
   return findField(element, field).textContent;
 }
 
@@ -94,13 +94,21 @@ function getActions(doc) {
     return `${range}\n${longRange}`;
   };
 
+  const getName = (element) => {
+    const spellName = findField(element, fields.actions.name.spell);
+    if (spellName) {
+      return spellName.childNodes[0].nodeValue;
+    }
+
+    return findField(element, fields.actions.name.weapon).textContent;
+  };
+
   const array = [];
   findFields(doc, fields.actions.element).forEach((element) => {
     // eslint-disable-next-line max-len
-    const name = findField(element, fields.actions.name.spell) || findField(element, fields.actions.name.weapon);
-    const damage = findField(element, fields.damage) || findField(element, 'ct-combat-attack__damage');
+    const damage = findField(element, fields.actions.damage) || findField(element, 'ct-combat-attack__damage');
     array.push({
-      name: name.childNodes[0].nodeValue,
+      name: getName(element),
       range: getRange(element),
       hit: getToHit(element),
       damage: damage.childNodes[0].nodeValue,

@@ -12,9 +12,9 @@ function Actions(props) {
   return (
     <table className="table Actions">
       <colgroup>
-        <col style={{ width: '40%' }} />
+        <col style={{ width: '50%' }} />
         <col style={{ width: '20%' }} />
-        <col style={{ width: '20%' }} />
+        <col style={{ width: '10%' }} />
         <col style={{ width: '20%' }} />
       </colgroup>
       <tr>
@@ -27,6 +27,18 @@ function Actions(props) {
     </table>
   );
 }
+
+Actions.propTypes = {
+  actions: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    hit: PropTypes.shape({
+      sign: PropTypes.string.isRequired,
+      num: PropTypes.string.isRequired,
+    }).isRequired,
+    range: PropTypes.string.isRequired,
+    damage: PropTypes.string.isRequired,
+  })).isRequired,
+};
 
 function Action(props) {
   const {
@@ -43,7 +55,10 @@ function Action(props) {
 }
 
 Action.propTypes = {
-  title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  bonus: PropTypes.string.isRequired,
+  range: PropTypes.string.isRequired,
+  damage: PropTypes.string.isRequired,
 };
 
 export default Actions;

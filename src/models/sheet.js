@@ -1,7 +1,14 @@
 const validateList = (list) => {
   if (!list || !Array.isArray(list)) return false;
 
-  return list.reduce((result, item) => result && typeof item === 'object' && item.constructor === Object);
+  for (let index = 0; index < list.length; index += 1) {
+    const item = list[index];
+    if (typeof item !== 'object' || item.constructor !== Object) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
 const Sheet = (props) => {
