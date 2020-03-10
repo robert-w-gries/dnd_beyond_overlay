@@ -73,6 +73,7 @@
 }
 
 .CharacterTidbits {
+  width: 130px;
   padding: 2px;
   background-color: white;
   color: black;
