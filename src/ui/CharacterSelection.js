@@ -1,20 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const sharedPropTypes = {
+  savedProfiles: PropTypes.arrayOf(PropTypes.shape({
+    avatar: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    level: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
+  selectCharacter: PropTypes.func.isRequired,
+  selectedProfile: PropTypes.shape({
+    avatar: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    level: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }),
+};
+
+const sharedDefaultProps = {
+  selectedProfile: {
+    avatar: '',
+    id: null,
+    level: '',
+    name: '',
+  },
+};
+
 function CharacterSelection(props) {
   const { savedProfiles, selectCharacter, selectedProfile } = props;
 
   return (
     <div>
       <button type="button">Add A Character</button>
-      <SavedProfiles savedProfiles={savedProfiles} selectCharacter={selectCharacter} selectedProfile={selectedProfile} />
+      <SavedProfiles
+        savedProfiles={savedProfiles}
+        selectCharacter={selectCharacter}
+        selectedProfile={selectedProfile}
+      />
     </div>
   );
 }
 
-CharacterSelection.propTypes = {
-  selectCharacter: PropTypes.func.isRequired,
-};
+CharacterSelection.propTypes = sharedPropTypes;
+CharacterSelection.defaultProps = sharedDefaultProps;
 
 function SavedProfiles(props) {
   const { savedProfiles, selectCharacter, selectedProfile } = props;
@@ -41,13 +69,16 @@ function SavedProfiles(props) {
   );
 }
 
+SavedProfiles.propTypes = sharedPropTypes;
+SavedProfiles.defaultProps = sharedDefaultProps;
+
 function CharacterProfile(props) {
   const { profile, selectCharacter, selected } = props;
   return (
     <button
       className="CharacterProfile"
       type="button"
-      style={selected ? { outline: '3px solid red' } : null}
+      style={selected ? { outline: '4px solid red' } : null}
       onClick={selectCharacter}
       onKeyPress={selectCharacter}
     >
@@ -57,10 +88,25 @@ function CharacterProfile(props) {
   );
 }
 
+CharacterProfile.propTypes = {
+  profile: PropTypes.shape({
+    avatar: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    level: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  selectCharacter: PropTypes.func.isRequired,
+  selected: PropTypes.bool.isRequired,
+};
+
 function Avatar(props) {
   const { image } = props;
   return <img className="Avatar" src={image} alt="" />;
 }
+
+Avatar.propTypes = {
+  image: PropTypes.string.isRequired,
+};
 
 function CharacterTidbits(props) {
   const { level, name } = props;
@@ -71,5 +117,10 @@ function CharacterTidbits(props) {
     </div>
   );
 }
+
+CharacterTidbits.propTypes = {
+  level: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 export default CharacterSelection;

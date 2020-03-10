@@ -16,13 +16,11 @@ function Overlay() {
     // Load saved user profiles
     setSavedProfiles([
       Profile({
-        avatar: 'https://www.dndbeyond.com/Content/Skins/Waterdeep/images/characters/default-avatar-builder.png',
         id: 20359926,
         name: 'Jives Thickbottome',
         level: '17',
       }),
       Profile({
-        avatar: 'https://www.dndbeyond.com/Content/Skins/Waterdeep/images/characters/default-avatar-builder.png',
         id: 20976116,
         name: 'Erwin Mossfoot',
         level: '16',

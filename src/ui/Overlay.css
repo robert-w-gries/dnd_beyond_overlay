@@ -53,6 +53,7 @@
 }
 
 .CharacterTidbits {
+  padding: 2px;
   background-color: white;
   color: black;
   white-space: nowrap;
@@ -235,6 +236,7 @@ iframe[title='charSheet'] {
 td {
   padding-top: 2px;
   padding-bottom: 2px;
+  vertical-align: bottom;
 }
 
 th {

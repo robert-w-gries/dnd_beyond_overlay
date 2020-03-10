@@ -59,6 +59,8 @@ function formData(iframeDoc) {
     return array;
   };
 
+  const health = iframeDoc.querySelectorAll(`.${fields.health}`)[1].textContent;
+
   const skills = getStats(fields.skills, (skillObj, element) => {
     // eslint-disable-next-line no-param-reassign
     skillObj.prof = element.querySelector(`.${fields.skills.prof}`).getAttribute('data-original-title');
@@ -68,7 +70,7 @@ function formData(iframeDoc) {
 
   return Sheet({
     attributes: getStats(fields.attributes),
-    health: getElement(fields.health).textContent,
+    health,
     level: getElement(fields.profile.level).textContent,
     name: getElement(fields.characterName).textContent,
     savingThrows: getStats(fields.savingThrows),
@@ -93,8 +95,23 @@ function BeyondLoader(props) {
 }
 
 BeyondLoader.propTypes = {
-  charId: PropTypes.number.isRequired,
+  onBeyondError: PropTypes.func.isRequired,
   onBeyondLoaded: PropTypes.func.isRequired,
+  selectedProfile: PropTypes.shape({
+    avatar: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    level: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }),
+};
+
+BeyondLoader.defaultProps = {
+  selectedProfile: {
+    avatar: '',
+    id: null,
+    level: '',
+    name: '',
+  },
 };
 
 function BeyondFrame(props) {
@@ -123,6 +140,7 @@ function BeyondFrame(props) {
 }
 
 BeyondFrame.propTypes = {
+  onBeyondError: PropTypes.func.isRequired,
   onBeyondLoaded: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
 };

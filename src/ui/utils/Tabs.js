@@ -6,7 +6,7 @@ function Tab(props) {
 }
 
 function Tabs(props) {
-  const { children, defaultTab } = props;
+  const { children, className, defaultTab } = props;
   const [currentTab, setCurrentTab] = useState(defaultTab);
 
   React.Children.forEach(children, (child) => {
@@ -30,7 +30,7 @@ function Tabs(props) {
   const content = React.Children.toArray(children).find((tab) => currentTab === tab.props.title);
 
   return (
-    <div className={`Tabs ${props.className}`}>
+    <div className={`Tabs ${className}`}>
       <div className="row TabsRow">
         {tabs}
       </div>
@@ -43,6 +43,7 @@ function Tabs(props) {
 
 Tabs.propTypes = {
   children: PropTypes.element.isRequired,
+  className: PropTypes.string.isRequired,
   defaultTab: PropTypes.string,
 };
 
