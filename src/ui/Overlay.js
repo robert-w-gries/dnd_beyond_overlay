@@ -21,6 +21,11 @@ function Overlay() {
         level: '17',
       }),
       Profile({
+        id: 20359926,
+        name: 'This is a very long name that cant be seen at this point',
+        level: '17',
+      }),
+      Profile({
         id: 20976116,
         name: 'Erwin Mossfoot',
         level: '16',
