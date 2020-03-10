@@ -47,7 +47,7 @@ function Action(props) {
   return (
     <tr className="action">
       <td className="ActionNameCol ActionName">{name}</td>
-      <td className="dataText">{range}</td>
+      <td className="ActionRange dataText">{range}</td>
       <td className="dataText">{bonus}</td>
       <td className="dataText">{damage}</td>
     </tr>
