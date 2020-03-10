@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import Sheet from '../models/sheet';
 
 const fields = {
   attributes: {
@@ -10,7 +11,10 @@ const fields = {
   },
   characterName: 'ct-character-tidbits__name',
   health: 'ct-health-summary__hp-number',
-  loaded: 'ct-character-sheet-desktop',
+  loading: {
+    loaded: 'ct-character-sheet-desktop',
+    failed: 'ct-character-sheet--failed',
+  },
   profile: {
     avatar: 'ct-character-tidbits__avatar',
     level: 'ct-character-tidbits__xp-level',
@@ -62,24 +66,30 @@ function formData(iframeDoc) {
     skillObj.attr = element.querySelector(`.${fields.skills.attr}`).textContent;
   });
 
-  return {
+  return Sheet({
     attributes: getStats(fields.attributes),
     health: getElement(fields.health).textContent,
     level: getElement(fields.profile.level).textContent,
     name: getElement(fields.characterName).textContent,
     savingThrows: getStats(fields.savingThrows),
     skills,
-  };
+  });
 }
 
 function BeyondLoader(props) {
-  const { charId, onBeyondLoaded } = props;
-  if (!charId) {
+  const { onBeyondError, onBeyondLoaded, selectedProfile } = props;
+  if (!selectedProfile.id) {
     return null;
   }
 
-  const url = `https://www.dndbeyond.com/characters/${charId}`;
-  return <BeyondFrame url={url} onBeyondLoaded={onBeyondLoaded} />;
+  const url = `https://www.dndbeyond.com/characters/${selectedProfile.id}`;
+  return (
+    <BeyondFrame
+      url={url}
+      onBeyondLoaded={onBeyondLoaded}
+      onBeyondError={() => { onBeyondError(); }}
+    />
+  );
 }
 
 BeyondLoader.propTypes = {
@@ -88,27 +98,27 @@ BeyondLoader.propTypes = {
 };
 
 function BeyondFrame(props) {
-  const { onBeyondLoaded, url } = props;
+  const { onBeyondLoaded, onBeyondError, url } = props;
 
   const frameRef = useRef();
 
-  let isBeyondLoaded = false;
-  const checkSheetLoaded = (frameDocument) => {
-    if (isBeyondLoaded) {
-      return;
-    }
+  const checkSheetLoaded = () => {
+    const frameDocument = frameRef.current.contentDocument;
 
-    if (frameDocument.querySelector(`.${fields.loaded}`)) {
+    if (frameDocument.querySelector(`.${fields.loading.loaded}`)) {
       const data = formData(frameDocument);
-      isBeyondLoaded = true;
       onBeyondLoaded(data);
-      return;
+    } else if (frameDocument.querySelector(`.${fields.loading.failed}`)) {
+      onBeyondError();
+    } else {
+      setTimeout(() => {
+        checkSheetLoaded();
+      }, 500, frameDocument);
     }
-    setTimeout(checkSheetLoaded, 500, frameDocument);
   };
 
   return (
-    <iframe is="x-frame-bypass" title="charSheet" src={url} ref={frameRef} onLoad={() => setTimeout(checkSheetLoaded, 500, frameRef.current.contentDocument)} />
+    <iframe is="x-frame-bypass" title="charSheet" src={url} ref={frameRef} onError={onBeyondError} onLoad={checkSheetLoaded} />
   );
 }
 

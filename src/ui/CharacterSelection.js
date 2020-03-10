@@ -2,37 +2,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function CharacterSelection(props) {
-  const { savedProfiles, selectCharacter } = props;
+  const { savedProfiles, selectCharacter, selectedProfile } = props;
 
   return (
     <div>
-      <div>Add A Character</div>
-      <SavedProfiles savedProfiles={savedProfiles} selectCharacter={selectCharacter} />
+      <button type="button">Add A Character</button>
+      <SavedProfiles savedProfiles={savedProfiles} selectCharacter={selectCharacter} selectedProfile={selectedProfile} />
     </div>
   );
 }
 
 CharacterSelection.propTypes = {
-  /* savedProfiles: PropTypes.arrayOf(PropTypes.shape({
-
-  })).isRequired, */
   selectCharacter: PropTypes.func.isRequired,
 };
 
 function SavedProfiles(props) {
-  const { savedProfiles, selectCharacter } = props;
+  const { savedProfiles, selectCharacter, selectedProfile } = props;
   if (!savedProfiles) {
     return null;
   }
 
-  const profiles = savedProfiles.map((char) => {
-    const { id, name, level } = char;
+  const profiles = savedProfiles.map((profile) => {
+    const { id } = profile;
     return (
       <CharacterProfile
         key={id.toString()}
-        name={name}
-        level={level}
-        selectCharacter={() => selectCharacter(id)}
+        selected={id === selectedProfile.id}
+        profile={profile}
+        selectCharacter={() => selectCharacter(profile)}
       />
     );
   });
@@ -45,23 +42,30 @@ function SavedProfiles(props) {
 }
 
 function CharacterProfile(props) {
-  const { level, name, selectCharacter } = props;
+  const { profile, selectCharacter, selected } = props;
   return (
-    <button className="CharacterProfile" type="button" onClick={selectCharacter} onKeyPress={selectCharacter}>
-      <Avatar />
-      <CharacterTidbits name={name} level={level} />
+    <button
+      className="CharacterProfile"
+      type="button"
+      style={selected ? { outline: '3px solid red' } : null}
+      onClick={selectCharacter}
+      onKeyPress={selectCharacter}
+    >
+      <Avatar image={profile.avatar} />
+      <CharacterTidbits name={profile.name} level={profile.level} />
     </button>
   );
 }
 
-function Avatar() {
-  return <div>Avatar</div>;
+function Avatar(props) {
+  const { image } = props;
+  return <img className="Avatar" src={image} alt="" />;
 }
 
 function CharacterTidbits(props) {
   const { level, name } = props;
   return (
-    <div>
+    <div className="CharacterTidbits">
       <div>{name}</div>
       <div>{`Level ${level}`}</div>
     </div>

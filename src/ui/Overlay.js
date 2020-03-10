@@ -3,52 +3,68 @@ import './Overlay.css';
 import BeyondLoader from './BeyondLoader';
 import Character from './character/Character';
 import CharacterSelection from './CharacterSelection';
+import Profile from '../models/profile';
 import { Tabs, Tab } from './utils/Tabs';
 
 function Overlay() {
-  const [charId, setCharId] = useState(null);
+  const [loadStatus, setLoadStatus] = useState('');
+  const [savedProfiles, setSavedProfiles] = useState([]);
+  const [selectedProfile, setSelectedProfile] = useState({ id: '' });
   const [sheet, setSheet] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [savedProfiles, setSavedProfiles] = useState(null);
   useEffect(() => {
     // Load saved user profiles
     setSavedProfiles([
-      {
+      Profile({
+        avatar: 'https://www.dndbeyond.com/Content/Skins/Waterdeep/images/characters/default-avatar-builder.png',
         id: 20359926,
         name: 'Jives Thickbottome',
         level: '17',
-      },
-      {
+      }),
+      Profile({
+        avatar: 'https://www.dndbeyond.com/Content/Skins/Waterdeep/images/characters/default-avatar-builder.png',
         id: 20976116,
         name: 'Erwin Mossfoot',
         level: '16',
-      },
+      }),
     ]);
   }, []);
 
-  const selectCharacter = (id) => {
-    setIsLoading(true);
-    setCharId(id);
+  const selectCharacter = (profile) => {
+    if (profile.id === selectedProfile.id) {
+      return;
+    }
+    setLoadStatus('loading');
+    setSelectedProfile(profile);
   };
 
   const onBeyondLoaded = (data) => {
     setSheet(data);
-    setIsLoading(false);
+    setLoadStatus('done');
   };
 
-  const defaultTab = charId ? 'Character Sheet' : 'Select Character';
+  const defaultTab = selectedProfile.id ? 'Character Sheet' : 'Select Character';
   return (
     <div className="Overlay">
-      <BeyondLoader charId={charId} onBeyondLoaded={onBeyondLoaded} />
+      <BeyondLoader
+        selectedProfile={selectedProfile}
+        onBeyondLoaded={onBeyondLoaded}
+        onBeyondError={() => setLoadStatus('error')}
+      />
       <Tabs defaultTab={defaultTab} className="OverlayTabs">
         <Tab title="Select Character">
-          <CharacterSelection savedProfiles={savedProfiles} selectCharacter={selectCharacter} />
+          <CharacterSelection
+            savedProfiles={savedProfiles}
+            selectCharacter={selectCharacter}
+            selectedProfile={selectedProfile}
+          />
         </Tab>
         <Tab title="Character Sheet">
-          { isLoading ? <Loading /> : <Character sheet={sheet} /> }
+          <Character sheet={sheet} />
         </Tab>
       </Tabs>
+      {loadStatus === 'loading' ? <Loading /> : null}
+      {loadStatus === 'error' ? <div>Failed to load character</div> : null}
     </div>
   );
 }
