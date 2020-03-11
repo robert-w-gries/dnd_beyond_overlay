@@ -60,7 +60,7 @@ function BeyondFrame(props) {
   };
 
   return (
-    <iframe is="x-frame-bypass" title="charSheet" src={url} ref={frameRef} onError={onBeyondError} onLoad={checkSheetLoaded} />
+    <iframe is="x-frame-bypass" title="charSheet" sandbox="allow-scripts allow-same-origin" src={url} ref={frameRef} onError={onBeyondError} onLoad={checkSheetLoaded} />
   );
 }
 
