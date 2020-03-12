@@ -7,7 +7,7 @@ import Profile from '../models/profile';
 import { Tabs, Tab } from './utils/Tabs';
 
 function Overlay() {
-  const [loadStatus, setLoadStatus] = useState('');
+  const [loadStatus, setLoadStatus] = useState({ status: '' });
   const [savedProfiles, setSavedProfiles] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState({ id: '' });
   const [sheet, setSheet] = useState(null);
@@ -43,13 +43,30 @@ function Overlay() {
     if (profile.id === selectedProfile.id) {
       return;
     }
-    setLoadStatus('loading');
+    setLoadStatus({ status: 'loading' });
     setSelectedProfile(profile);
   };
 
   const onBeyondLoaded = (data) => {
     setSheet(data);
-    setLoadStatus('done');
+    setLoadStatus({ status: 'done' });
+  };
+
+  const sheetContent = () => {
+    let content = <div>Please select a character.</div>;
+    if (loadStatus.status === 'loading') {
+      content = <div className="loader" />;
+    } else if (loadStatus.status === 'error') {
+      content = (
+        <div>
+          <div>Failed to load character.</div>
+          <div>{`Error: ${loadStatus.errorMsg}`}</div>
+        </div>
+      );
+    } else if (loadStatus.status === 'done') {
+      content = <Character sheet={sheet} />;
+    }
+    return content;
   };
 
   return (
@@ -57,7 +74,7 @@ function Overlay() {
       <BeyondLoader
         selectedProfile={selectedProfile}
         onBeyondLoaded={onBeyondLoaded}
-        onBeyondError={() => setLoadStatus('error')}
+        onBeyondError={(errorMsg) => setLoadStatus({ status: 'error', errorMsg })}
       />
       <Tabs defaultTab="Select Character" className="OverlayTabs">
         <Tab title="Select Character">
@@ -68,16 +85,11 @@ function Overlay() {
           />
         </Tab>
         <Tab title="Character Sheet">
-          {loadStatus === 'loading' ? <Loading /> : <Character sheet={sheet} /> }
+          {sheetContent()}
         </Tab>
       </Tabs>
-      {loadStatus === 'error' ? <div>Failed to load character</div> : null}
     </div>
   );
-}
-
-function Loading() {
-  return (<div className="loader" />);
 }
 
 export default Overlay;

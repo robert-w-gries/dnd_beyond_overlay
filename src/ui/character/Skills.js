@@ -5,9 +5,9 @@ function Skills(props) {
   const { skills } = props;
   const skillElements = skills.map((skillObj) => {
     const {
-      attr, name, num, prof, sign,
+      attr, bonus, name, prof,
     } = skillObj;
-    return <Skill key={name} attribute={attr} bonus={`${sign}${num}`} name={name} prof={prof} />;
+    return <Skill key={name} attribute={attr} bonus={bonus} name={name} prof={prof} />;
   });
   return (
     <table className="table Skills">
@@ -25,9 +25,11 @@ function Skills(props) {
 Skills.propTypes = {
   skills: PropTypes.arrayOf(PropTypes.shape({
     attr: PropTypes.string.isRequired,
+    bonus: PropTypes.shape({
+      sign: PropTypes.string.isRequired,
+      num: PropTypes.string.isRequired,
+    }).isRequired,
     name: PropTypes.string.isRequired,
-    sign: PropTypes.string.isRequired,
-    num: PropTypes.string.isRequired,
     prof: PropTypes.string.isRequired,
   })).isRequired,
 };
@@ -49,14 +51,17 @@ function Skill(props) {
       <td className="SkillsProfCol">{proficiencyChars[prof]}</td>
       <td className="attr SkillsAttrCol">{attribute}</td>
       <td className="underline SkillsNameCol">{name}</td>
-      <td className="bonus SkillsBonusCol underline">{bonus}</td>
+      <td className="bonus SkillsBonusCol underline">{`${bonus.sign}${bonus.num}`}</td>
     </tr>
   );
 }
 
 Skill.propTypes = {
   attribute: PropTypes.string.isRequired,
-  bonus: PropTypes.string.isRequired,
+  bonus: PropTypes.shape({
+    sign: PropTypes.string.isRequired,
+    num: PropTypes.string.isRequired,
+  }).isRequired,
   name: PropTypes.string.isRequired,
   prof: PropTypes.string.isRequired,
 };

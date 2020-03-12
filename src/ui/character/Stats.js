@@ -14,9 +14,9 @@ function Attributes(props) {
   const { attributes } = props;
   const attributeElements = attributes.map((skillObj) => {
     const {
-      name, num, sign,
+      name, bonus,
     } = skillObj;
-    return <Attribute key={name} bonus={`${sign}${num}`} name={abbreviated[name]} />;
+    return <Attribute key={name} bonus={bonus} name={abbreviated[name]} />;
   });
 
   return (
@@ -29,8 +29,10 @@ function Attributes(props) {
 Attributes.propTypes = {
   attributes: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
-    sign: PropTypes.string.isRequired,
-    num: PropTypes.string.isRequired,
+    bonus: PropTypes.shape({
+      sign: PropTypes.string.isRequired,
+      num: PropTypes.string.isRequired,
+    }).isRequired,
   })).isRequired,
 };
 
@@ -39,13 +41,16 @@ function Attribute(props) {
   return (
     <div className="check Attribute">
       <div className="attr AttributeTitle">{name}</div>
-      <div className="AttributeBonus">{bonus}</div>
+      <div className="AttributeBonus">{`${bonus.sign}${bonus.num}`}</div>
     </div>
   );
 }
 
 Attribute.propTypes = {
-  bonus: PropTypes.string.isRequired,
+  bonus: PropTypes.shape({
+    sign: PropTypes.string.isRequired,
+    num: PropTypes.string.isRequired,
+  }).isRequired,
   name: PropTypes.string.isRequired,
 };
 
@@ -53,9 +58,9 @@ function SavingThrows(props) {
   const { savingThrows } = props;
   const savingThrowElements = savingThrows.map((stObj) => {
     const {
-      name, num, sign,
+      name, bonus,
     } = stObj;
-    return <SavingThrow key={name} bonus={`${sign}${num}`} name={name} />;
+    return <SavingThrow key={name} bonus={bonus} name={name} />;
   });
 
   return (
@@ -68,8 +73,10 @@ function SavingThrows(props) {
 SavingThrows.propTypes = {
   savingThrows: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
-    sign: PropTypes.string.isRequired,
-    num: PropTypes.string.isRequired,
+    bonus: PropTypes.shape({
+      sign: PropTypes.string.isRequired,
+      num: PropTypes.string.isRequired,
+    }).isRequired,
   })).isRequired,
 };
 
@@ -78,7 +85,7 @@ function SavingThrow(props) {
   return (
     <div className="check SavingThrow">
       <div className="attr SavingThrowTitle">{name}</div>
-      <div className="bonus SavingThrowStat">{bonus}</div>
+      <div className="bonus SavingThrowStat">{`${bonus.sign}${bonus.num}`}</div>
     </div>
   );
 }

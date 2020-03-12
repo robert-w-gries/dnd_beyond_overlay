@@ -1,4 +1,6 @@
 import Sheet from '../../models/sheet';
+import ActionsModel from '../../models/actions';
+import SkillsModel from '../../models/skills';
 
 const fields = {
   actions: {
@@ -9,7 +11,7 @@ const fields = {
     },
     range: {
       distance: 'ct-distance-number__number',
-      range: 'ct-combat-attack__range-value-close',
+      range_close: 'ct-combat-attack__range-value-close',
       range_long: 'ct-combat-attack__range-value-long',
     },
     hit: {
@@ -79,19 +81,26 @@ function getActions(doc) {
   };
 
   const getRange = (element) => {
+    const range = {
+      range: '',
+      long: '',
+      reach: '',
+    };
     if (findField(element, 'ct-combat-attack__empty')) {
-      return '--';
+      range.reach = '--';
+      return range;
     }
 
     const distance = findField(element, fields.actions.range.distance);
     if (distance) {
-      return distance.childNodes[0].nodeValue;
+      range.range = distance.childNodes[0].nodeValue;
+      return range;
     }
 
     // Handle bow/crossbow that has two ranges
-    const range = getFieldValue(element, fields.actions.range.range);
-    const longRange = getFieldValue(element, fields.actions.range.range_long);
-    return `${range}\n${longRange}`;
+    range.range = getFieldValue(element, fields.actions.range.range_close);
+    range.long = getFieldValue(element, fields.actions.range.range_long);
+    return range;
   };
 
   const getName = (element) => {
@@ -107,40 +116,47 @@ function getActions(doc) {
   findFields(doc, fields.actions.element).forEach((element) => {
     // eslint-disable-next-line max-len
     const damage = findField(element, fields.actions.damage) || findField(element, 'ct-combat-attack__damage');
-    array.push({
+    array.push(ActionsModel({
       name: getName(element),
       range: getRange(element),
       hit: getToHit(element),
       damage: damage.childNodes[0].nodeValue,
-    });
+    }));
   });
   return array;
 }
 
-function getStats(doc, fieldsObj, extraFieldsCallback) {
-  const array = [];
-  doc.querySelectorAll(`.${fieldsObj.element}`).forEach((element) => {
-    const stat = {
-      name: getFieldValue(element, fieldsObj.name),
+function getStat(element, fieldsObj) {
+  return {
+    name: getFieldValue(element, fieldsObj.name),
+    bonus: {
       sign: getFieldValue(element, fieldsObj.sign),
       num: getFieldValue(element, fieldsObj.num),
-    };
-    if (extraFieldsCallback) {
-      extraFieldsCallback(stat, element);
-    }
-    array.push(stat);
+    },
+  };
+}
+
+function getSkills(doc) {
+  const array = [];
+  findFields(doc, fields.skills.element).forEach((element) => {
+    const skillObj = getStat(element, fields.skills);
+    skillObj.prof = findField(element, fields.skills.prof).getAttribute('data-original-title');
+    skillObj.attr = getFieldValue(element, fields.skills.attr);
+    array.push(SkillsModel(skillObj));
+  });
+  return array;
+}
+
+function getStats(doc, field) {
+  const array = [];
+  findFields(doc, field.element).forEach((element) => {
+    const statObj = getStat(element, field);
+    array.push(statObj);
   });
   return array;
 }
 
 function parseBeyondSheet(doc) {
-  const skills = getStats(doc, fields.skills, (skillObj, element) => {
-    // eslint-disable-next-line no-param-reassign
-    skillObj.prof = findField(element, fields.skills.prof).getAttribute('data-original-title');
-    // eslint-disable-next-line no-param-reassign
-    skillObj.attr = getFieldValue(element, fields.skills.attr);
-  });
-
   return Sheet({
     actions: getActions(doc),
     attributes: getStats(doc, fields.attributes),
@@ -148,7 +164,7 @@ function parseBeyondSheet(doc) {
     level: getFieldValue(doc, fields.profile.level),
     name: getFieldValue(doc, fields.characterName),
     savingThrows: getStats(doc, fields.savingThrows),
-    skills,
+    skills: getSkills(doc),
   });
 }
 
