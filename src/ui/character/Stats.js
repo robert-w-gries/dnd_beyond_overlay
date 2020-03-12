@@ -31,7 +31,7 @@ Attributes.propTypes = {
     name: PropTypes.string.isRequired,
     bonus: PropTypes.shape({
       sign: PropTypes.string.isRequired,
-      num: PropTypes.string.isRequired,
+      num: PropTypes.number.isRequired,
     }).isRequired,
   })).isRequired,
 };

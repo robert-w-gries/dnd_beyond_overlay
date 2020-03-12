@@ -133,7 +133,7 @@ function getStat(element, fieldsObj) {
     name: getFieldValue(element, fieldsObj.name),
     bonus: {
       sign: getFieldValue(element, fieldsObj.sign),
-      num: getFieldValue(element, fieldsObj.num),
+      num: parseInt(getFieldValue(element, fieldsObj.num), 10),
     },
   };
 }

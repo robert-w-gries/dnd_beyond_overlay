@@ -59,7 +59,7 @@ function validateValue(checkType, checkValue) {
     }
 
     if (!checkType(value)) {
-      throw new Error('Value was not expected type');
+      throw new Error(`Value \`${value}\` was not expected type`);
     }
 
     if (checkValue && !checkValue(value)) {

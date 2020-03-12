@@ -7,7 +7,7 @@ const SkillsModel = (props) => {
     name: scheme.stringRequired,
     bonus: {
       sign: scheme.string,
-      num: scheme.stringRequired,
+      num: scheme.number,
     },
   });
 
