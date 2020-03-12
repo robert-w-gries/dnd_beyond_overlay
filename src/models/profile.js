@@ -1,21 +1,17 @@
-const Profile = (props) => {
-  if (!props) throw new Error('Profile(): Object not provided');
+import scheme from '../utils/modelUtils';
 
-  const {
-    avatar, id, level, name,
-  } = props;
-
-  if (!id) throw new Error('Profile(): ID invalid');
-  if (!level) throw new Error('Profile(): Level invalid');
-  if (!name) throw new Error('Profile(): Name invalid');
+const ProfileModel = (props) => {
+  const model = scheme.generateModel('ProfileModel', props, {
+    avatar: scheme.string,
+    id: scheme.number,
+    level: scheme.number,
+    name: scheme.stringRequired,
+  });
 
   const defaultAvatar = 'https://www.dndbeyond.com/Content/Skins/Waterdeep/images/characters/default-avatar-builder.png';
-  return {
-    avatar: avatar || defaultAvatar,
-    id,
-    level,
-    name,
-  };
+  model.avatar = model.avatar || defaultAvatar;
+
+  return Object.freeze(model);
 };
 
-export default Profile;
+export default ProfileModel;

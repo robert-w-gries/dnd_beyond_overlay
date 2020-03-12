@@ -1,9 +1,7 @@
 import scheme from '../utils/modelUtils';
 
-const SkillsModel = (props) => {
-  const model = scheme.generateModel('ProfileModel', props, {
-    prof: scheme.stringRequired,
-    attr: scheme.stringRequired,
+const StatsModel = (props) => {
+  const model = scheme.generateModel('StatsModel', props, {
     name: scheme.stringRequired,
     bonus: {
       sign: scheme.string,
@@ -14,4 +12,4 @@ const SkillsModel = (props) => {
   return Object.freeze(model);
 };
 
-export default SkillsModel;
+export default StatsModel;

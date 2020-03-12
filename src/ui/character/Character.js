@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Actions from './Actions';
 import { Attributes, SavingThrows, StatBlock } from './Stats';
 import Skills from './Skills';
-import { Tabs, Tab } from '../utils/Tabs';
+import { Tabs, Tab } from '../Tabs';
 
 function Character(props) {
   const { sheet } = props;

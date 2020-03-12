@@ -36,9 +36,9 @@ Actions.propTypes = {
       num: PropTypes.string.isRequired,
     }).isRequired,
     range: PropTypes.shape({
-      close: PropTypes.string.isRequired,
-      long: PropTypes.string.isRequired,
-      reach: PropTypes.string.isRequired,
+      range: PropTypes.string.isRequired,
+      long: PropTypes.string,
+      reach: PropTypes.bool.isRequired,
     }).isRequired,
     damage: PropTypes.string.isRequired,
   })).isRequired,
@@ -48,15 +48,10 @@ function Action(props) {
   const {
     name, bonus, range, damage,
   } = props;
-  const rangeString = () => {
-    if (range.reach) return range.reach;
-
-    return range.long ? `${range.range} ${range.long}` : range.range;
-  };
   return (
     <tr className="action">
       <td className="ActionNameCol ActionName">{name}</td>
-      <td className="ActionRange dataText">{rangeString()}</td>
+      <td className="ActionRange dataText">{range.long ? `${range.range} ${range.long}` : range.range}</td>
       <td className="dataText">{bonus}</td>
       <td className="dataText">{damage}</td>
     </tr>
@@ -66,7 +61,11 @@ function Action(props) {
 Action.propTypes = {
   name: PropTypes.string.isRequired,
   bonus: PropTypes.string.isRequired,
-  range: PropTypes.string.isRequired,
+  range: PropTypes.shape({
+    range: PropTypes.string.isRequired,
+    long: PropTypes.string,
+    reach: PropTypes.bool.isRequired,
+  }).isRequired,
   damage: PropTypes.string.isRequired,
 };
 

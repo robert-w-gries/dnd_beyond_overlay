@@ -5,14 +5,14 @@ const sharedPropTypes = {
   savedProfiles: PropTypes.arrayOf(PropTypes.shape({
     avatar: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    level: PropTypes.string.isRequired,
+    level: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   })).isRequired,
   selectCharacter: PropTypes.func.isRequired,
   selectedProfile: PropTypes.shape({
     avatar: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    level: PropTypes.string.isRequired,
+    level: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   }),
 };
@@ -21,7 +21,7 @@ const sharedDefaultProps = {
   selectedProfile: {
     avatar: '',
     id: null,
-    level: '',
+    level: null,
     name: '',
   },
 };
@@ -92,7 +92,7 @@ CharacterProfile.propTypes = {
   profile: PropTypes.shape({
     avatar: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    level: PropTypes.string.isRequired,
+    level: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
   selectCharacter: PropTypes.func.isRequired,
@@ -119,7 +119,7 @@ function CharacterTidbits(props) {
 }
 
 CharacterTidbits.propTypes = {
-  level: PropTypes.string.isRequired,
+  level: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
 };
 

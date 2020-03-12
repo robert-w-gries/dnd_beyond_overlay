@@ -1,6 +1,7 @@
-import Sheet from '../../models/sheet';
-import ActionsModel from '../../models/actions';
-import SkillsModel from '../../models/skills';
+import Sheet from '../models/sheet';
+import ActionsModel from '../models/actions';
+import SkillsModel from '../models/skills';
+import StatsModel from '../models/stats';
 
 const fields = {
   actions: {
@@ -84,16 +85,17 @@ function getActions(doc) {
     const range = {
       range: '',
       long: '',
-      reach: '',
+      reach: false,
     };
     if (findField(element, 'ct-combat-attack__empty')) {
-      range.reach = '--';
+      range.range = '--';
       return range;
     }
 
     const distance = findField(element, fields.actions.range.distance);
     if (distance) {
       range.range = distance.childNodes[0].nodeValue;
+      range.reach = true;
       return range;
     }
 
@@ -139,6 +141,7 @@ function getStat(element, fieldsObj) {
 function getSkills(doc) {
   const array = [];
   findFields(doc, fields.skills.element).forEach((element) => {
+    // Get skill name and bonus then add proficiency and attribute type
     const skillObj = getStat(element, fields.skills);
     skillObj.prof = findField(element, fields.skills.prof).getAttribute('data-original-title');
     skillObj.attr = getFieldValue(element, fields.skills.attr);
@@ -151,7 +154,7 @@ function getStats(doc, field) {
   const array = [];
   findFields(doc, field.element).forEach((element) => {
     const statObj = getStat(element, field);
-    array.push(statObj);
+    array.push(StatsModel(statObj));
   });
   return array;
 }

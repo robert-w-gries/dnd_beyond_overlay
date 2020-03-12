@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { parseBeyondStatus, parseBeyondSheet } from './utils/parseBeyondSheet';
+import { parseBeyondStatus, parseBeyondSheet } from '../utils/parseBeyondSheet';
+
+const BEYOND_MAX_RETRIES = 20;
 
 function BeyondLoader(props) {
   const { onBeyondError, onBeyondLoaded, selectedProfile } = props;
@@ -24,7 +26,7 @@ BeyondLoader.propTypes = {
   selectedProfile: PropTypes.shape({
     avatar: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    level: PropTypes.string.isRequired,
+    level: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   }),
 };
@@ -33,7 +35,7 @@ BeyondLoader.defaultProps = {
   selectedProfile: {
     avatar: '',
     id: null,
-    level: '',
+    level: null,
     name: '',
   },
 };
@@ -81,7 +83,7 @@ function BeyondFrame(props) {
       sandbox="allow-scripts allow-same-origin"
       src={url}
       ref={frameRef}
-      onLoad={() => checkSheetLoaded(10)}
+      onLoad={() => checkSheetLoaded(BEYOND_MAX_RETRIES)}
     />
   );
 }
