@@ -20,11 +20,15 @@ function isString(value) {
 
 function validateObject(objStr, propsObj, schemeObj) {
   if (!schemeObj) {
-    throw new Error(`${objStr}: scheme object null`);
+    throw new Error(`${objStr}: Scheme object null`);
   }
 
   if (!propsObj) {
-    throw new Error(`${objStr}: properties object null`);
+    throw new Error(`${objStr}: Properties object null`);
+  }
+
+  if (!isObject(propsObj)) {
+    throw new Error(`${objStr}: Expected this field to be an object`);
   }
 
   Object.keys(schemeObj).forEach((key) => {
@@ -36,21 +40,17 @@ function validateObject(objStr, propsObj, schemeObj) {
   const result = {};
   Object.keys(schemeObj).forEach((key) => {
     if (isObject(schemeObj[key])) {
-      result[key] = validateObject(`${schemeObj}.${key}`, propsObj[key], schemeObj[key]);
+      result[key] = validateObject(`${objStr}.${key}`, propsObj[key], schemeObj[key]);
     } else {
-      result[key] = schemeObj[key](propsObj[key]);
+      try {
+        result[key] = schemeObj[key](propsObj[key]);
+      } catch (err) {
+        throw new Error(`${objStr}.${key}: ${err.message}`);
+      }
     }
   });
   return result;
 }
-
-/*function generateModel(modelName, props, scheme) {
-  try {
-    return validateObject(`${modelName}Scheme`, props, scheme);
-  } catch (err) {
-    throw new Error(`${modelName}: ${err}`);
-  }
-}*/
 
 function validateValue(checkType, checkValue) {
   return (value) => {
@@ -58,7 +58,7 @@ function validateValue(checkType, checkValue) {
       throw new Error('Value was null or undefined');
     }
 
-    if (!checkType) {
+    if (!checkType(value)) {
       throw new Error('Value was not expected type');
     }
 

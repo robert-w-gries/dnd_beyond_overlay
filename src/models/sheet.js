@@ -1,7 +1,7 @@
 import scheme from '../utils/modelUtils';
 
 function Sheet(props) {
-  const model = scheme.generateModel('ProfileModel', props, {
+  const model = scheme.generateModel('SheetModel', props, {
     actions: scheme.array,
     attributes: scheme.array,
     health: scheme.stringRequired,

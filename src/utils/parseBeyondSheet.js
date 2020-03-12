@@ -160,11 +160,12 @@ function getStats(doc, field) {
 }
 
 function parseBeyondSheet(doc) {
+  const levelStr = findField(doc, fields.profile.level).childNodes[1].nodeValue;
   return Sheet({
     actions: getActions(doc),
     attributes: getStats(doc, fields.attributes),
     health: findFields(doc, fields.health)[1].childNodes[0].nodeValue,
-    level: getFieldValue(doc, fields.profile.level),
+    level: parseInt(levelStr, 10),
     name: getFieldValue(doc, fields.characterName),
     savingThrows: getStats(doc, fields.savingThrows),
     skills: getSkills(doc),
