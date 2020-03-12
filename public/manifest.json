@@ -16,10 +16,14 @@
   "browser_action": {
     "default_icon": "logo192.png"
   },
+  "content_security_policy": "script-src 'self' https://www.dndbeyond.com/js/ https://media.dndbeyond.com; object-src 'self'",
   "content_scripts": [{
     "matches": ["*://app.roll20.net/editor/"],
     "js": ["inject_sidebar.js"]
   }],
-  "permissions": ["*://app.roll20.net/editor/"],
+  "permissions": [
+    "*://app.roll20.net/editor/",
+    "*://*.dndbeyond.com/characters/*"
+  ],
   "web_accessible_resources": ["index.html"]
 }

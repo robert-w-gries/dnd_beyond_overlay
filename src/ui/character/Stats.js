@@ -1,58 +1,98 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Attributes() {
+const abbreviated = {
+  Strength: 'str',
+  Dexterity: 'dex',
+  Constitution: 'con',
+  Intelligence: 'int',
+  Wisdom: 'wis',
+  Charisma: 'cha',
+};
+
+function Attributes(props) {
+  const { attributes } = props;
+  const attributeElements = attributes.map((skillObj) => {
+    const {
+      name, bonus,
+    } = skillObj;
+    return <Attribute key={name} bonus={bonus} name={abbreviated[name]} />;
+  });
+
   return (
-    <div className="grid Attributes">
-      <Attribute title="STR" />
-      <Attribute title="DEX" />
-      <Attribute title="CON" />
-      <Attribute title="INT" />
-      <Attribute title="WIS" />
-      <Attribute title="CHA" />
+    <div className="grid threecol Attributes">
+      {attributeElements}
     </div>
   );
 }
 
+Attributes.propTypes = {
+  attributes: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    bonus: PropTypes.shape({
+      sign: PropTypes.string.isRequired,
+      num: PropTypes.number.isRequired,
+    }).isRequired,
+  })).isRequired,
+};
+
 function Attribute(props) {
-  const { title } = props;
+  const { bonus, name } = props;
   return (
     <div className="check Attribute">
-      <div className="attr AttributeTitle">{title}</div>
-      <div className="AttributeBonus">+0</div>
+      <div className="attr AttributeTitle">{name}</div>
+      <div className="AttributeBonus">{`${bonus.sign}${bonus.num}`}</div>
     </div>
   );
 }
 
 Attribute.propTypes = {
-  title: PropTypes.string.isRequired,
+  bonus: PropTypes.shape({
+    sign: PropTypes.string.isRequired,
+    num: PropTypes.string.isRequired,
+  }).isRequired,
+  name: PropTypes.string.isRequired,
 };
 
-function SavingThrows() {
+function SavingThrows(props) {
+  const { savingThrows } = props;
+  const savingThrowElements = savingThrows.map((stObj) => {
+    const {
+      name, bonus,
+    } = stObj;
+    return <SavingThrow key={name} bonus={bonus} name={name} />;
+  });
+
   return (
-    <div className="grid SavingThrows">
-      <SavingThrow title="STR" />
-      <SavingThrow title="DEX" />
-      <SavingThrow title="CON" />
-      <SavingThrow title="INT" />
-      <SavingThrow title="WIS" />
-      <SavingThrow title="CHA" />
+    <div className="grid threecol SavingThrows">
+      {savingThrowElements}
     </div>
   );
 }
 
+SavingThrows.propTypes = {
+  savingThrows: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    bonus: PropTypes.shape({
+      sign: PropTypes.string.isRequired,
+      num: PropTypes.string.isRequired,
+    }).isRequired,
+  })).isRequired,
+};
+
 function SavingThrow(props) {
-  const { title } = props;
+  const { bonus, name } = props;
   return (
     <div className="check SavingThrow">
-      <div className="attr SavingThrowTitle">{title}</div>
-      <div className="bonus SavingThrowStat">+0</div>
+      <div className="attr SavingThrowTitle">{name}</div>
+      <div className="bonus SavingThrowStat">{`${bonus.sign}${bonus.num}`}</div>
     </div>
   );
 }
 
 SavingThrow.propTypes = {
-  title: PropTypes.string.isRequired,
+  bonus: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 function StatBlock(props) {

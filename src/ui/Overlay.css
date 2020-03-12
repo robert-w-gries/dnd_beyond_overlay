@@ -3,8 +3,35 @@
   color: white;
   font-size: calc(10px + 2vmin);
   min-height: 100vh;
+}
+
+.OverlayTabs > .TabContent {
+  margin: 5px;
+}
+
+.OverlayTabs > .TabContent > div > * {
+  margin-bottom: 10px;
+}
+
+.Actions {
+  table-layout: fixed;
+}
+
+.Actions > tr > td {
+  border-bottom: 1px solid rgba(255, 0, 0, 0.2);
+  vertical-align: middle;
+  word-break: break-word;
+}
+
+.ActionName {
+  font-size: medium;
   overflow: hidden;
-  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ActionNameCol {
+  text-align: left;
 }
 
 .Attribute {
@@ -24,16 +51,43 @@
   flex: 1;
 }
 
+.Avatar {
+  flex: 1;
+  width: 100%;
+  vertical-align: middle;
+}
+
 .Character {
-    min-height: 100%;
+  min-height: 100%;
 }
 
-.Character > div:not(.CharacterHeader) {
-  margin: 10px;
+.CharacterProfile {
+  display: flex;
+  flex-flow: column;
+  background: white;
+  border: none;
+  cursor: pointer;
+  outline: 1px solid white;
+  padding: 0;
 }
 
-.CharacterHeader {
-  margin: 5px;
+.CharacterTidbits {
+  width: 130px;
+  padding: 2px;
+  background-color: white;
+  color: black;
+}
+
+.CharacterTidbits > div {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.CharacterTabs > .TabContent {
+  background-color: white;
+  color: black;
+  padding: 5px;
 }
 
 .SavingThrow {
@@ -49,13 +103,32 @@
 }
 
 .SavingThrowTitle {
-  flex: 1;
   border-right: 1px solid black;
+}
+
+.SavingThrowStat {
+  flex: 1;
 }
 
 .SavingThrow > div {
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.SkillsAttrCol {
+  padding-right: 3px;
+}
+
+.SkillsBonusCol {
+  text-align: right;
+}
+
+.SkillsNameCol {
+  text-align: left;
+}
+
+.SkillsProfCol {
+  text-align: center;
 }
 
 .StatBlock {
@@ -72,7 +145,7 @@
 
 .Tab {
   flex: 1;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   cursor: pointer;
   outline: none;
   padding: 0.5em 1em;
@@ -80,11 +153,6 @@
 
 .Tab:hover {
   background-color: #777;
-}
-
-.TabContent {
-  background-color: white;
-  color: black;
 }
 
 .action {
@@ -98,6 +166,7 @@
 
 .attr {
   font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
 }
 
 .bonus {
@@ -113,17 +182,39 @@
   background-color: rgb(207, 207, 207);
 }
 
-.grid {
+.dataText {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: small;
+}
+
+.grid.twocol {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.grid.threecol {
   display: grid;
   grid-template-columns: auto auto auto;
-}
-
-.grid.Attributes {
   gap: 5px;
 }
 
-.grid.SavingThrows {
-  gap: 5px;
+.loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .row {
@@ -146,14 +237,32 @@
 
 .table {
   border-collapse: collapse;
-  text-align: left;
+  text-align: center;
   width: 100%;
 }
 
+.underline {
+  border-bottom: 1px solid rgba(255, 0, 0, 0.4);
+}
+
+h1 {
+  text-align: center;
+}
+
+iframe[title='charSheet'] {
+  height: 4000px;
+  width: 4000px;
+  position: fixed;
+  z-index: -1;
+}
+
 td {
-  padding: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  vertical-align: bottom;
 }
 
 th {
   font-size: 12px;
+  user-select: none;
 }
