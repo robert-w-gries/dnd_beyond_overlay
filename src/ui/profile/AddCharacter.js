@@ -9,13 +9,23 @@ function AddCharacterForms(props) {
   const [charId, setCharId] = useState('');
 
   const handleAddCharacter = () => {
-    const profile = ProfileModel({
-      id: parseInt(charId, 10),
-      name: charName,
-      avatar: '',
-      level: 0,
-    });
-    onAddProfile(profile);
+    const url = `https://www.dndbeyond.com/character/${charId}/json`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        const avatar = data.avatarUrl || '';
+        const level = data.classes.reduce((total, classObj) => {
+          const classLevel = parseInt(classObj.level, 10);
+          return total + classLevel;
+        }, 0);
+        const profile = ProfileModel({
+          id: parseInt(charId, 10),
+          name: data.name,
+          avatar,
+          level,
+        });
+        onAddProfile(profile);
+      });
   };
 
   return (
