@@ -1,22 +1,4 @@
-function isArray(value) {
-  return value && typeof value === 'object' && value.constructor === Array;
-}
-
-function isBoolean(value) {
-  return typeof value === 'boolean';
-}
-
-function isNumber(value) {
-  return typeof value === 'number' && Number.isFinite(value);
-}
-
-function isObject(value) {
-  return typeof value === 'object' || value.constructor === Object;
-}
-
-function isString(value) {
-  return typeof value === 'string' || value instanceof String;
-}
+import type from './types';
 
 function validateObject(objStr, propsObj, schemeObj) {
   if (!schemeObj) {
@@ -27,7 +9,7 @@ function validateObject(objStr, propsObj, schemeObj) {
     throw new Error(`${objStr}: Properties object null`);
   }
 
-  if (!isObject(propsObj)) {
+  if (!type.isObject(propsObj)) {
     throw new Error(`${objStr}: Expected this field to be an object`);
   }
 
@@ -39,7 +21,7 @@ function validateObject(objStr, propsObj, schemeObj) {
 
   const result = {};
   Object.keys(schemeObj).forEach((key) => {
-    if (isObject(schemeObj[key])) {
+    if (type.isObject(schemeObj[key])) {
       result[key] = validateObject(`${objStr}.${key}`, propsObj[key], schemeObj[key]);
     } else {
       try {
@@ -72,11 +54,11 @@ function validateValue(checkType, checkValue) {
 
 const scheme = {
   generateModel: validateObject,
-  array: validateValue(isArray),
-  bool: validateValue(isBoolean),
-  number: validateValue(isNumber),
-  string: validateValue(isString),
-  stringRequired: validateValue(isString, (str) => str !== ''),
+  array: validateValue(type.isArray),
+  bool: validateValue(type.isBoolean),
+  number: validateValue(type.isNumber),
+  string: validateValue(type.isString),
+  stringRequired: validateValue(type.isString, (str) => str !== ''),
 };
 
 export default scheme;

@@ -32,7 +32,7 @@ function CharacterSelection(props) {
 
   return (
     <div>
-      <AddCharacter addProfile={profileOperations.add} />
+      <AddCharacter addProfile={profileOperations.add} savedProfiles={savedProfiles} />
       <SavedProfiles
         profileOperations={profileOperations}
         savedProfiles={savedProfiles}

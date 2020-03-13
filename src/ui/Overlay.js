@@ -37,13 +37,7 @@ function Overlay() {
   }, []);
 
   const profileOperations = {
-    add: (profile) => {
-      // Ensure that we don't add two of the same profile
-      if (savedProfiles.find((p) => profile.id === p.id)) {
-        return;
-      }
-      setSavedProfiles((list) => [...list, profile]);
-    },
+    add: (profile) => setSavedProfiles((list) => [...list, profile]),
     remove: (profile) => setSavedProfiles((list) => list.filter((p) => profile.id !== p.id)),
     select: (profile) => {
       if (selectedProfile && profile.id === selectedProfile.id) {

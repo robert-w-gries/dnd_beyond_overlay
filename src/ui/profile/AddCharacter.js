@@ -1,15 +1,36 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ProfileModel from '../../models/profile';
+import type from '../../utils/types';
+
+const BEYOND_ID_LENGTH = 8;
 
 function AddCharacterForms(props) {
-  const { onAddProfile, onCancel } = props;
-
-  const [charName, setCharName] = useState('');
+  const { savedProfiles, onAddProfile, onCancel } = props;
   const [charId, setCharId] = useState('');
+  const [error, setError] = useState('');
+
+  const validateInputId = (input) => {
+    const parsedId = parseInt(input, 10);
+    if (input.length !== BEYOND_ID_LENGTH || !type.isNumber(parsedId)) {
+      throw new Error('Invalid DnD Beyond character ID provided');
+    }
+    if (savedProfiles.find((profile) => profile.id === parsedId)) {
+      throw new Error('Character profile already exists.');
+    }
+    return parsedId;
+  };
 
   const handleAddCharacter = () => {
-    const url = `https://www.dndbeyond.com/character/${charId}/json`;
+    let id;
+    try {
+      id = validateInputId(charId);
+    } catch (err) {
+      setError(`Error while adding character: ${err.message}`);
+      return;
+    }
+
+    const url = `https://www.dndbeyond.com/character/${id}/json`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -19,7 +40,7 @@ function AddCharacterForms(props) {
           return total + classLevel;
         }, 0);
         const profile = ProfileModel({
-          id: parseInt(charId, 10),
+          id,
           name: data.name,
           avatar,
           level,
@@ -35,17 +56,6 @@ function AddCharacterForms(props) {
         <button type="submit" onClick={handleAddCharacter}>Add Character</button>
       </div>
       <form className="CharacterSelectionInputForms">
-        <label htmlFor="nameInput">
-          Profile Name:
-          <input
-            id="nameInput"
-            type="text"
-            minLength="1"
-            maxLength="25"
-            value={charName}
-            onChange={(event) => setCharName(event.target.value)}
-          />
-        </label>
         <label htmlFor="idInput">
           Character ID:
           <input
@@ -59,17 +69,24 @@ function AddCharacterForms(props) {
           />
         </label>
       </form>
+      {error ? <div>{error}</div> : null}
     </div>
   );
 }
 
 AddCharacterForms.propTypes = {
+  savedProfiles: PropTypes.arrayOf(PropTypes.shape({
+    avatar: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    level: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
   onAddProfile: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
 };
 
 function AddCharacter(props) {
-  const { addProfile } = props;
+  const { addProfile, savedProfiles } = props;
   const [visible, setVisible] = useState(false);
 
   const triggerFormsButton = (
@@ -82,7 +99,11 @@ function AddCharacter(props) {
   };
 
   const addForms = (
-    <AddCharacterForms onAddProfile={onAddProfile} onCancel={() => setVisible(false)} />
+    <AddCharacterForms
+      savedProfiles={savedProfiles}
+      onAddProfile={onAddProfile}
+      onCancel={() => setVisible(false)}
+    />
   );
 
   return visible ? addForms : triggerFormsButton;
