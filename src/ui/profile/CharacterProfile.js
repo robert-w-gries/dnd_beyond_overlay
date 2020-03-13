@@ -7,8 +7,8 @@ function CharacterProfile(props) {
   } = props;
 
   const handleDelete = (event) => {
-    if (event.target !== this) return;
     removeProfile(profile);
+    event.stopPropagation();
   };
 
   return (
