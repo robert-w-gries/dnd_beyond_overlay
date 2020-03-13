@@ -2,11 +2,11 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { parseBeyondStatus, parseBeyondSheet } from '../utils/parseBeyondSheet';
 
-const BEYOND_MAX_RETRIES = 20;
+const BEYOND_MAX_RETRIES = 15;
 
 function BeyondLoader(props) {
   const { onBeyondError, onBeyondLoaded, selectedProfile } = props;
-  if (!selectedProfile.id) {
+  if (!selectedProfile) {
     return null;
   }
 

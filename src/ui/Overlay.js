@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './Overlay.css';
 import BeyondLoader from './BeyondLoader';
-import Character from './character/Character';
-import CharacterSelection from './CharacterSelection';
+import Character from './sheet/Character';
+import CharacterSelection from './profile/CharacterSelection';
 import ProfileModel from '../models/profile';
 import { Tabs, Tab } from './Tabs';
 
 function Overlay() {
-  const [loadStatus, setLoadStatus] = useState({ status: '' });
+  const [loadStatus, setLoadStatus] = useState(null);
   const [savedProfiles, setSavedProfiles] = useState([]);
-  const [selectedProfile, setSelectedProfile] = useState({ id: '' });
+  const [selectedProfile, setSelectedProfile] = useState(null);
   const [sheet, setSheet] = useState(null);
 
   useEffect(() => {
@@ -19,12 +19,6 @@ function Overlay() {
         avatar: '',
         id: 20359926,
         name: 'Jives Thickbottome',
-        level: 17,
-      }),
-      ProfileModel({
-        avatar: '',
-        id: 20359926,
-        name: 'This is a very long name that cant be seen at this point',
         level: 17,
       }),
       ProfileModel({
@@ -42,32 +36,29 @@ function Overlay() {
     ]);
   }, []);
 
-  const selectCharacter = (profile) => {
-    if (profile.id === selectedProfile.id) {
-      return;
-    }
-    setLoadStatus({ status: 'loading' });
-    setSelectedProfile(profile);
-  };
-
-  const onBeyondLoaded = (data) => {
-    setSheet(data);
-    setLoadStatus({ status: 'done' });
+  const profileOperations = {
+    add: (profile) => setSavedProfiles((list) => [...list, profile]),
+    remove: (profile) => setSavedProfiles((list) => list.filter((p) => profile.id !== p.id)),
+    select: (profile) => {
+      if (selectedProfile && profile.id === selectedProfile.id) {
+        return;
+      }
+      setLoadStatus({ status: 'loading' });
+      setSelectedProfile(profile);
+    },
   };
 
   const sheetContent = () => {
-    let content = <div>Please select a character.</div>;
+    let content;
     if (loadStatus.status === 'loading') {
       content = <div className="loader" />;
-    } else if (loadStatus.status === 'error') {
-      content = (
-        <div>
-          <div>Failed to load character.</div>
-          <div>{`Error: ${loadStatus.errorMsg}`}</div>
-        </div>
-      );
     } else if (loadStatus.status === 'done') {
       content = <Character sheet={sheet} />;
+    } else {
+      content = [
+        <div>Failed to load character.</div>,
+        <div>{`Error: ${loadStatus.errorMsg}`}</div>,
+      ];
     }
     return content;
   };
@@ -76,19 +67,22 @@ function Overlay() {
     <div className="Overlay">
       <BeyondLoader
         selectedProfile={selectedProfile}
-        onBeyondLoaded={onBeyondLoaded}
+        onBeyondLoaded={(sheetData) => {
+          setSheet(sheetData);
+          setLoadStatus({ status: 'done' });
+        }}
         onBeyondError={(errorMsg) => setLoadStatus({ status: 'error', errorMsg })}
       />
       <Tabs defaultTab="Select Character" className="OverlayTabs">
         <Tab title="Select Character">
           <CharacterSelection
+            profileOperations={profileOperations}
             savedProfiles={savedProfiles}
-            selectCharacter={selectCharacter}
             selectedProfile={selectedProfile}
           />
         </Tab>
         <Tab title="Character Sheet">
-          {sheetContent()}
+          {loadStatus ? sheetContent() : <div>Please select a character.</div>}
         </Tab>
       </Tabs>
     </div>
