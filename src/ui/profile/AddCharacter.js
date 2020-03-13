@@ -31,22 +31,21 @@ function AddCharacterForms(props) {
     }
 
     const url = `https://www.dndbeyond.com/character/${id}/json`;
-    fetch(url)
+    onAddProfile(fetch(url)
       .then((response) => response.json())
-      .then((data) => {
-        const avatar = data.avatarUrl || '';
-        const level = data.classes.reduce((total, classObj) => {
+      .then((jsonData) => {
+        const avatar = jsonData.avatarUrl || '';
+        const level = jsonData.classes.reduce((total, classObj) => {
           const classLevel = parseInt(classObj.level, 10);
           return total + classLevel;
         }, 0);
-        const profile = ProfileModel({
+        return new Promise((resolve) => resolve(ProfileModel({
           id,
-          name: data.name,
+          name: jsonData.name,
           avatar,
           level,
-        });
-        onAddProfile(profile);
-      });
+        })));
+      }));
   };
 
   return (
@@ -93,8 +92,8 @@ function AddCharacter(props) {
     <button type="button" onClick={() => setVisible(true)}>Add Character</button>
   );
 
-  const onAddProfile = (profile) => {
-    addProfile(profile);
+  const onAddProfile = (profilePromise) => {
+    addProfile(profilePromise);
     setVisible(false);
   };
 

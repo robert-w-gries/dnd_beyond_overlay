@@ -37,8 +37,16 @@ function Overlay() {
   }, []);
 
   const profileOperations = {
-    add: (profile) => setSavedProfiles((list) => [...list, profile]),
-    remove: (profile) => setSavedProfiles((list) => list.filter((p) => profile.id !== p.id)),
+    add: (profilePromise) => {
+      profilePromise.then((profile) => {
+        setSavedProfiles((list) => [...list, profile]);
+      });
+    },
+    remove: (profile) => {
+      setSheet(null);
+      setSelectedProfile(null);
+      setSavedProfiles((list) => list.filter((p) => profile.id !== p.id))
+    },
     select: (profile) => {
       if (selectedProfile && profile.id === selectedProfile.id) {
         return;
@@ -82,7 +90,7 @@ function Overlay() {
           />
         </Tab>
         <Tab title="Character Sheet">
-          {loadStatus ? sheetContent() : <div>Please select a character.</div>}
+          {sheet ? sheetContent() : <div>Please select a character.</div>}
         </Tab>
       </Tabs>
     </div>
