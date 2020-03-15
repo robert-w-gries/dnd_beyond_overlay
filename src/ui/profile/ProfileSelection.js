@@ -59,7 +59,7 @@ function ProfileSelection(props) {
       if (!result.success) {
         return Promise.reject(result.errorMsg);
       }
-      return Promise.resolve(result.data);
+      return result.data;
     }));
   };
 

@@ -77,19 +77,17 @@ function BeyondFrame(props) {
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  function getLoadingResult(retries) {
-    return new Promise((resolve, reject) => {
-      checkSheetLoaded().then(resolve)
-        .catch(() => {
-          if (!retries || retries < 0) return reject(new Error('Could not reach DnD Beyond.'));
-
-          return sleep(500)
-            .then(() => getLoadingResult(retries - 1))
-            .then(resolve)
-            .catch(reject);
-        });
-    });
-  }
+  const getLoadingResult = async () => {
+    for (let attempt = 1; attempt <= BEYOND_MAX_RETRIES; attempt += 1) {
+      try {
+        return await checkSheetLoaded();
+      } catch (err) {
+        console.log(attempt);
+        await sleep(500);
+      }
+    }
+    throw new Error('Could not reach DnD Beyond');
+  };
 
   return (
     <iframe
@@ -98,7 +96,7 @@ function BeyondFrame(props) {
       sandbox="allow-scripts allow-same-origin"
       src={url}
       ref={frameRef}
-      onLoad={() => onBeyondLoaded(getLoadingResult(BEYOND_MAX_RETRIES))}
+      onLoad={() => onBeyondLoaded(getLoadingResult())}
     />
   );
 }
