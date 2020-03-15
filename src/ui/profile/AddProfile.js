@@ -5,7 +5,7 @@ import type from '../../utils/types';
 
 const BEYOND_ID_LENGTH = 8;
 
-function AddCharacterForms(props) {
+function AddProfileForms(props) {
   const { savedProfiles, onAddProfile, onCancel } = props;
   const [charId, setCharId] = useState('');
   const [error, setError] = useState('');
@@ -39,6 +39,7 @@ function AddCharacterForms(props) {
           const classLevel = parseInt(classObj.level, 10);
           return total + classLevel;
         }, 0);
+        //TODO: it seems this isn't necessary
         return new Promise((resolve) => resolve(ProfileModel({
           id,
           name: jsonData.name,
@@ -73,7 +74,7 @@ function AddCharacterForms(props) {
   );
 }
 
-AddCharacterForms.propTypes = {
+AddProfileForms.propTypes = {
   savedProfiles: PropTypes.arrayOf(PropTypes.shape({
     avatar: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
@@ -84,7 +85,7 @@ AddCharacterForms.propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
-function AddCharacter(props) {
+function AddProfile(props) {
   const { addProfile, savedProfiles } = props;
   const [visible, setVisible] = useState(false);
 
@@ -98,7 +99,7 @@ function AddCharacter(props) {
   };
 
   const addForms = (
-    <AddCharacterForms
+    <AddProfileForms
       savedProfiles={savedProfiles}
       onAddProfile={onAddProfile}
       onCancel={() => setVisible(false)}
@@ -108,8 +109,8 @@ function AddCharacter(props) {
   return visible ? addForms : triggerFormsButton;
 }
 
-AddCharacter.propTypes = {
+AddProfile.propTypes = {
   addProfile: PropTypes.func.isRequired,
 };
 
-export default AddCharacter;
+export default AddProfile;

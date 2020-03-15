@@ -1,16 +1,16 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { parseBeyondStatus, parseBeyondSheet } from '../utils/parseBeyondSheet';
+import { parseBeyondStatus, parseBeyondSheet } from '../../utils/parseBeyondSheet';
 
 const BEYOND_MAX_RETRIES = 15;
 
 function BeyondLoader(props) {
-  const { onBeyondError, onBeyondLoaded, selectedProfile } = props;
-  if (!selectedProfile) {
+  const { currentProfile, onBeyondError, onBeyondLoaded } = props;
+  if (!currentProfile) {
     return null;
   }
 
-  const url = `https://www.dndbeyond.com/characters/${selectedProfile.id}`;
+  const url = `https://www.dndbeyond.com/characters/${currentProfile.id}`;
   return (
     <BeyondFrame
       url={url}
@@ -49,32 +49,47 @@ function BeyondFrame(props) {
   // 1) The `iframe` fetches the `dndbeyond.com/characters/id` page
   // 2) The page dynamically loads character sheet data
   // We need to ensure that step 2 is finished before attempting to parse
-  const checkSheetLoaded = (retries) => {
-    if (!retries || retries < 0) {
-      onBeyondError('Could not reach DnD Beyond.');
-      return;
-    }
+  async function checkSheetLoaded() {
+    const sheetResult = {
+      success: false,
+      data: null,
+      errorMsg: '',
+    };
 
     const frameDocument = frameRef.current.contentDocument;
 
     const beyondStatus = parseBeyondStatus(frameDocument);
-    if (beyondStatus === 'loaded') {
-      let sheetData;
+    if (beyondStatus === 'failed') {
+      sheetResult.errorMsg = 'Could not parse character sheet data.';
+    } else if (beyondStatus === 'loaded') {
       try {
-        sheetData = parseBeyondSheet(frameDocument);
+        sheetResult.success = true;
+        sheetResult.data = parseBeyondSheet(frameDocument);
       } catch (err) {
-        onBeyondError('Could not parse character sheet data.');
-        throw err;
+        sheetResult.errorMsg = 'Could not parse character sheet data.';
       }
-      onBeyondLoaded(sheetData);
-    } else if (beyondStatus === 'failed') {
-      onBeyondError('DnD Beyond failed to load character sheet data.');
     } else {
-      setTimeout(() => {
-        checkSheetLoaded(retries - 1);
-      }, 500, frameDocument);
+      throw new Error('Sheet still loading');
     }
-  };
+
+    return sheetResult;
+  }
+
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  function getLoadingResult(retries) {
+    return new Promise((resolve, reject) => {
+      checkSheetLoaded().then(resolve)
+        .catch(() => {
+          if (!retries || retries < 0) return reject(new Error('Could not reach DnD Beyond.'));
+
+          return sleep(500)
+            .then(() => getLoadingResult(retries - 1))
+            .then(resolve)
+            .catch(reject);
+        });
+    });
+  }
 
   return (
     <iframe
@@ -83,7 +98,7 @@ function BeyondFrame(props) {
       sandbox="allow-scripts allow-same-origin"
       src={url}
       ref={frameRef}
-      onLoad={() => checkSheetLoaded(BEYOND_MAX_RETRIES)}
+      onLoad={() => onBeyondLoaded(getLoadingResult(BEYOND_MAX_RETRIES))}
     />
   );
 }

@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import Actions from './Actions';
 import { Attributes, SavingThrows, StatBlock } from './Stats';
 import Skills from './Skills';
-import { Tabs, Tab } from '../Tabs';
+import { TabsRow, TabContent } from '../tabs/TabsRow';
 
-function Character(props) {
-  const { sheet } = props;
+function CharacterSheet(props) {
+  const { onBack, sheet } = props;
+
   if (!sheet) {
     return null;
   }
@@ -23,19 +24,19 @@ function Character(props) {
       <StatBlock header="Saving Throws">
         <SavingThrows savingThrows={savingThrows} />
       </StatBlock>
-      <Tabs defaultTab="Skills" className="CharacterTabs">
-        <Tab title="Skills">
+      <TabsRow defaultTab="Skills" className="CharacterTabs">
+        <TabContent title="Skills">
           <Skills skills={skills} />
-        </Tab>
-        <Tab title="Actions">
+        </TabContent>
+        <TabContent title="Actions">
           <Actions actions={actions} />
-        </Tab>
-      </Tabs>
+        </TabContent>
+      </TabsRow>
     </div>
   );
 }
 
-Character.propTypes = {
+CharacterSheet.propTypes = {
   sheet: PropTypes.shape({
     actions: PropTypes.array.isRequired,
     attributes: PropTypes.array.isRequired,
@@ -61,4 +62,4 @@ CharacterHeader.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-export default Character;
+export default CharacterSheet;

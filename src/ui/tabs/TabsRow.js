@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function Tab(props) {
+function TabContent(props) {
   return props.children;
 }
 
-function Tabs(props) {
+function TabsRow(props) {
   const { children, className, defaultTab } = props;
   const [currentTab, setCurrentTab] = useState(defaultTab);
 
   React.Children.forEach(children, (child) => {
-    if (child.type !== Tab) throw new Error(`Children of Tabs must be of type Tab, instead received a ${child.type}`);
+    if (child.type !== TabContent) throw new Error(`Children of Tabs must be of type Tab, instead received a ${child.type}`);
   });
 
   const tabs = React.Children.map(children, (tab) => {
@@ -41,17 +41,17 @@ function Tabs(props) {
   );
 }
 
-Tabs.propTypes = {
+TabsRow.propTypes = {
   children: PropTypes.element.isRequired,
   className: PropTypes.string.isRequired,
   defaultTab: PropTypes.string,
 };
 
-Tabs.defaultProps = {
+TabsRow.defaultProps = {
   defaultTab: '',
 };
 
 export {
-  Tabs,
-  Tab,
+  TabsRow,
+  TabContent,
 };
