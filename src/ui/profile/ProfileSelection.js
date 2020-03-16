@@ -1,9 +1,10 @@
+// eslint-disable-next-line no-redeclare
+/* global chrome */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import AddProfile from './AddProfile';
 import BeyondLoader from './BeyondLoader';
 import CharacterProfile from './CharacterProfile';
-import ProfileModel from '../../models/profile';
 
 function ProfileSelection(props) {
   const { onCharacterReady } = props;
@@ -11,33 +12,19 @@ function ProfileSelection(props) {
   const [currentProfile, setCurrentProfile] = useState(null);
 
   useEffect(() => {
-    // TODO: Load saved user profiles
-    setSavedProfiles([
-      ProfileModel({
-        avatar: '',
-        id: 20359926,
-        name: 'Jives Thickbottome',
-        level: 17,
-      }),
-      ProfileModel({
-        avatar: '',
-        id: 20976116,
-        name: 'Erwin Mossfoot',
-        level: 16,
-      }),
-      ProfileModel({
-        avatar: 'https://media-waterdeep.cursecdn.com/avatars/thumbnails/8965/197/240/150/637186813156282102.jpeg',
-        id: 21275516,
-        name: 'Lilia',
-        level: 17,
-      }),
-    ]);
+    chrome.storage.local.get('savedProfiles', (result) => {
+      setSavedProfiles(result.savedProfiles || []);
+    });
   }, []);
 
   const profileOperations = {
     add: (profilePromise) => {
       profilePromise.then((profile) => {
         setSavedProfiles((list) => [...list, profile]);
+        chrome.storage.local.get('savedProfiles', (result) => {
+          result.savedProfiles.push(profile);
+          chrome.storage.local.set({ savedProfiles: result.savedProfiles });
+        });
       });
     },
     remove: (profile) => {
