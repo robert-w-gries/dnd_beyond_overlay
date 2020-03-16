@@ -20,10 +20,10 @@ function ProfileSelection(props) {
   const profileOperations = {
     add: (profilePromise) => {
       profilePromise.then((profile) => {
-        setSavedProfiles((list) => [...list, profile]);
-        chrome.storage.local.get('savedProfiles', (result) => {
-          result.savedProfiles.push(profile);
-          chrome.storage.local.set({ savedProfiles: result.savedProfiles });
+        setSavedProfiles((list) => {
+          const newList = [...list, profile];
+          chrome.storage.local.set({ savedProfiles: newList });
+          return newList;
         });
       });
     },
@@ -31,10 +31,10 @@ function ProfileSelection(props) {
       if (profile === currentProfile) {
         setCurrentProfile(null);
       }
-      setSavedProfiles((list) => list.filter((p) => profile.id !== p.id));
-      chrome.storage.local.get('savedProfiles', (result) => {
-        const newList = result.savedProfiles.filter((p) => profile.id !== p.id);
+      setSavedProfiles((list) => {
+        const newList = list.filter((p) => profile.id !== p.id);
         chrome.storage.local.set({ savedProfiles: newList });
+        return newList;
       });
     },
     select: (profile) => {
