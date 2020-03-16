@@ -32,6 +32,10 @@ function ProfileSelection(props) {
         setCurrentProfile(null);
       }
       setSavedProfiles((list) => list.filter((p) => profile.id !== p.id));
+      chrome.storage.local.get('savedProfiles', (result) => {
+        const newList = result.savedProfiles.filter((p) => profile.id !== p.id);
+        chrome.storage.local.set({ savedProfiles: newList });
+      });
     },
     select: (profile) => {
       if (currentProfile && profile.id === currentProfile.id) {
