@@ -20,7 +20,7 @@ function Attributes(props) {
   });
 
   return (
-    <div className="grid threecol Attributes">
+    <div className="grid3">
       {attributeElements}
     </div>
   );

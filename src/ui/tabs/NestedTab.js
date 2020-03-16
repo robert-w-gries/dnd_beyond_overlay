@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles/Overlay.module.css';
 
 function NestedTab(props) {
   const {
     active, children, onClick, parentTabs, title,
   } = props;
 
+  //TODO: be smarter about using the active property to reurn content
   if (!active) {
     throw new Error('At least one NestedTab must be active');
   }
@@ -15,10 +17,18 @@ function NestedTab(props) {
   }
 
   const nestedTabs = (
-    <span className="row">
+    <span className={styles.NestedTabHeader}>
       {parentTabs}
-      {parentTabs ? <span>{' > '}</span> : null}
-      <div role="button" tabIndex={0} onClick={onClick} onKeyPress={onClick}>{title}</div>
+      {parentTabs ? <span>{'>'}</span> : null}
+      <button
+        className={styles.NestedTabTitle}
+        type="button"
+        tabIndex={0}
+        onClick={onClick}
+        onKeyPress={onClick}
+      >
+        {title}
+      </button>
     </span>
   );
 
@@ -38,11 +48,7 @@ function NestedTab(props) {
     return content;
   };
 
-  return (
-    <div>
-      {nestedContent()}
-    </div>
-  );
+  return nestedContent();
 }
 
 NestedTab.propTypes = {

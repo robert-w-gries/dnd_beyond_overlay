@@ -2,6 +2,7 @@
 /* global chrome */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles/profile.module.css';
 import AddProfile from './AddProfile';
 import BeyondLoader from './BeyondLoader';
 import CharacterProfile from './CharacterProfile';
@@ -94,7 +95,7 @@ function SavedProfiles(props) {
   });
 
   return (
-    <div className="grid twocol">
+    <div className={styles.SavedProfiles}>
       {profiles}
     </div>
   );

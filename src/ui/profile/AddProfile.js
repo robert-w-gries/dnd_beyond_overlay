@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles/profile.module.css';
 import ProfileModel from '../../models/profile';
 import type from '../../utils/types';
 
@@ -31,6 +32,7 @@ function AddProfileForms(props) {
     }
 
     const url = `https://www.dndbeyond.com/character/${id}/json`;
+    //TODO: Add loading icon to profile before replacing with actual content
     onAddProfile(fetch(url)
       .then((response) => response.json())
       .then((jsonData) => {
@@ -50,11 +52,7 @@ function AddProfileForms(props) {
 
   return (
     <div>
-      <div className="row">
-        <button type="button" onClick={onCancel}>Cancel</button>
-        <button type="submit" onClick={handleAddCharacter}>Add Character</button>
-      </div>
-      <form className="CharacterSelectionInputForms">
+      <form className={styles.InputForm}>
         <label htmlFor="idInput">
           Character ID:
           <input
@@ -68,6 +66,23 @@ function AddProfileForms(props) {
           />
         </label>
       </form>
+      <div className={styles.AddButtonsRow}>
+        <button
+          type="button"
+          onClick={onCancel}
+          onKeyPress={onCancel}
+        >
+          Cancel
+        </button>
+        <button
+          className={styles.AddCharacterButton}
+          type="submit"
+          onClick={handleAddCharacter}
+          onKeyPress={handleAddCharacter}
+        >
+          Add Character
+        </button>
+      </div>
       {error ? <div>{error}</div> : null}
     </div>
   );

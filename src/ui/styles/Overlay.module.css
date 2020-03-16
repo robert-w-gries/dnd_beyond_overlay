@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+
+.Overlay {
+  background-color: #282c34;
+  color: white;
+  font-size: calc(10px + 2vmin);
+  min-height: 100vh;
+}
+
+.Overlay > div {
+  margin: 5px;
+}
+
+.Overlay > div > * {
+  margin-bottom: 5px;
+}
+
+.NestedTabHeader {
+  display: flex;
+  align-items: center;
+  background-color: red;  
+  user-select: none;
+}
+
+.NestedTabTitle {
+  padding: 5px;
+  cursor: pointer;
+  outline: 0;
+  border: none;
+}
+
+.NestedTabTitle::after{
+  content: ' > ';
+}
+
+.NestedTabTitle:last-child::after {
+  content: '';
+}

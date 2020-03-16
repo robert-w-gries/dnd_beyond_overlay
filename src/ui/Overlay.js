@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Overlay.css';
+import styles from './styles/Overlay.module.css';
 import CharacterSheet from './sheet/CharacterSheet';
 import ProfileSelection from './profile/ProfileSelection';
 import NestedTab from './tabs/NestedTab';
@@ -16,7 +16,7 @@ function Overlay() {
   };
 
   return (
-    <div className="Overlay">
+    <div className={`globalOverlay ${styles.Overlay}`}>
       <NestedTab title="Select Character" onClick={() => setActiveTab('Select Character')} active>
         <ProfileSelection onCharacterReady={onCharacterReady} />
         <NestedTab title="Character Sheet" active={activeTab === 'Character Sheet'}>

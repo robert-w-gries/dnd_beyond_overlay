@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles/profile.module.css';
 
 function CharacterProfile(props) {
   const {
@@ -11,15 +12,16 @@ function CharacterProfile(props) {
     event.stopPropagation();
   };
 
+  const selectedStyle = selected ? styles.selected : '';
+
   return (
     <button
-      className="CharacterProfile"
+      className={`${styles.CharacterProfile} ${selectedStyle}`}
       type="button"
-      style={selected ? { outline: '4px solid red' } : null}
       onClick={() => selectProfile(profile)}
       onKeyPress={() => selectProfile(profile)}
     >
-      <button className="deleteProfileButton" type="button" onClick={handleDelete}>
+      <button className={styles.RemoveProfile} type="button" onClick={handleDelete}>
         &#128465;
       </button>
       <Avatar image={profile.avatar} />
@@ -42,7 +44,7 @@ CharacterProfile.propTypes = {
 
 function Avatar(props) {
   const { image } = props;
-  return <img className="Avatar" src={image} alt="" />;
+  return <img className={styles.Avatar} src={image} alt="" />;
 }
 
 Avatar.propTypes = {
@@ -52,7 +54,7 @@ Avatar.propTypes = {
 function CharacterTidbits(props) {
   const { level, name } = props;
   return (
-    <div className="CharacterTidbits">
+    <div className={styles.CharacterTidbits}>
       <div>{name}</div>
       <div>{`Level ${level}`}</div>
     </div>
