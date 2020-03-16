@@ -2,7 +2,7 @@ import React from 'react';
 
 function NestedTab(props) {
   const {
-    active, children, parentTitle, title
+    active, children, onClick, parentTabs, title
   } = props;
 
   if (!active) {
@@ -13,25 +13,25 @@ function NestedTab(props) {
     return null;
   }
 
-  let formedTitle;
   const nestedTitle = () => {
-    if (formedTitle) return formedTitle;
 
-    let pre = '';
-    if (parentTitle) {
-      pre = `${parentTitle} > `;
-    }
-    formedTitle = `${pre}${title}`;
-    return formedTitle;
+    return (
+      <span className="row">
+        {parentTabs}
+        {parentTabs ? <span>{' > '}</span> : null}
+        <div role="button" tabIndex={0} onClick={onClick} onKeyPress={onClick}>{title}</div>
+      </span>
+    );
   };
 
-  const test = () => {
-    const content = [<span>{nestedTitle()}</span>];
+  const nestedContent = () => {
+    const header = nestedTitle();
+    const content = [header];
     const childrenArray = React.Children.toArray(props.children);
     for (let i = 0; i < childrenArray.length; i += 1) {
       const child = childrenArray[i];
       if (child.type === NestedTab && child.props.active) {
-        child.props.parentTitle = nestedTitle();
+        child.props.parentTabs = header;
         return child;
       }
       if (child.type !== NestedTab) {
@@ -43,7 +43,7 @@ function NestedTab(props) {
 
   return (
     <div>
-      {test()}
+      {nestedContent()}
     </div>
   );
 }

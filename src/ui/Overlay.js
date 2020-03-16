@@ -17,12 +17,9 @@ function Overlay() {
 
   return (
     <div className="Overlay">
-      <NestedTab title="Select Character" active>
+      <NestedTab title="Select Character" onClick={() => setActiveTab('Select Character')} active>
         <ProfileSelection onCharacterReady={onCharacterReady} />
-        <NestedTab
-          title="Character Sheet"
-          active={activeTab === 'Character Sheet'}
-        >
+        <NestedTab title="Character Sheet" active={activeTab === 'Character Sheet'}>
           <CharacterSheet sheet={sheet} />
         </NestedTab>
       </NestedTab>
