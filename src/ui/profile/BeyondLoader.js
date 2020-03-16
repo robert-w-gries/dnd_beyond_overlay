@@ -40,48 +40,46 @@ BeyondLoader.defaultProps = {
   },
 };
 
+// There are two instances of loading:
+// 1) The `iframe` fetches the `dndbeyond.com/characters/id` page
+// 2) The page dynamically loads character sheet data
+// We need to ensure that step 2 is finished before attempting to parse
+async function checkSheetLoaded(frameDocument) {
+  const sheetResult = {
+    success: false,
+    data: null,
+    errorMsg: '',
+  };
+
+  const beyondStatus = parseBeyondStatus(frameDocument);
+  if (beyondStatus === 'failed') {
+    sheetResult.errorMsg = 'Could not parse character sheet data.';
+  } else if (beyondStatus === 'loaded') {
+    try {
+      sheetResult.success = true;
+      sheetResult.data = parseBeyondSheet(frameDocument);
+    } catch (err) {
+      sheetResult.errorMsg = 'Could not parse character sheet data.';
+    }
+  } else {
+    throw new Error('Sheet still loading');
+  }
+
+  return sheetResult;
+}
+
 function BeyondFrame(props) {
   const { onBeyondLoaded, onBeyondError, url } = props;
 
   const frameRef = useRef();
-
-  // There are two instances of loading:
-  // 1) The `iframe` fetches the `dndbeyond.com/characters/id` page
-  // 2) The page dynamically loads character sheet data
-  // We need to ensure that step 2 is finished before attempting to parse
-  async function checkSheetLoaded() {
-    const sheetResult = {
-      success: false,
-      data: null,
-      errorMsg: '',
-    };
-
-    const frameDocument = frameRef.current.contentDocument;
-    const beyondStatus = parseBeyondStatus(frameDocument);
-    if (beyondStatus === 'failed') {
-      sheetResult.errorMsg = 'Could not parse character sheet data.';
-    } else if (beyondStatus === 'loaded') {
-      try {
-        sheetResult.success = true;
-        sheetResult.data = parseBeyondSheet(frameDocument);
-      } catch (err) {
-        sheetResult.errorMsg = 'Could not parse character sheet data.';
-      }
-    } else {
-      throw new Error('Sheet still loading');
-    }
-
-    return sheetResult;
-  }
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const getLoadingResult = async () => {
     for (let attempt = 1; attempt <= BEYOND_MAX_RETRIES; attempt += 1) {
       try {
-        return await checkSheetLoaded();
+        return await checkSheetLoaded(frameRef.current.contentDocument);
       } catch (err) {
-        console.log(attempt);
         await sleep(500);
       }
     }
@@ -93,7 +91,7 @@ function BeyondFrame(props) {
       // prevent issue of onload() being called twice
       // https://stackoverflow.com/a/15880489
       frameRef.current.onload = null;
-      onBeyondLoaded(getLoadingResult(frameRef.current.contentDocument));
+      onBeyondLoaded(getLoadingResult());
     };
   }, []);
 
