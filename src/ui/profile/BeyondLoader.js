@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { parseBeyondStatus, parseBeyondSheet } from '../../utils/parseBeyondSheet';
 
@@ -57,7 +57,6 @@ function BeyondFrame(props) {
     };
 
     const frameDocument = frameRef.current.contentDocument;
-
     const beyondStatus = parseBeyondStatus(frameDocument);
     if (beyondStatus === 'failed') {
       sheetResult.errorMsg = 'Could not parse character sheet data.';
@@ -89,6 +88,15 @@ function BeyondFrame(props) {
     throw new Error('Could not reach DnD Beyond');
   };
 
+  useEffect(() => {
+    frameRef.current.onload = () => {
+      // prevent issue of onload() being called twice
+      // https://stackoverflow.com/a/15880489
+      frameRef.current.onload = null;
+      onBeyondLoaded(getLoadingResult(frameRef.current.contentDocument));
+    };
+  }, []);
+
   return (
     <iframe
       is="x-frame-bypass"
@@ -96,7 +104,6 @@ function BeyondFrame(props) {
       sandbox="allow-scripts allow-same-origin"
       src={url}
       ref={frameRef}
-      onLoad={() => onBeyondLoaded(getLoadingResult())}
     />
   );
 }
