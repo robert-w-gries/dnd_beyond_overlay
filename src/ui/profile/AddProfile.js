@@ -39,13 +39,12 @@ function AddProfileForms(props) {
           const classLevel = parseInt(classObj.level, 10);
           return total + classLevel;
         }, 0);
-        //TODO: it seems this isn't necessary
-        return new Promise((resolve) => resolve(ProfileModel({
+        return ProfileModel({
           id,
           name: jsonData.name,
           avatar,
           level,
-        })));
+        });
       }));
   };
 
