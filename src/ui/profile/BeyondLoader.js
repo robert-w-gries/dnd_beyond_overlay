@@ -5,7 +5,7 @@ import { parseBeyondStatus, parseBeyondSheet } from '../../utils/parseBeyondShee
 const BEYOND_MAX_RETRIES = 15;
 
 function BeyondLoader(props) {
-  const { currentProfile, onBeyondError, onBeyondLoaded } = props;
+  const { currentProfile, onBeyondLoaded } = props;
   if (!currentProfile) {
     return null;
   }
@@ -15,15 +15,13 @@ function BeyondLoader(props) {
     <BeyondFrame
       url={url}
       onBeyondLoaded={onBeyondLoaded}
-      onBeyondError={onBeyondError}
     />
   );
 }
 
 BeyondLoader.propTypes = {
-  onBeyondError: PropTypes.func.isRequired,
   onBeyondLoaded: PropTypes.func.isRequired,
-  selectedProfile: PropTypes.shape({
+  currentProfile: PropTypes.shape({
     avatar: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
     level: PropTypes.number.isRequired,
@@ -32,7 +30,7 @@ BeyondLoader.propTypes = {
 };
 
 BeyondLoader.defaultProps = {
-  selectedProfile: {
+  currentProfile: {
     avatar: '',
     id: null,
     level: null,
@@ -62,14 +60,14 @@ async function checkSheetLoaded(frameDocument) {
       sheetResult.errorMsg = 'Could not parse character sheet data.';
     }
   } else {
-    throw new Error('Sheet still loading');
+    throw new Error('RETRY');
   }
 
   return sheetResult;
 }
 
 function BeyondFrame(props) {
-  const { onBeyondLoaded, onBeyondError, url } = props;
+  const { onBeyondLoaded, url } = props;
 
   const frameRef = useRef();
 
@@ -78,9 +76,15 @@ function BeyondFrame(props) {
   const getLoadingResult = async () => {
     for (let attempt = 1; attempt <= BEYOND_MAX_RETRIES; attempt += 1) {
       try {
+        // eslint-disable-next-line no-await-in-loop
         return await checkSheetLoaded(frameRef.current.contentDocument);
       } catch (err) {
-        await sleep(500);
+        if (err.message === 'RETRY') {
+          // eslint-disable-next-line no-await-in-loop
+          await sleep(500);
+        } else {
+          throw err;
+        }
       }
     }
     throw new Error('Could not reach DnD Beyond');
@@ -107,7 +111,6 @@ function BeyondFrame(props) {
 }
 
 BeyondFrame.propTypes = {
-  onBeyondError: PropTypes.func.isRequired,
   onBeyondLoaded: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
 };

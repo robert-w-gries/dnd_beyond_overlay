@@ -79,6 +79,10 @@ function ProfileSelection(props) {
   );
 }
 
+ProfileSelection.propTypes = {
+  onCharacterReady: PropTypes.func.isRequired,
+};
+
 function SavedProfiles(props) {
   const { profileOperations, savedProfiles, currentProfile } = props;
   if (!savedProfiles) {
@@ -104,5 +108,31 @@ function SavedProfiles(props) {
     </div>
   );
 }
+
+const profileType = {
+  avatar: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  level: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
+SavedProfiles.propTypes = {
+  profileOperations: PropTypes.shape({
+    add: PropTypes.func.isRequired,
+    remove: PropTypes.func.isRequired,
+    select: PropTypes.func.isRequired,
+  }).isRequired,
+  savedProfiles: PropTypes.arrayOf(PropTypes.shape(profileType)).isRequired,
+  currentProfile: profileType,
+};
+
+SavedProfiles.defaultProps = {
+  currentProfile: {
+    avatar: '',
+    id: null,
+    level: null,
+    name: '',
+  },
+};
 
 export default ProfileSelection;

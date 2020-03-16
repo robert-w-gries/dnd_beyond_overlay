@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function NestedTab(props) {
   const {
-    active, children, onClick, parentTabs, title
+    active, children, onClick, parentTabs, title,
   } = props;
 
   if (!active) {
@@ -13,25 +14,21 @@ function NestedTab(props) {
     return null;
   }
 
-  const nestedTitle = () => {
-
-    return (
-      <span className="row">
-        {parentTabs}
-        {parentTabs ? <span>{' > '}</span> : null}
-        <div role="button" tabIndex={0} onClick={onClick} onKeyPress={onClick}>{title}</div>
-      </span>
-    );
-  };
+  const nestedTabs = (
+    <span className="row">
+      {parentTabs}
+      {parentTabs ? <span>{' > '}</span> : null}
+      <div role="button" tabIndex={0} onClick={onClick} onKeyPress={onClick}>{title}</div>
+    </span>
+  );
 
   const nestedContent = () => {
-    const header = nestedTitle();
-    const content = [header];
+    const content = [nestedTabs];
     const childrenArray = React.Children.toArray(props.children);
     for (let i = 0; i < childrenArray.length; i += 1) {
       const child = childrenArray[i];
       if (child.type === NestedTab && child.props.active) {
-        child.props.parentTabs = header;
+        child.props.parentTabs = nestedTabs;
         return child;
       }
       if (child.type !== NestedTab) {
@@ -47,5 +44,13 @@ function NestedTab(props) {
     </div>
   );
 }
+
+NestedTab.propTypes = {
+  active: PropTypes.bool.isRequired,
+  children: PropTypes.element.isRequired,
+  onClick: PropTypes.func.isRequired,
+  parentTabs: PropTypes.element.isRequired,
+  title: PropTypes.string.isRequired,
+};
 
 export default NestedTab;

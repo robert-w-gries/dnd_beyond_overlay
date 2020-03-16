@@ -6,7 +6,7 @@ import Skills from './Skills';
 import { TabsRow, TabContent } from '../tabs/TabsRow';
 
 function CharacterSheet(props) {
-  const { onBack, sheet } = props;
+  const { sheet } = props;
 
   if (!sheet) {
     return null;
