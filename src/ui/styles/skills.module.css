@@ -1,0 +1,19 @@
+.BonusColumn {
+  text-align: right;
+}
+
+.NameColumn {
+  text-align: left;
+}
+
+th {
+  font-size: 12px;
+}
+
+td.BonusColumn {
+  border-bottom: 1px solid rgba(255, 0, 0, 0.4);
+}
+
+td.NameColumn {
+  border-bottom: 1px solid rgba(255, 0, 0, 0.4);
+}

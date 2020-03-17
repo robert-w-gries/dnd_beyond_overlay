@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../styles/Overlay.module.css';
+import styles from '../styles/overlay.module.css';
 
 function NestedTab(props) {
   const {

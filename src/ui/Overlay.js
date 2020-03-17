@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './styles/Overlay.module.css';
+import styles from './styles/overlay.module.css';
 import CharacterSheet from './sheet/CharacterSheet';
 import ProfileSelection from './profile/ProfileSelection';
 import NestedTab from './tabs/NestedTab';

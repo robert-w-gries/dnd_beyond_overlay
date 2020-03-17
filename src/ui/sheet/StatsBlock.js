@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles/sheet.module.css';
 
 const abbreviated = {
   Strength: 'str',
@@ -20,7 +21,7 @@ function Attributes(props) {
   });
 
   return (
-    <div className="grid3">
+    <div className={styles.StatsBlockGrid}>
       {attributeElements}
     </div>
   );
@@ -39,9 +40,9 @@ Attributes.propTypes = {
 function Attribute(props) {
   const { bonus, name } = props;
   return (
-    <div className="check Attribute">
-      <div className="attr AttributeTitle">{name}</div>
-      <div className="AttributeBonus">{`${bonus.sign}${bonus.num}`}</div>
+    <div className={[styles.Attribute, styles.check].join(' ')}>
+      <div>{name}</div>
+      <div>{`${bonus.sign}${bonus.num}`}</div>
     </div>
   );
 }
@@ -64,7 +65,7 @@ function SavingThrows(props) {
   });
 
   return (
-    <div className="grid threecol SavingThrows">
+    <div className={styles.StatsBlockGrid}>
       {savingThrowElements}
     </div>
   );
@@ -83,9 +84,13 @@ SavingThrows.propTypes = {
 function SavingThrow(props) {
   const { bonus, name } = props;
   return (
-    <div className="check SavingThrow">
-      <div className="attr SavingThrowTitle">{name}</div>
-      <div className="bonus SavingThrowStat">{`${bonus.sign}${bonus.num}`}</div>
+    <div className={[styles.SavingThrow, styles.check].join(' ')}>
+      <div className={styles.SavingThrowName}>{name}</div>
+      <div
+        className={[styles.SavingThrowBonus, styles.bonus].join(' ')}
+      >
+        {`${bonus.sign}${bonus.num}`}
+      </div>
     </div>
   );
 }
@@ -95,30 +100,30 @@ SavingThrow.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-function StatBlock(props) {
+function StatsBlock(props) {
   const { children, header } = props;
   const h = (
-    <h1 className="StatBlockHeader">{header}</h1>
+    <h1 className={styles.StatsBlockHeader}>{header}</h1>
   );
   return (
-    <div className="StatBlock">
+    <div>
       { header ? h : null }
       {children}
     </div>
   );
 }
 
-StatBlock.propTypes = {
+StatsBlock.propTypes = {
   children: PropTypes.element.isRequired,
   header: PropTypes.string,
 };
 
-StatBlock.defaultProps = {
+StatsBlock.defaultProps = {
   header: '',
 };
 
 export {
   Attributes,
   SavingThrows,
-  StatBlock,
+  StatsBlock,
 };

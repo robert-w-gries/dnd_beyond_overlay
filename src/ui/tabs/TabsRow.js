@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles/overlay.module.css';
 
 function TabContent(props) {
   return props.children;
 }
 
 function TabsRow(props) {
-  const { children, className, defaultTab } = props;
+  const { children, defaultTab } = props;
   const [currentTab, setCurrentTab] = useState(defaultTab);
 
   React.Children.forEach(children, (child) => {
@@ -14,14 +15,15 @@ function TabsRow(props) {
   });
 
   const tabs = React.Children.map(children, (tab) => {
-    const selectedStyle = {
-      background: 'red',
-      color: 'white',
-      fontWeight: 'bold',
-    };
+    const classes = [styles.Tab];
+    if (currentTab === tab.props.title) classes.push(styles.selectedTab);
 
     return (
-      <button type="button" className="Tab" style={currentTab === tab.props.title ? selectedStyle : null} onClick={() => setCurrentTab(tab.props.title)}>
+      <button
+        type="button"
+        className={classes.join(' ')}
+        onClick={() => setCurrentTab(tab.props.title)}
+      >
         {tab.props.title}
       </button>
     );
@@ -30,8 +32,8 @@ function TabsRow(props) {
   const content = React.Children.toArray(children).find((tab) => currentTab === tab.props.title);
 
   return (
-    <div className={`Tabs ${className}`}>
-      <div className="row TabsRow">
+    <div>
+      <div className={styles.TabsRow}>
         {tabs}
       </div>
       <div className="TabContent">
@@ -43,7 +45,6 @@ function TabsRow(props) {
 
 TabsRow.propTypes = {
   children: PropTypes.element.isRequired,
-  className: PropTypes.string.isRequired,
   defaultTab: PropTypes.string,
 };
 

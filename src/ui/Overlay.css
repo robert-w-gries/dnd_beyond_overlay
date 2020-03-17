@@ -36,35 +36,6 @@
   flex: 1;
 }
 
-.Character {
-  min-height: 100%;
-}
-
-.CharacterSelectionInputForms {
-  display: flex;
-}
-
-.CharacterSelectionInputForms > label {
-  flex: 1;
-}
-
-.CharacterSelectionInputForms > label > input {
-  width: 95%;
-}
-
-.CharacterTidbits {
-  width: 130px;
-  padding: 2px;
-  background-color: white;
-  color: black;
-}
-
-.CharacterTidbits > div {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
 .CharacterTabs > .TabContent {
   background-color: white;
   color: black;
@@ -100,14 +71,6 @@
   padding-right: 3px;
 }
 
-.SkillsBonusCol {
-  text-align: right;
-}
-
-.SkillsNameCol {
-  text-align: left;
-}
-
 .SkillsProfCol {
   text-align: center;
 }
@@ -122,18 +85,6 @@
   margin: 0;
   padding-bottom: 5px;
   user-select: none;
-}
-
-.Tab {
-  flex: 1;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  outline: none;
-  padding: 0.5em 1em;
-}
-
-.Tab:hover {
-  background-color: #777;
 }
 
 .action {
@@ -152,15 +103,6 @@
 
 .bonus {
   font-family: 'Courier New', Courier, monospace;
-}
-
-.check {
-  cursor: pointer;
-  user-select: none;
-}
-
-.check:hover {
-  background-color: rgb(207, 207, 207);
 }
 
 .dataText {
@@ -184,47 +126,4 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.row.CharacterHeader {
-  justify-content: space-between;
-}
-
-.row.Skill {
-  justify-content: space-between;
-}
-
-.row.TabsRow {
-  justify-content: space-evenly;
-}
-
-.table {
-  border-collapse: collapse;
-  text-align: center;
-  width: 100%;
-}
-
-.underline {
-  border-bottom: 1px solid rgba(255, 0, 0, 0.4);
-}
-
-h1 {
-  text-align: center;
-}
-
-td {
-  padding-top: 2px;
-  padding-bottom: 2px;
-  vertical-align: bottom;
-}
-
-th {
-  font-size: 12px;
-  user-select: none;
 }

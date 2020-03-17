@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import sheetStyles from '../styles/sheet.module.css';
+import skillStyles from '../styles/skills.module.css';
 
 function Skills(props) {
   const { skills } = props;
@@ -10,12 +12,12 @@ function Skills(props) {
     return <Skill key={name} attribute={attr} bonus={bonus} name={name} prof={prof} />;
   });
   return (
-    <table className="table Skills">
+    <table>
       <tr>
         <th>Prof</th>
         <th>Attr</th>
-        <th className="SkillsNameCol">Skill</th>
-        <th className="SkillsBonusCol">Bonus</th>
+        <th className={skillStyles.NameColumn}>Skill</th>
+        <th className={skillStyles.BonusColumn}>Bonus</th>
       </tr>
       {skillElements}
     </table>
@@ -47,11 +49,13 @@ function Skill(props) {
   };
 
   return (
-    <tr className="check">
+    <tr className={sheetStyles.check}>
       <td className="SkillsProfCol">{proficiencyChars[prof]}</td>
       <td className="attr SkillsAttrCol">{attribute}</td>
-      <td className="underline SkillsNameCol">{name}</td>
-      <td className="bonus SkillsBonusCol underline">{`${bonus.sign}${bonus.num}`}</td>
+      <td className={skillStyles.NameColumn}>{name}</td>
+      <td className={skillStyles.BonusColumn}>
+        {`${bonus.sign}${bonus.num}`}
+      </td>
     </tr>
   );
 }
