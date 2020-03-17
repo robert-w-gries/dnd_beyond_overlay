@@ -20,7 +20,9 @@ function ProfileSelection(props) {
 
   const profileOperations = {
     add: (profilePromise) => {
+      //TODO:add empty profile to saved profiles list
       profilePromise.then((profile) => {
+        //TODO: replace info of empty list with fetched data
         setSavedProfiles((list) => {
           const newList = [...list, profile];
           chrome.storage.local.set({ savedProfiles: newList });
