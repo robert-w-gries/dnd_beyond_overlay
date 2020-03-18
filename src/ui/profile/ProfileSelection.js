@@ -14,7 +14,6 @@ const LoadedProfile = (profileModel) => ({
 
 const ErrorProfile = () => ({
   status: 'error',
-  avatar: 'https://www.dndbeyond.com/Content/Skins/Waterdeep/images/characters/default-avatar-builder.png',
 });
 
 const LoadingProfile = () => ({
