@@ -5,47 +5,98 @@ import PropTypes from 'prop-types';
 import styles from '../styles/profile.module.css';
 import AddProfile from './AddProfile';
 import BeyondLoader from './BeyondLoader';
-import CharacterProfile from './CharacterProfile';
+import Profiles from './Profile';
+
+const LoadedProfile = (profileModel) => ({
+  status: 'loaded',
+  profile: profileModel,
+});
+
+const ErrorProfile = () => ({
+  status: 'error',
+  avatar: 'https://www.dndbeyond.com/Content/Skins/Waterdeep/images/characters/default-avatar-builder.png',
+});
+
+const LoadingProfile = () => ({
+  status: 'loading',
+});
 
 function ProfileSelection(props) {
   const { onCharacterReady } = props;
-  const [savedProfiles, setSavedProfiles] = useState([]);
+  const [profiles, setProfiles] = useState(new Map());
   const [currentProfile, setCurrentProfile] = useState(null);
 
   useEffect(() => {
     chrome.storage.local.get('savedProfiles', (result) => {
-      setSavedProfiles(result.savedProfiles || []);
+      if (!result.savedProfiles) return;
+
+      const keyPairs = result.savedProfiles.map((profile) => [profile.id, LoadedProfile(profile)]);
+      setProfiles(new Map(keyPairs));
     });
   }, []);
 
-  const profileOperations = {
-    add: (profilePromise) => {
-      //TODO:add empty profile to saved profiles list
-      profilePromise.then((profile) => {
-        //TODO: replace info of empty list with fetched data
-        setSavedProfiles((list) => {
-          const newList = [...list, profile];
-          chrome.storage.local.set({ savedProfiles: newList });
-          return newList;
+  const onAddProfile = (id, profilePromise) => {
+    if (profiles.has(id)) {
+      throw new Error('ALREADY_EXISTS');
+    }
+
+    // Add profile as a placeholder `LoadingProfile` first
+    setProfiles((map) => {
+      const newMap = new Map(Array.from(map.entries()));
+      newMap.set(id, LoadingProfile());
+      return newMap;
+    });
+
+    // Once the loading is complete, either mark it as `loaded` or `error`
+    profilePromise.then((profile) => {
+      setProfiles((map) => {
+        const newMap = new Map(Array.from(map.entries()));
+        newMap.set(id, LoadedProfile(profile));
+
+        // Append the loaded profile to list of saved profiles
+        chrome.storage.local.get('savedProfiles', (result) => {
+          const savedList = result.savedProfiles ? [...result.savedProfiles, profile] : [profile];
+          chrome.storage.local.set({ savedProfiles: savedList });
         });
+
+        return newMap;
       });
-    },
-    remove: (profile) => {
-      if (profile === currentProfile) {
-        setCurrentProfile(null);
-      }
-      setSavedProfiles((list) => {
-        const newList = list.filter((p) => profile.id !== p.id);
+    }).catch((err) => {
+      // Update the profile to indicate it errored
+      setProfiles((map) => {
+        const newMap = new Map(Array.from(map.entries()));
+        newMap.set(id, ErrorProfile());
+        return newMap;
+      });
+      throw err;
+    });
+  };
+
+  const onRemoveProfile = (id) => {
+    if (currentProfile && id === currentProfile.id) {
+      setCurrentProfile(null);
+    }
+
+    setProfiles((map) => {
+      const newMap = new Map(Array.from(map.entries()));
+      newMap.delete(id);
+
+      // Remove the profile from local storage if it was saved
+      chrome.storage.local.get('savedProfiles', (result) => {
+        if (!result.savedProfiles) return;
+        const newList = result.savedProfiles.filter((profile) => profile.id !== id);
         chrome.storage.local.set({ savedProfiles: newList });
-        return newList;
       });
-    },
-    select: (profile) => {
-      if (currentProfile && profile.id === currentProfile.id) {
-        return;
-      }
-      setCurrentProfile(profile);
-    },
+
+      return newMap;
+    });
+  };
+
+  const onSelectProfile = (profile) => {
+    if (currentProfile && profile.id === currentProfile.id) {
+      return;
+    }
+    setCurrentProfile(profile);
   };
 
   const onCharacterLoaded = (loadingPromise) => {
@@ -63,10 +114,11 @@ function ProfileSelection(props) {
         currentProfile={currentProfile}
         onBeyondLoaded={onCharacterLoaded}
       />
-      <AddProfile addProfile={profileOperations.add} savedProfiles={savedProfiles} />
-      <SavedProfiles
-        profileOperations={profileOperations}
-        savedProfiles={savedProfiles}
+      <AddProfile addProfile={onAddProfile} />
+      <Profiles
+        onRemoveProfile={onRemoveProfile}
+        onSelectProfile={onSelectProfile}
+        profiles={profiles}
         currentProfile={currentProfile}
       />
     </div>
@@ -75,58 +127,6 @@ function ProfileSelection(props) {
 
 ProfileSelection.propTypes = {
   onCharacterReady: PropTypes.func.isRequired,
-};
-
-function SavedProfiles(props) {
-  const { profileOperations, savedProfiles, currentProfile } = props;
-  if (!savedProfiles) {
-    return null;
-  }
-
-  const profiles = savedProfiles.map((profile) => {
-    const { id } = profile;
-    return (
-      <CharacterProfile
-        key={id.toString()}
-        removeProfile={profileOperations.remove}
-        selected={currentProfile && id === currentProfile.id}
-        profile={profile}
-        selectProfile={profileOperations.select}
-      />
-    );
-  });
-
-  return (
-    <div className={styles.SavedProfiles}>
-      {profiles}
-    </div>
-  );
-}
-
-const profileType = {
-  avatar: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
-  level: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-};
-
-SavedProfiles.propTypes = {
-  profileOperations: PropTypes.shape({
-    add: PropTypes.func.isRequired,
-    remove: PropTypes.func.isRequired,
-    select: PropTypes.func.isRequired,
-  }).isRequired,
-  savedProfiles: PropTypes.arrayOf(PropTypes.shape(profileType)).isRequired,
-  currentProfile: profileType,
-};
-
-SavedProfiles.defaultProps = {
-  currentProfile: {
-    avatar: '',
-    id: null,
-    level: null,
-    name: '',
-  },
 };
 
 export default ProfileSelection;
