@@ -166,19 +166,20 @@ function RemoveProfile(props) {
 
 function Avatar(props) {
   const {
-    image, loading,
+    image, error, loading,
   } = props;
   return (
     <div className={styles.AvatarWrapper}>
       {loading ? <div className={styles.Loader} /> : null}
+      {error ? <div className={styles.Error}>X</div> : null}
       <img className={styles.Avatar} src={image} alt="" />
     </div>
   );
 }
 
 Avatar.propTypes = {
-  handleDelete: PropTypes.func.isRequired,
   image: PropTypes.string.isRequired,
+  error: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
