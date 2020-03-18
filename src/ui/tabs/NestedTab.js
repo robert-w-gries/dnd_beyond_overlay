@@ -7,7 +7,8 @@ function NestedTab(props) {
     active, children, onClick, parentTabs, title,
   } = props;
 
-  //TODO: be smarter about using the active property to reurn content
+  // TODO: be smarter about using the active property to reurn content
+  // Maybe we could separate into active (aka display this content) vs isHeader?
   if (!active) {
     throw new Error('At least one NestedTab must be active');
   }

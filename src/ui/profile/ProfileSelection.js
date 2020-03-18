@@ -2,7 +2,6 @@
 /* global chrome */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import styles from '../styles/profile.module.css';
 import AddProfile from './AddProfile';
 import BeyondLoader from './BeyondLoader';
 import Profiles from './Profile';

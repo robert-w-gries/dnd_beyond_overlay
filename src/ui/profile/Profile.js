@@ -84,6 +84,19 @@ function Profile(props) {
   ]);
 }
 
+Profile.propTypes = {
+  name: PropTypes.string.isRequired,
+  avatar: PropTypes.string,
+  level: PropTypes.string,
+  error: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
+Profile.defaultProps = {
+  avatar: '',
+  level: '',
+};
+
 function CharacterProfile(props) {
   const {
     onRemoved, profile, selectProfile, selected,
@@ -115,13 +128,8 @@ function CharacterProfile(props) {
 }
 
 CharacterProfile.propTypes = {
-  profile: PropTypes.shape({
-    avatar: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    level: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-  removeProfile: PropTypes.func.isRequired,
+  profile: PropTypes.shape(profileType).isRequired,
+  onRemoved: PropTypes.func.isRequired,
   selectProfile: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired,
 };
@@ -140,6 +148,11 @@ function LoadingProfile(props) {
   );
 }
 
+LoadingProfile.propTypes = {
+  id: PropTypes.number.isRequired,
+  onRemoved: PropTypes.func.isRequired,
+};
+
 function ErrorProfile(props) {
   const { id, onRemoved } = props;
 
@@ -154,6 +167,11 @@ function ErrorProfile(props) {
   );
 }
 
+ErrorProfile.propTypes = {
+  id: PropTypes.number.isRequired,
+  onRemoved: PropTypes.func.isRequired,
+};
+
 function RemoveProfile(props) {
   const { onRemoved } = props;
 
@@ -163,6 +181,10 @@ function RemoveProfile(props) {
     </button>
   );
 }
+
+RemoveProfile.propTypes = {
+  onRemoved: PropTypes.func.isRequired,
+};
 
 function Avatar(props) {
   const {
