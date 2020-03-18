@@ -1,0 +1,90 @@
+.Attribute {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  padding: 5px;
+  background-color: white;
+  color: black;
+  border: 3px solid black;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.CharacterHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.CharacterName {
+  margin-right: 10px;
+  flex: 1;
+  user-select: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.CharacterSheet {
+  min-height: 100%;
+}
+
+.SavingThrow {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  background-color: white;
+  color: black;
+  border: 3px solid black;
+  text-align: center;
+}
+
+.SavingThrowBonus {
+  flex: 2;
+}
+
+.SavingThrowName {
+  flex: 1;
+  padding-right: 5px;
+  border-right: 1px solid black;
+  text-transform: uppercase;
+}
+
+.StatsBlockGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.StatsBlockHeader {
+  text-align: center;
+  font-size: large;
+  margin: 0px 0px 5px 0px;
+  user-select: none;
+}
+
+.bonus {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.check {
+  vertical-align: bottom;
+  user-select: none;
+  cursor: pointer;
+}
+
+.check:hover {
+  background-color: rgb(207, 207, 207);
+}
+
+table {
+  width: 100%;
+  background-color: white;
+  color: black;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+th, td {
+  padding: 2px 5px 2px 5px;
+  user-select: none;
+}

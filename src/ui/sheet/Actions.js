@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import sheetStyles from '../styles/sheet.module.css';
+import actionsStyles from '../styles/actions.module.css';
 
 function Actions(props) {
   const { actions } = props;
@@ -10,15 +12,15 @@ function Actions(props) {
     return <Action key={name} bonus={`${hit.sign}${hit.num}`} name={name} range={range} damage={damage} />;
   });
   return (
-    <table className="table Actions">
+    <table className={actionsStyles.ActionsTable}>
       <colgroup>
-        <col style={{ width: '50%' }} />
-        <col style={{ width: '20%' }} />
-        <col style={{ width: '10%' }} />
-        <col style={{ width: '20%' }} />
+        <col style={{ width: '46%' }} />
+        <col style={{ width: '16%' }} />
+        <col style={{ width: '15%' }} />
+        <col style={{ width: '23%' }} />
       </colgroup>
       <tr>
-        <th className="ActionNameCol">Action</th>
+        <th className={actionsStyles.NameCol}>Action</th>
         <th>Range</th>
         <th>Hit</th>
         <th>Damage</th>
@@ -49,11 +51,11 @@ function Action(props) {
     name, bonus, range, damage,
   } = props;
   return (
-    <tr className="action">
-      <td className="ActionNameCol ActionName">{name}</td>
-      <td className="ActionRange dataText">{range.long ? `${range.range} ${range.long}` : range.range}</td>
-      <td className="dataText">{bonus}</td>
-      <td className="dataText">{damage}</td>
+    <tr className={sheetStyles.check}>
+      <td className={actionsStyles.NameCol}>{name}</td>
+      <td className={actionsStyles.RangeCol}>{range.long ? `${range.range} ${range.long}` : range.range}</td>
+      <td className={actionsStyles.BonusCol}>{bonus}</td>
+      <td className={actionsStyles.DamageCol}>{damage}</td>
     </tr>
   );
 }
