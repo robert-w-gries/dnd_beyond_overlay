@@ -12,6 +12,10 @@
   text-align: right;
 }
 
+td.bonusScore {
+  font-family: 'Courier New', Courier, monospace;
+}
+
 td.bonusName, td.bonusScore {
   border-bottom: 1px solid rgba(255, 0, 0, 0.4);
 }

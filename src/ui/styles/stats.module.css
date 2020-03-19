@@ -51,6 +51,7 @@
 
 .bonusScore {
   composes: bonusScore from "./sheet.module.css";
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .Attribute > div.bonusScore {
