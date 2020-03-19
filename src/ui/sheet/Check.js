@@ -22,4 +22,16 @@ function Check(props) {
   return React.Children.map(children, (child) => React.cloneElement(child, { onClick: sendRoll }));
 }
 
+Check.propTypes = {
+  children: PropTypes.element.isRequired,
+  bonus: PropTypes.string.isRequired,
+  damage: PropTypes.string,
+  dice: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
+Check.defaultProps = {
+  damage: '--',
+};
+
 export default Check;

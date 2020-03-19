@@ -24,9 +24,9 @@ function Actions(props) {
       <table>
         <colgroup>
           <col style={{ width: '47%' }} />
-          <col style={{ width: '18%' }} />
-          <col style={{ width: '12%' }} />
-          <col style={{ width: '23%' }} />
+          <col style={{ width: '19%' }} />
+          <col style={{ width: '14%' }} />
+          <col style={{ width: '20%' }} />
         </colgroup>
         <tr>
           <th className={styles.bonusName}>Action</th>
@@ -60,13 +60,12 @@ function Action(props) {
   const {
     name, bonus, range, damage,
   } = props;
-  //TODO: Replace 'bonusName' with 'actionName'
   return (
     <Check dice="1d20" bonus={bonus} damage={damage} name={name}>
       <tr className={styles.check}>
-        <td className={styles.bonusName}>{name}</td>
+        <td className={styles.actionName}>{name}</td>
         <td className={styles.range}>{range.long ? `${range.range} ${range.long}` : range.range}</td>
-        <td className={styles.bonusScore}>{bonus}</td>
+        <td className={styles.bonus}>{bonus}</td>
         <td className={styles.damage}>{damage}</td>
       </tr>
     </Check>
