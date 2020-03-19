@@ -26,3 +26,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 });
 
 document.body.appendChild(iframe);
+
+// Needed because `executeScript()` evaluates the last value as a structured result
+// eslint-disable-next-line no-unused-expressions
+true;

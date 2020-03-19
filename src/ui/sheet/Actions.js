@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/actions.module.css';
+import Check from './Check';
 
 function Actions(props) {
   const { actions } = props;
@@ -59,13 +60,16 @@ function Action(props) {
   const {
     name, bonus, range, damage,
   } = props;
+  //TODO: Replace 'bonusName' with 'actionName'
   return (
-    <tr className={styles.check}>
-      <td className={styles.bonusName}>{name}</td>
-      <td className={styles.range}>{range.long ? `${range.range} ${range.long}` : range.range}</td>
-      <td className={styles.bonusScore}>{bonus}</td>
-      <td className={styles.damage}>{damage}</td>
-    </tr>
+    <Check dice="1d20" bonus={bonus} damage={damage} name={name}>
+      <tr className={styles.check}>
+        <td className={styles.bonusName}>{name}</td>
+        <td className={styles.range}>{range.long ? `${range.range} ${range.long}` : range.range}</td>
+        <td className={styles.bonusScore}>{bonus}</td>
+        <td className={styles.damage}>{damage}</td>
+      </tr>
+    </Check>
   );
 }
 

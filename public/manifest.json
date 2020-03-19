@@ -19,9 +19,10 @@
   "content_security_policy": "script-src 'self' https://www.dndbeyond.com/js/ https://media.dndbeyond.com; object-src 'self'",
   "content_scripts": [{
     "matches": ["*://app.roll20.net/editor/"],
-    "js": ["inject_sidebar.js"]
+    "js": ["roll20.js"]
   }],
   "permissions": [
+    "activeTab",
     "storage",
     "*://app.roll20.net/editor/",
     "*://*.dndbeyond.com/characters/*"

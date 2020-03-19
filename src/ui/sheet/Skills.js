@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/skills.module.css';
+import Check from './Check';
 
 function Skills(props) {
   const { skills } = props;
@@ -55,15 +56,16 @@ function Skill(props) {
     'Not Proficient': String.fromCharCode(9675),
   };
 
+  const bonusScore = `${bonus.sign}${bonus.num}`;
   return (
-    <tr className={styles.check}>
-      <td className="SkillsProfCol">{proficiencyChars[prof]}</td>
-      <td className="attr SkillsAttrCol">{attribute}</td>
-      <td className={styles.bonusName}>{name}</td>
-      <td className={styles.bonusScore}>
-        {`${bonus.sign}${bonus.num}`}
-      </td>
-    </tr>
+    <Check dice="1d20" bonus={bonusScore} name={`${name} Check`}>
+      <tr className={styles.check}>
+        <td className="SkillsProfCol">{proficiencyChars[prof]}</td>
+        <td className="attr SkillsAttrCol">{attribute}</td>
+        <td className={styles.bonusName}>{name}</td>
+        <td className={styles.bonusScore}>{bonusScore}</td>
+      </tr>
+    </Check>
   );
 }
 
