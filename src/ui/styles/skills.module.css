@@ -1,19 +1,21 @@
-.BonusColumn {
-  text-align: right;
+.SkillsTableWrapper {
+  composes: TableWrapper from './sheet.module.css';
 }
 
-.NameColumn {
+.bonusName {
+  composes: bonusName from './sheet.module.css';
   text-align: left;
 }
 
-th {
-  font-size: 12px;
+.bonusScore {
+  composes: bonusScore from './sheet.module.css';
+  text-align: right;
 }
 
-td.BonusColumn {
+td.bonusName, td.bonusScore {
   border-bottom: 1px solid rgba(255, 0, 0, 0.4);
 }
 
-td.NameColumn {
-  border-bottom: 1px solid rgba(255, 0, 0, 0.4);
+.check {
+  composes: check from "./sheet.module.css";
 }

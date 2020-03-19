@@ -1,34 +1,43 @@
-.ActionsTable {
+.ActionsTableWrapper {
+  composes: TableWrapper from './sheet.module.css';
+}
+
+.ActionsTableWrapper > table {
   table-layout: fixed;
 }
 
-.NameCol {
+.bonusName {
+  composes: bonusName from './sheet.module.css';
   text-align: left;
 }
 
-td.BonusCol {
-  font-size: 12px;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-td.DamageCol {
-  font-size: 12px;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-td.NameCol {
+td.bonusName {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 
-td.RangeCol {
+td.bonusScore {
+  font-size: 12px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+td.damage {
+  font-size: 12px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+td.range {
   font-family: 'Courier New', Courier, monospace;
   font-size: 12px;
 }
 
-.ActionsTable > tr > td {
+.ActionsTableWrapper > table > tr > td {
   border-bottom: 1px solid rgba(255, 0, 0, 0.2);
   vertical-align: middle;
   word-break: break-word;
+}
+
+.check {
+  composes: check from './sheet.module.css';
 }

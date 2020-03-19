@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import sheetStyles from '../styles/sheet.module.css';
-import skillStyles from '../styles/skills.module.css';
+import styles from '../styles/skills.module.css';
 
 function Skills(props) {
   const { skills } = props;
@@ -12,15 +11,23 @@ function Skills(props) {
     return <Skill key={name} attribute={attr} bonus={bonus} name={name} prof={prof} />;
   });
   return (
-    <table>
-      <tr>
-        <th>Prof</th>
-        <th>Attr</th>
-        <th className={skillStyles.NameColumn}>Skill</th>
-        <th className={skillStyles.BonusColumn}>Bonus</th>
-      </tr>
-      {skillElements}
-    </table>
+    <div className={styles.SkillsTableWrapper}>
+      <table>
+        <colgroup>
+          <col style={{ width: '15%' }} />
+          <col style={{ width: '15%' }} />
+          <col style={{ width: '55%' }} />
+          <col style={{ width: '15%' }} />
+        </colgroup>
+        <tr>
+          <th>Prof</th>
+          <th>Attr</th>
+          <th className={styles.bonusName}>Skill</th>
+          <th className={styles.bonusScore}>Bonus</th>
+        </tr>
+        {skillElements}
+      </table>
+    </div>
   );
 }
 
@@ -49,11 +56,11 @@ function Skill(props) {
   };
 
   return (
-    <tr className={sheetStyles.check}>
+    <tr className={styles.check}>
       <td className="SkillsProfCol">{proficiencyChars[prof]}</td>
       <td className="attr SkillsAttrCol">{attribute}</td>
-      <td className={skillStyles.NameColumn}>{name}</td>
-      <td className={skillStyles.BonusColumn}>
+      <td className={styles.bonusName}>{name}</td>
+      <td className={styles.bonusScore}>
         {`${bonus.sign}${bonus.num}`}
       </td>
     </tr>

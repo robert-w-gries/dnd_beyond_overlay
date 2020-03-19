@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import sheetStyles from '../styles/sheet.module.css';
-import actionsStyles from '../styles/actions.module.css';
+import styles from '../styles/actions.module.css';
 
 function Actions(props) {
   const { actions } = props;
@@ -9,24 +8,34 @@ function Actions(props) {
     const {
       name, hit, range, damage,
     } = actionObj;
-    return <Action key={name} bonus={`${hit.sign}${hit.num}`} name={name} range={range} damage={damage} />;
+    return (
+      <Action
+        key={name}
+        bonus={`${hit.sign}${hit.num}`}
+        name={name}
+        range={range}
+        damage={damage}
+      />
+    );
   });
   return (
-    <table className={actionsStyles.ActionsTable}>
-      <colgroup>
-        <col style={{ width: '46%' }} />
-        <col style={{ width: '16%' }} />
-        <col style={{ width: '15%' }} />
-        <col style={{ width: '23%' }} />
-      </colgroup>
-      <tr>
-        <th className={actionsStyles.NameCol}>Action</th>
-        <th>Range</th>
-        <th>Hit</th>
-        <th>Damage</th>
-      </tr>
-      {actionElements}
-    </table>
+    <div className={styles.ActionsTableWrapper}>
+      <table>
+        <colgroup>
+          <col style={{ width: '47%' }} />
+          <col style={{ width: '18%' }} />
+          <col style={{ width: '12%' }} />
+          <col style={{ width: '23%' }} />
+        </colgroup>
+        <tr>
+          <th className={styles.bonusName}>Action</th>
+          <th>Range</th>
+          <th>Hit</th>
+          <th>Damage</th>
+        </tr>
+        {actionElements}
+      </table>
+    </div>
   );
 }
 
@@ -51,11 +60,11 @@ function Action(props) {
     name, bonus, range, damage,
   } = props;
   return (
-    <tr className={sheetStyles.check}>
-      <td className={actionsStyles.NameCol}>{name}</td>
-      <td className={actionsStyles.RangeCol}>{range.long ? `${range.range} ${range.long}` : range.range}</td>
-      <td className={actionsStyles.BonusCol}>{bonus}</td>
-      <td className={actionsStyles.DamageCol}>{damage}</td>
+    <tr className={styles.check}>
+      <td className={styles.bonusName}>{name}</td>
+      <td className={styles.range}>{range.long ? `${range.range} ${range.long}` : range.range}</td>
+      <td className={styles.bonusScore}>{bonus}</td>
+      <td className={styles.damage}>{damage}</td>
     </tr>
   );
 }

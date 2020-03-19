@@ -35,7 +35,8 @@
   padding: 0;
   cursor: pointer;
 }.selected {
-  border: 4px solid #c53131;
+  outline: 4px solid #c53131;
+  border: 0;
 }
 
 .CharacterTidbits {
