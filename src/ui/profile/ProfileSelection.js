@@ -2,6 +2,7 @@
 /* global chrome */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import styles from '../styles/profile.module.css';
 import AddProfile from './AddProfile';
 import BeyondLoader from './BeyondLoader';
 import Profiles from './Profile';
@@ -129,7 +130,7 @@ function ProfileSelection(props) {
         onBeyondLoaded={onCharacterLoaded}
       />
       <AddProfile addProfile={onAddProfile} />
-      {errorMessage ? <p>{`Error: ${errorMessage}`}</p> : null}
+      {errorMessage ? <div className={styles.ErrorMsg}>{`Error: ${errorMessage}`}</div> : null}
       <Profiles
         onRemoveProfile={onRemoveProfile}
         onSelectProfile={onSelectProfile}

@@ -198,7 +198,7 @@ function Avatar(props) {
   return (
     <div className={styles.AvatarWrapper}>
       {loading ? <div className={styles.Loader} /> : null}
-      {error ? <div className={styles.Error}>X</div> : null}
+      {error ? <div className={styles.ErrorMarker}>X</div> : null}
       <img className={styles.Avatar} src={image} alt="" />
     </div>
   );
