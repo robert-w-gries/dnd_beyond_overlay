@@ -14,7 +14,6 @@ const formatRoll = ({ name, check, damage }) => {
   if (damage && damage !== '--') {
     strs.push(`{{damage=[[${damage}]]}}`);
   }
-  console.log(strs);
   return strs.join(' ');
 };
 
@@ -25,7 +24,5 @@ const sendRoll = (roll) => {
   input.text.value = savedText;
 };
 
-console.log(input);
 const backgroundPort = chrome.runtime.connect({ name: 'roll20' });
-
 backgroundPort.onMessage.addListener((msg) => sendRoll(msg));

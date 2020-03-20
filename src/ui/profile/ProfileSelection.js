@@ -11,8 +11,10 @@ const LoadedProfile = (profileModel) => ({
   profile: profileModel,
 });
 
-const ErrorProfile = () => ({
+const ErrorProfile = (error, profile) => ({
   status: 'error',
+  error,
+  profile,
 });
 
 const LoadingProfile = () => ({
@@ -23,6 +25,7 @@ function ProfileSelection(props) {
   const { onCharacterReady } = props;
   const [profiles, setProfiles] = useState(new Map());
   const [currentProfile, setCurrentProfile] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     chrome.storage.local.get('savedProfiles', (result) => {
@@ -45,7 +48,7 @@ function ProfileSelection(props) {
       return newMap;
     });
 
-    // Once the loading is complete, either mark it as `loaded` or `error`
+    // Once the profile is added is complete, either mark it as `loaded` or `error`
     profilePromise.then((profile) => {
       setProfiles((map) => {
         const newMap = new Map(Array.from(map.entries()));
@@ -66,6 +69,7 @@ function ProfileSelection(props) {
         newMap.set(id, ErrorProfile());
         return newMap;
       });
+      setErrorMessage(err.message);
       throw err;
     });
   };
@@ -98,11 +102,23 @@ function ProfileSelection(props) {
   };
 
   const onCharacterLoaded = (loadingPromise) => {
+    // Check if character sheet was successfully loaded
     onCharacterReady(loadingPromise.then((result) => {
       if (!result.success) {
-        return Promise.reject(result.errorMsg);
+        throw new Error(result.errorMsg);
       }
       return result.data;
+    }).catch((err) => {
+      setCurrentProfile((profile) => {
+        setProfiles((map) => {
+          const newMap = new Map(Array.from(map.entries()));
+          newMap.set(profile.id, ErrorProfile(err.message, profile));
+          return newMap;
+        });
+        return null;
+      });
+      setErrorMessage(err.message);
+      return Promise.reject(err);
     }));
   };
 
@@ -113,6 +129,7 @@ function ProfileSelection(props) {
         onBeyondLoaded={onCharacterLoaded}
       />
       <AddProfile addProfile={onAddProfile} />
+      {errorMessage ? <p>{`Error: ${errorMessage}`}</p> : null}
       <Profiles
         onRemoveProfile={onRemoveProfile}
         onSelectProfile={onSelectProfile}

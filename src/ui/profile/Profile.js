@@ -31,7 +31,7 @@ function Profiles(props) {
         <LoadingProfile id={id} onRemoved={onRemoved} />
       ),
       error: (
-        <ErrorProfile id={id} onRemoved={onRemoved} />
+        <ErrorProfile id={id} profile={profileType.profile} onRemoved={onRemoved} />
       ),
     });
 
@@ -154,21 +154,26 @@ LoadingProfile.propTypes = {
 };
 
 function ErrorProfile(props) {
-  const { id, onRemoved } = props;
+  const { id, profile, onRemoved } = props;
+
+  const profileWrapper = () => {
+    if (!profile) {
+      return <Profile name={`ID: ${id}`} error />;
+    }
+    return <Profile name={profile.name} avatar={profile.avatar} level={profile.level} error />;
+  };
 
   return (
     <div className={styles.ErrorProfile}>
       <RemoveProfile onRemoved={onRemoved} />
-      <Profile
-        name={`ID: ${id}`}
-        error
-      />
+      {profileWrapper()}
     </div>
   );
 }
 
 ErrorProfile.propTypes = {
   id: PropTypes.number.isRequired,
+  profile: PropTypes.shape(profileType).isRequired,
   onRemoved: PropTypes.func.isRequired,
 };
 
