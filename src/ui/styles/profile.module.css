@@ -1,8 +1,4 @@
-.AddButtonsRow {
-  display: flex;
-  justify-content: space-between;
-  animation: slide-down 0.4s ease;
-} @keyframes slide-down {
+@keyframes slide-down {
   0% {
     opacity: 0;
     transform: translateY(-5%);
@@ -11,6 +7,12 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.AddButtonsRow {
+  display: flex;
+  justify-content: space-between;
+  animation: slide-down 0.4s ease;
 }
 
 .AvatarWrapper {
@@ -81,11 +83,30 @@
   user-select: none;
 }
 
-.ErrorMsg {
-  padding: 5px;
-  border: 2px solid rgba(255, 0, 0, 0.8);
-  user-select: none;
+div.ErrorMsg {
+  margin-bottom: 5px;
+  padding: 2px 5px;
+  border: 2px solid red;
+  color: black;
+  background-color: yellow;
   font-size: 14px;
+  font-weight: bold;
+  user-select: none;
+}
+
+.ErrorMsg > p {
+  margin: 0;
+}
+
+.Info {
+  padding: 5px;
+  color: black;
+  background-color: white;
+  border: 3px solid black;
+  font-size: 16px;
+  font-weight: bold;
+  user-select: none;
+  animation: slide-down 0.4s ease;
 }
 
 .InputForm {

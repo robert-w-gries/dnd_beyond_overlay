@@ -38,6 +38,8 @@ function ProfileSelection(props) {
   }, []);
 
   const onAddProfile = (id, profilePromise) => {
+    setErrorMessage('');
+
     if (profiles.has(id)) {
       throw new Error('ALREADY_EXISTS');
     }
@@ -80,6 +82,8 @@ function ProfileSelection(props) {
       setCurrentProfile(null);
     }
 
+    setErrorMessage('');
+
     setProfiles((map) => {
       const newMap = new Map(Array.from(map.entries()));
       newMap.delete(id);
@@ -99,6 +103,7 @@ function ProfileSelection(props) {
     if (currentProfile && profile.id === currentProfile.id) {
       return;
     }
+    setErrorMessage('');
     setCurrentProfile(profile);
   };
 
@@ -123,14 +128,24 @@ function ProfileSelection(props) {
     }));
   };
 
+  const errorBox = (errorStr) => {
+    const prepend = `Error: ${errorStr}`;
+    const strWrappers = prepend.split('\n').map((str) => <p>{str}</p>);
+    return (
+      <div className={styles.ErrorMsg}>
+        {strWrappers}
+      </div>
+    );
+  };
+
   return (
     <div>
       <BeyondLoader
         currentProfile={currentProfile}
         onBeyondLoaded={onCharacterLoaded}
       />
-      <AddProfile addProfile={onAddProfile} />
-      {errorMessage ? <div className={styles.ErrorMsg}>{`Error: ${errorMessage}`}</div> : null}
+      <AddProfile addProfile={onAddProfile} onError={(errMsg) => setErrorMessage(errMsg)} />
+      {errorMessage ? errorBox(errorMessage) : null}
       <Profiles
         onRemoveProfile={onRemoveProfile}
         onSelectProfile={onSelectProfile}

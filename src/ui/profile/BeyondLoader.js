@@ -87,7 +87,7 @@ function BeyondFrame(props) {
         }
       }
     }
-    throw new Error('Could not reach DnD Beyond');
+    throw new Error('Could not reach DnD Beyond.');
   };
 
   useEffect(() => {
