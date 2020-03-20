@@ -31,7 +31,12 @@ function Profiles(props) {
         <LoadingProfile id={id} onRemoved={onRemoved} />
       ),
       error: (
-        <ErrorProfile id={id} profile={profileType.profile} onRemoved={onRemoved} />
+        <ErrorProfile
+          id={id}
+          profile={profileType.profile}
+          onRemoved={onRemoved}
+          onRetry={onSelectProfile}
+        />
       ),
     });
 
@@ -116,7 +121,7 @@ function CharacterProfile(props) {
       }}
       onKeyPress={() => selectProfile(profile)}
     >
-      <RemoveProfile onRemoved={onRemoved} />
+      <ProfileButtons onRemoved={onRemoved} />
       <Profile
         name={profile.name}
         avatar={profile.avatar}
@@ -139,7 +144,7 @@ function LoadingProfile(props) {
 
   return (
     <div className={styles.LoadingProfile}>
-      <RemoveProfile onRemoved={onRemoved} />
+      <ProfileButtons onRemoved={onRemoved} />
       <Profile
         name={`ID: ${id}`}
         loading
@@ -154,40 +159,41 @@ LoadingProfile.propTypes = {
 };
 
 function ErrorProfile(props) {
-  const { id, profile, onRemoved } = props;
-
-  const profileWrapper = () => {
-    if (!profile) {
-      return <Profile name={`ID: ${id}`} error />;
-    }
-    return <Profile name={profile.name} avatar={profile.avatar} level={profile.level} error />;
-  };
+  const { profile, onRemoved, onRetry } = props;
 
   return (
     <div className={styles.ErrorProfile}>
-      <RemoveProfile onRemoved={onRemoved} />
-      {profileWrapper()}
+      <ProfileButtons onRemoved={onRemoved} onRetry={onRetry} />
+      <Profile name={profile.name} avatar={profile.avatar} level={profile.level} error />
     </div>
   );
 }
 
 ErrorProfile.propTypes = {
-  id: PropTypes.number.isRequired,
   profile: PropTypes.shape(profileType).isRequired,
   onRemoved: PropTypes.func.isRequired,
 };
 
-function RemoveProfile(props) {
-  const { onRemoved } = props;
+function ProfileButtons(props) {
+  const { onRemoved, onRetry } = props;
+
+  const retryButton = ((
+    <button type="button" className={styles.RetryButton}>
+      <span>&#8634;</span>
+    </button>
+  ));
 
   return (
-    <button className={styles.RemoveProfile} type="button" onClick={onRemoved}>
-      &#128465;
-    </button>
+    <div className={styles.ProfileButtons}>
+      <button className={styles.RemoveButton} type="button" onClick={onRemoved}>
+        <span>&#128465;</span>
+      </button>
+      {onRetry ? retryButton : null}
+    </div>
   );
 }
 
-RemoveProfile.propTypes = {
+ProfileButtons.propTypes = {
   onRemoved: PropTypes.func.isRequired,
 };
 
