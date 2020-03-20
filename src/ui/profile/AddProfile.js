@@ -32,6 +32,7 @@ function AddProfileForms(props) {
     try {
       onAddProfile(id, fetch(url)
         .then((response) => response.json())
+        .catch(() => Promise.reject(new Error('Profile not found.')))
         .then((jsonData) => {
           if (jsonData.errorCode === 404) {
             const strs = [

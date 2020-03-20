@@ -51,7 +51,6 @@ function ProfileSelection(props) {
       return newMap;
     });
 
-    // Once the profile is added is complete, either mark it as `loaded` or `error`
     profilePromise.then((profile) => {
       setProfiles((map) => {
         const newMap = new Map(Array.from(map.entries()));
@@ -66,10 +65,10 @@ function ProfileSelection(props) {
         return newMap;
       });
     }).catch((err) => {
-      // Update the profile to indicate it errored
+      // Remove the unloadable profile
       setProfiles((map) => {
         const newMap = new Map(Array.from(map.entries()));
-        newMap.set(id, ErrorProfile());
+        newMap.delete(id);
         return newMap;
       });
       setErrorMessage(err.message);
