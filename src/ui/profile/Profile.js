@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/profile.module.css';
+
+const profileType = {
+  avatar: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  level: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 function Profiles(props) {
   const {
@@ -12,12 +19,12 @@ function Profiles(props) {
   }
 
   const profileViews = [];
-  profiles.forEach((profileType, id) => {
+  profiles.forEach(({ profile, status }, id) => {
     profileViews.push((
       <CharacterProfile
-        profile={profileType.profile}
+        profile={profile}
         selected={currentProfile && currentProfile.id === id}
-        status={profileType.status}
+        status={status}
         onRemoved={onRemoveProfile}
         onSelected={onSelectProfile}
       />
@@ -31,11 +38,11 @@ function Profiles(props) {
   );
 }
 
-const profileType = {
-  avatar: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
-  level: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
+Profiles.propTypes = {
+  currentProfile: PropTypes.shape(profileType).isRequired,
+  profiles: PropTypes.arrayOf(PropTypes.shape(profileType)).isRequired,
+  onRemoveProfile: PropTypes.func.isRequired,
+  onSelectProfile: PropTypes.func.isRequired,
 };
 
 function CharacterProfile(props) {
@@ -91,7 +98,7 @@ CharacterProfile.propTypes = {
 };
 
 function SelectableWrapper(props) {
-  const { selected, onSelect } = props;
+  const { children, selected, onSelect } = props;
   const selectedStyle = selected ? styles.selected : '';
   return (
     <button
@@ -100,10 +107,16 @@ function SelectableWrapper(props) {
       onClick={onSelect}
       onKeyPress={onSelect}
     >
-      {props.children}
+      {children}
     </button>
   );
 }
+
+SelectableWrapper.propTypes = {
+  children: PropTypes.element.isRequired,
+  selected: PropTypes.bool.isRequired,
+  onSelect: PropTypes.func.isRequired,
+};
 
 function ProfileButtons(props) {
   const { error, onRemove, onRetry } = props;
@@ -125,7 +138,9 @@ function ProfileButtons(props) {
 }
 
 ProfileButtons.propTypes = {
-  onRemoved: PropTypes.func.isRequired,
+  error: PropTypes.bool.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  onRetry: PropTypes.func.isRequired,
 };
 
 function Avatar(props) {

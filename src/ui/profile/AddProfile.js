@@ -102,6 +102,7 @@ function AddProfileForms(props) {
 AddProfileForms.propTypes = {
   onAddProfile: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
 };
 
 function AddProfile(props) {
