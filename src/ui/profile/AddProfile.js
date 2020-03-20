@@ -105,16 +105,19 @@ AddProfileForms.propTypes = {
 };
 
 function AddProfile(props) {
-  const { addProfile, onError } = props;
+  const { addProfile, clearError, onError } = props;
   const [visible, setVisible] = useState(false);
 
   const triggerFormsButton = (
-    <button type="button" onClick={() => setVisible(true)}>Add Character</button>
+    <button type="button" onClick={() => { setVisible(true); clearError(); }}>
+      Add Character
+    </button>
   );
 
   const onAddProfile = (id, profilePromise) => {
     addProfile(id, profilePromise);
     setVisible(false);
+    clearError();
   };
 
   const addForms = ([
@@ -124,7 +127,10 @@ function AddProfile(props) {
     </p>,
     <AddProfileForms
       onAddProfile={onAddProfile}
-      onCancel={() => setVisible(false)}
+      onCancel={() => {
+        setVisible(false);
+        clearError();
+      }}
       onError={onError}
     />,
   ]);

@@ -18,8 +18,9 @@ const ErrorProfile = (error, profile) => ({
   profile,
 });
 
-const LoadingProfile = () => ({
+const LoadingProfile = (profile) => ({
   status: 'loading',
+  profile,
 });
 
 function ProfileSelection(props) {
@@ -38,16 +39,14 @@ function ProfileSelection(props) {
   }, []);
 
   const onAddProfile = (id, profilePromise) => {
-    setErrorMessage('');
-
     if (profiles.has(id)) {
       throw new Error('ALREADY_EXISTS');
     }
 
-    // Add profile as a placeholder `LoadingProfile` first
+    // Add placeholder profile with id until loaded
     setProfiles((map) => {
       const newMap = new Map(Array.from(map.entries()));
-      newMap.set(id, LoadingProfile());
+      newMap.set(id, LoadingProfile({ id }));
       return newMap;
     });
 
@@ -102,6 +101,11 @@ function ProfileSelection(props) {
     if (currentProfile && profile.id === currentProfile.id) {
       return;
     }
+    setProfiles((map) => {
+      const newMap = new Map(Array.from(map.entries()));
+      newMap.set(profile.id, LoadingProfile(profile));
+      return newMap;
+    });
     setErrorMessage('');
     setCurrentProfile(profile);
   };
@@ -143,13 +147,17 @@ function ProfileSelection(props) {
         currentProfile={currentProfile}
         onBeyondLoaded={onCharacterLoaded}
       />
-      <AddProfile addProfile={onAddProfile} onError={(errMsg) => setErrorMessage(errMsg)} />
+      <AddProfile
+        addProfile={onAddProfile}
+        clearError={() => setErrorMessage('')}
+        onError={(errMsg) => setErrorMessage(errMsg)}
+      />
       {errorMessage ? errorBox(errorMessage) : null}
       <Profiles
+        currentProfile={currentProfile}
+        profiles={profiles}
         onRemoveProfile={onRemoveProfile}
         onSelectProfile={onSelectProfile}
-        profiles={profiles}
-        currentProfile={currentProfile}
       />
     </div>
   );

@@ -30,20 +30,27 @@
   position: relative;
   display: flex;
   flex-flow: column;
+  justify-content: center;
   align-items: center;
   background-color: white;
   border: 1px solid white;
   outline: 0;
   padding: 0;
-  cursor: pointer;
 }.selected {
   outline: 4px solid #c53131;
   border: 0;
 }
 
+.SelectableProfile {
+  composes: CharacterProfile;
+  cursor: pointer;
+}
+
 .CharacterTidbits {
   width: 100%;
   min-height: 32px;
+  color: black;
+  user-select: none;
 }
 
 .CharacterTidbits > div {
@@ -57,19 +64,6 @@
   margin: auto;
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
-}
-
-.ErrorProfile {
-  position: relative;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  background-color: white;
-  border: 1px solid white;
-  outline: 0;
-  padding: 0;
 }
 
 .ErrorMarker {
@@ -147,19 +141,6 @@ div.ErrorMsg {
 } @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-.LoadingProfile {
-  position: relative;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  background-color: white;
-  border: 1px solid white;
-  outline: 0;
-  padding: 0;
 }
 
 .ProfileButtons {
