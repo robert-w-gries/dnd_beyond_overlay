@@ -7,14 +7,13 @@ import type from '../../utils/types';
 const BEYOND_ID_LENGTH = 8;
 
 function AddProfileForms(props) {
-  const { onAddProfile, onCancel } = props;
+  const { onAddProfile, onCancel, onError } = props;
   const [charId, setCharId] = useState('');
-  const [error, setError] = useState('');
 
   const validateInputId = (input) => {
     const parsedId = parseInt(input, 10);
     if (input.length !== BEYOND_ID_LENGTH || !type.isNumber(parsedId)) {
-      throw new Error('Invalid DnD Beyond character ID provided');
+      throw new Error('Invalid DnD Beyond Character ID.');
     }
     return parsedId;
   };
@@ -24,7 +23,7 @@ function AddProfileForms(props) {
     try {
       id = validateInputId(charId);
     } catch (err) {
-      setError(`Error: ${err.message}`);
+      onError(err.message);
       return;
     }
 
@@ -33,7 +32,15 @@ function AddProfileForms(props) {
     try {
       onAddProfile(id, fetch(url)
         .then((response) => response.json())
+        .catch(() => Promise.reject(new Error('Profile not found.')))
         .then((jsonData) => {
+          if (jsonData.errorCode === 404) {
+            const strs = [
+              'Could not retrieve profile.',
+              'Please verify your character privacy is set to public.',
+            ];
+            throw new Error(strs.join('\n'));
+          }
           const avatar = jsonData.avatarUrl || '';
           const level = jsonData.classes.reduce((total, classObj) => {
             const classLevel = parseInt(classObj.level, 10);
@@ -48,7 +55,7 @@ function AddProfileForms(props) {
         }));
     } catch (err) {
       if (err.message === 'ALREADY_EXISTS') {
-        setError('Error: Character already added!');
+        onError('Character already added.');
       } else {
         throw err;
       }
@@ -88,7 +95,6 @@ function AddProfileForms(props) {
           Add Character
         </button>
       </div>
-      {error ? <div>{error}</div> : null}
     </div>
   );
 }
@@ -96,27 +102,39 @@ function AddProfileForms(props) {
 AddProfileForms.propTypes = {
   onAddProfile: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
 };
 
 function AddProfile(props) {
-  const { addProfile } = props;
+  const { addProfile, clearError, onError } = props;
   const [visible, setVisible] = useState(false);
 
   const triggerFormsButton = (
-    <button type="button" onClick={() => setVisible(true)}>Add Character</button>
+    <button type="button" onClick={() => { setVisible(true); clearError(); }}>
+      Add Character
+    </button>
   );
 
   const onAddProfile = (id, profilePromise) => {
     addProfile(id, profilePromise);
     setVisible(false);
+    clearError();
   };
 
-  const addForms = (
+  const addForms = ([
+    <p className={styles.Info}>
+      Go to your DnD Beyond character sheet page
+       and use the last 8 digits of the URL to get your ID.
+    </p>,
     <AddProfileForms
       onAddProfile={onAddProfile}
-      onCancel={() => setVisible(false)}
-    />
-  );
+      onCancel={() => {
+        setVisible(false);
+        clearError();
+      }}
+      onError={onError}
+    />,
+  ]);
 
   return visible ? addForms : triggerFormsButton;
 }

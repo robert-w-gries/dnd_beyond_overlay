@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/profile.module.css';
 
+const profileType = {
+  avatar: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  level: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
 function Profiles(props) {
   const {
-    onRemoveProfile, onSelectProfile, profiles, currentProfile,
+    currentProfile, profiles, onRemoveProfile, onSelectProfile,
   } = props;
 
   if (!profiles) {
@@ -12,30 +19,16 @@ function Profiles(props) {
   }
 
   const profileViews = [];
-  profiles.forEach((profileType, id) => {
-    const onRemoved = (event) => {
-      onRemoveProfile(id);
-      event.stopPropagation();
-    };
-
-    const statusToProfiles = ({
-      loaded: (
-        <CharacterProfile
-          onRemoved={onRemoved}
-          selected={currentProfile && id === currentProfile.id}
-          profile={profileType.profile}
-          selectProfile={onSelectProfile}
-        />
-      ),
-      loading: (
-        <LoadingProfile id={id} onRemoved={onRemoved} />
-      ),
-      error: (
-        <ErrorProfile id={id} onRemoved={onRemoved} />
-      ),
-    });
-
-    profileViews.push(statusToProfiles[profileType.status]);
+  profiles.forEach(({ profile, status }, id) => {
+    profileViews.push((
+      <CharacterProfile
+        profile={profile}
+        selected={currentProfile && currentProfile.id === id}
+        status={status}
+        onRemoved={onRemoveProfile}
+        onSelected={onSelectProfile}
+      />
+    ));
   });
 
   return (
@@ -45,86 +38,56 @@ function Profiles(props) {
   );
 }
 
-const profileType = {
-  avatar: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
-  level: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-};
-
 Profiles.propTypes = {
+  currentProfile: PropTypes.shape(profileType).isRequired,
+  profiles: PropTypes.arrayOf(PropTypes.shape(profileType)).isRequired,
   onRemoveProfile: PropTypes.func.isRequired,
   onSelectProfile: PropTypes.func.isRequired,
-  profiles: PropTypes.arrayOf(PropTypes.shape({
-    status: PropTypes.string.isRequired,
-    profile: PropTypes.shape(profileType).isRequired,
-  })).isRequired,
-  currentProfile: PropTypes.shape(profileType),
-};
-
-Profiles.defaultProps = {
-  currentProfile: {
-    avatar: '',
-    id: null,
-    level: null,
-    name: '',
-  },
-};
-
-function Profile(props) {
-  const {
-    name, avatar, level, error, loading,
-  } = props;
-
-  const image = avatar || 'https://www.dndbeyond.com/Content/Skins/Waterdeep/images/characters/default-avatar-builder.png';
-
-  return ([
-    <Avatar image={image} error={error} loading={loading} />,
-    <CharacterTidbits name={name} level={level} />,
-  ]);
-}
-
-Profile.propTypes = {
-  name: PropTypes.string.isRequired,
-  avatar: PropTypes.string,
-  level: PropTypes.string,
-  error: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired,
-};
-
-Profile.defaultProps = {
-  avatar: '',
-  level: '',
 };
 
 function CharacterProfile(props) {
   const {
-    onRemoved, profile, selectProfile, selected,
+    profile, selected, status, onRemoved, onSelected,
   } = props;
 
-  const [loading, setLoading] = useState(false);
+  const onRemove = (event) => {
+    event.stopPropagation();
+    onRemoved(profile.id);
+  };
 
-  const selectedStyle = selected ? styles.selected : '';
+  const onSelect = () => {
+    onSelected(profile);
+  };
 
-  return (
-    <button
-      className={`${styles.CharacterProfile} ${selectedStyle}`}
-      type="button"
-      onClick={() => {
-        setLoading(true);
-        selectProfile(profile);
-      }}
-      onKeyPress={() => selectProfile(profile)}
-    >
-      <RemoveProfile onRemoved={onRemoved} />
-      <Profile
-        name={profile.name}
-        avatar={profile.avatar}
-        level={profile.level}
-        loading={loading}
-      />
-    </button>
-  );
+  const wrapper = (content) => {
+    if (status === 'loaded') {
+      return (
+        <SelectableWrapper onSelect={onSelect} selected={selected}>
+          {content}
+        </SelectableWrapper>
+      );
+    }
+
+    return (
+      <div className={styles.CharacterProfile}>
+        {content}
+      </div>
+    );
+  };
+
+  const tidbits = (() => {
+    if (status === 'loading' && !profile.name) {
+      return { name: `ID: ${profile.id}`, level: '' };
+    }
+
+    return { name: profile.name, level: profile.level };
+  })();
+
+  return wrapper([
+    <ProfileButtons onRemove={onRemove} onRetry={onSelect} error={status === 'error'} />,
+    <Avatar image={profile.avatar} error={status === 'error'} loading={status === 'loading'} />,
+    <CharacterTidbits name={tidbits.name} level={tidbits.level} />,
+  ]);
 }
 
 CharacterProfile.propTypes = {
@@ -134,67 +97,63 @@ CharacterProfile.propTypes = {
   selected: PropTypes.bool.isRequired,
 };
 
-function LoadingProfile(props) {
-  const { id, onRemoved } = props;
-
+function SelectableWrapper(props) {
+  const { children, selected, onSelect } = props;
+  const selectedStyle = selected ? styles.selected : '';
   return (
-    <div className={styles.LoadingProfile}>
-      <RemoveProfile onRemoved={onRemoved} />
-      <Profile
-        name={`ID: ${id}`}
-        loading
-      />
-    </div>
-  );
-}
-
-LoadingProfile.propTypes = {
-  id: PropTypes.number.isRequired,
-  onRemoved: PropTypes.func.isRequired,
-};
-
-function ErrorProfile(props) {
-  const { id, onRemoved } = props;
-
-  return (
-    <div className={styles.ErrorProfile}>
-      <RemoveProfile onRemoved={onRemoved} />
-      <Profile
-        name={`ID: ${id}`}
-        error
-      />
-    </div>
-  );
-}
-
-ErrorProfile.propTypes = {
-  id: PropTypes.number.isRequired,
-  onRemoved: PropTypes.func.isRequired,
-};
-
-function RemoveProfile(props) {
-  const { onRemoved } = props;
-
-  return (
-    <button className={styles.RemoveProfile} type="button" onClick={onRemoved}>
-      &#128465;
+    <button
+      type="button"
+      className={`${styles.SelectableProfile} ${selectedStyle}`}
+      onClick={onSelect}
+      onKeyPress={onSelect}
+    >
+      {children}
     </button>
   );
 }
 
-RemoveProfile.propTypes = {
-  onRemoved: PropTypes.func.isRequired,
+SelectableWrapper.propTypes = {
+  children: PropTypes.element.isRequired,
+  selected: PropTypes.bool.isRequired,
+  onSelect: PropTypes.func.isRequired,
+};
+
+function ProfileButtons(props) {
+  const { error, onRemove, onRetry } = props;
+
+  const retryButton = ((
+    <button type="button" className={styles.RetryButton} onClick={onRetry}>
+      <span>&#8634;</span>
+    </button>
+  ));
+
+  return (
+    <div className={styles.ProfileButtons}>
+      <button className={styles.RemoveButton} type="button" onClick={onRemove}>
+        <span>&#128465;</span>
+      </button>
+      {error ? retryButton : null}
+    </div>
+  );
+}
+
+ProfileButtons.propTypes = {
+  error: PropTypes.bool.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  onRetry: PropTypes.func.isRequired,
 };
 
 function Avatar(props) {
   const {
     image, error, loading,
   } = props;
+
+  const src = image || 'https://www.dndbeyond.com/Content/Skins/Waterdeep/images/characters/default-avatar-builder.png';
   return (
     <div className={styles.AvatarWrapper}>
       {loading ? <div className={styles.Loader} /> : null}
-      {error ? <div className={styles.Error}>X</div> : null}
-      <img className={styles.Avatar} src={image} alt="" />
+      {error ? <div className={styles.ErrorMarker}>X</div> : null}
+      <img className={styles.Avatar} src={src} alt="" />
     </div>
   );
 }

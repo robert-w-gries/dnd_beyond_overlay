@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { parseBeyondStatus, parseBeyondSheet } from '../../utils/parseBeyondSheet';
 
-const BEYOND_MAX_RETRIES = 15;
+const BEYOND_MAX_RETRIES = 60;
 
 function BeyondLoader(props) {
   const { currentProfile, onBeyondLoaded } = props;
@@ -87,7 +87,7 @@ function BeyondFrame(props) {
         }
       }
     }
-    throw new Error('Could not reach DnD Beyond');
+    throw new Error('Could not reach DnD Beyond.');
   };
 
   useEffect(() => {

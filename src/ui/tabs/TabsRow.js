@@ -36,7 +36,7 @@ function TabsRow(props) {
       <div className={styles.TabsRow}>
         {tabs}
       </div>
-      <div className="TabContent">
+      <div>
         {content}
       </div>
     </div>

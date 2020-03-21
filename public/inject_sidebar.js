@@ -21,8 +21,12 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg === 'toggle') {
     toggle(iframe);
   } else if (msg === 'isAlive') {
-    sendResponse({ isAlive: 'true' });
+    sendResponse({ isAlive: true });
   }
 });
 
 document.body.appendChild(iframe);
+
+// Needed because `executeScript()` evaluates the last value as a structured result
+// eslint-disable-next-line no-unused-expressions
+true;

@@ -1,19 +1,25 @@
-// Handle Chrome being unable to load content script on pre-loaded web page
-// StackOverflow: https://stackoverflow.com/a/23895822
+function extensionIsListening(response) {
+  return !chrome.runtime.lastError && response && response.isAlive;
+}
+
+// We want to send the toggle message to the sidebar script
+// If the sidebar script is not yet setup, we call executeScript to initialize it
 function ensureSendMessage(tabId, message, callback) {
   // Check if tab is ready for sidebar injection
   chrome.tabs.sendMessage(tabId, 'isAlive', (response) => {
-    if (response && response.isAlive) {
+    if (extensionIsListening(response)) {
+      // the listener is setup so we can send the toggle message now
       chrome.tabs.sendMessage(tabId, message, callback);
-    } else {
-      // No listener on the other end; manually attempt to execute the sidebar injection
-      chrome.tabs.executeScript(tabId, { file: 'inject_sidebar.js' }, () => {
-        if (chrome.runtime.lastError) {
-          throw Error(`Unable to inject sidebar into tab ${tabId}`);
-        }
-        chrome.tabs.sendMessage(tabId, message, callback);
-      });
+      return;
     }
+
+    // No listener on the other end; manually attempt to execute the sidebar injection
+    chrome.tabs.executeScript(tabId, { file: 'inject_sidebar.js' }, () => {
+      if (chrome.runtime.lastError) {
+        throw Error(`Unable to inject sidebar into tab ${tabId}`);
+      }
+      chrome.tabs.sendMessage(tabId, message, callback);
+    });
   });
 }
 
@@ -21,5 +27,19 @@ function ensureSendMessage(tabId, message, callback) {
 chrome.browserAction.onClicked.addListener(() => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     ensureSendMessage(tabs[0].id, 'toggle');
+  });
+});
+
+// Track the receivers where rolls will be sent
+// For now, we support only Roll20 but that could change
+const receivers = {};
+
+chrome.runtime.onConnect.addListener((port) => {
+  receivers[port.name] = port;
+});
+
+chrome.runtime.onMessage.addListener((msg) => {
+  Object.values(receivers).forEach((port) => {
+    port.postMessage(msg);
   });
 });

@@ -1,129 +1,103 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../styles/sheet.module.css';
+import styles from '../styles/stats.module.css';
+import Check from './Check';
+import RollModel from '../../models/roll';
 
-const abbreviated = {
-  Strength: 'str',
-  Dexterity: 'dex',
-  Constitution: 'con',
-  Intelligence: 'int',
-  Wisdom: 'wis',
-  Charisma: 'cha',
-};
-
-function Attributes(props) {
-  const { attributes } = props;
-  const attributeElements = attributes.map((skillObj) => {
-    const {
-      name, bonus,
-    } = skillObj;
-    return <Attribute key={name} bonus={bonus} name={abbreviated[name]} />;
-  });
-
-  return (
-    <div className={styles.StatsBlockGrid}>
-      {attributeElements}
-    </div>
-  );
-}
-
-Attributes.propTypes = {
-  attributes: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    bonus: PropTypes.shape({
-      sign: PropTypes.string.isRequired,
-      num: PropTypes.number.isRequired,
-    }).isRequired,
-  })).isRequired,
-};
-
-function Attribute(props) {
-  const { bonus, name } = props;
-  return (
-    <div className={[styles.Attribute, styles.check].join(' ')}>
-      <div>{name}</div>
-      <div>{`${bonus.sign}${bonus.num}`}</div>
-    </div>
-  );
-}
-
-Attribute.propTypes = {
+const statsProp = {
+  name: PropTypes.string.isRequired,
   bonus: PropTypes.shape({
     sign: PropTypes.string.isRequired,
-    num: PropTypes.string.isRequired,
+    num: PropTypes.number.isRequired,
   }).isRequired,
-  name: PropTypes.string.isRequired,
 };
 
-function SavingThrows(props) {
-  const { savingThrows } = props;
-  const savingThrowElements = savingThrows.map((stObj) => {
-    const {
-      name, bonus,
-    } = stObj;
-    return <SavingThrow key={name} bonus={bonus} name={name} />;
-  });
-
-  return (
-    <div className={styles.StatsBlockGrid}>
-      {savingThrowElements}
-    </div>
-  );
+function StatsGrid({ children }) {
+  return <div className={styles.StatsBlockGrid}>{children}</div>;
 }
 
-SavingThrows.propTypes = {
-  savingThrows: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    bonus: PropTypes.shape({
-      sign: PropTypes.string.isRequired,
-      num: PropTypes.string.isRequired,
-    }).isRequired,
-  })).isRequired,
+StatsGrid.propTypes = {
+  children: PropTypes.element.isRequired,
 };
 
-function SavingThrow(props) {
-  const { bonus, name } = props;
+function Stat(props) {
+  const {
+    className, name, bonus, onCheck,
+  } = props;
   return (
-    <div className={[styles.SavingThrow, styles.check].join(' ')}>
-      <div className={styles.SavingThrowName}>{name}</div>
-      <div
-        className={[styles.SavingThrowBonus, styles.bonus].join(' ')}
-      >
-        {`${bonus.sign}${bonus.num}`}
+    <div
+      role="button"
+      onClick={onCheck}
+      onKeyPress={onCheck}
+      tabIndex={0}
+      className={[className, styles.check].join(' ')}
+    >
+      <div className={styles.statName}>
+        {name}
+      </div>
+      <div className={styles.bonusScore}>
+        {bonus}
       </div>
     </div>
   );
 }
 
-SavingThrow.propTypes = {
-  bonus: PropTypes.string.isRequired,
+Stat.propTypes = {
+  className: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  bonus: PropTypes.shape({
+    sign: PropTypes.string.isRequired,
+    num: PropTypes.number.isRequired,
+  }).isRequired,
+  onCheck: PropTypes.func.isRequired,
 };
 
-function StatsBlock(props) {
-  const { children, header } = props;
-  const h = (
-    <h1 className={styles.StatsBlockHeader}>{header}</h1>
+function Attributes({ attributes, characterName }) {
+  const stats = attributes.map(({ name: attrName, bonus }) => ((
+    <Check
+      roll={RollModel(characterName, `${attrName} Check`, (roll) => ({
+        roll: roll(`1d20 ${bonus.sign} ${bonus.num}`),
+      }))}>
+      <Stat className={styles.Attribute} name={attrName} bonus={`${bonus.sign}${bonus.num}`} />
+    </Check>
+  )));
+  return (
+    <StatsGrid>
+      {stats}
+    </StatsGrid>
   );
+}
+
+Attributes.propTypes = {
+  characterName: PropTypes.string.isRequired,
+  attributes: PropTypes.arrayOf(PropTypes.shape(statsProp)).isRequired,
+};
+
+function SavingThrows({ savingThrows, characterName }) {
+  const stats = savingThrows.map(({ name: throwName, bonus }) => ((
+    <Check
+      roll={RollModel(characterName, `${throwName} Saving Throw`, (roll) => ({
+        roll: roll(`1d20 ${bonus.sign} ${bonus.num}`),
+      }))}>
+      <Stat className={styles.SavingThrow} name={throwName} bonus={`${bonus.sign}${bonus.num}`} />
+    </Check>
+  )));
   return (
     <div>
-      { header ? h : null }
-      {children}
+      <h1 className={styles.StatsBlockHeader}>Saving Throws</h1>
+      <StatsGrid>
+        {stats}
+      </StatsGrid>
     </div>
   );
 }
 
-StatsBlock.propTypes = {
-  children: PropTypes.element.isRequired,
-  header: PropTypes.string,
-};
-
-StatsBlock.defaultProps = {
-  header: '',
+SavingThrows.propTypes = {
+  characterName: PropTypes.string.isRequired,
+  savingThrows: PropTypes.arrayOf(PropTypes.shape(statsProp)).isRequired,
 };
 
 export {
   Attributes,
   SavingThrows,
-  StatsBlock,
 };
