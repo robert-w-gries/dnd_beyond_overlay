@@ -12,8 +12,8 @@ function ActionsTable({ actions, characterName }) {
     <Check
       key={actionName}
       roll={RollModel(characterName, actionName, (roll) => ({
-        roll: roll(`1d20 ${hit.sign} ${hit.num}`),
-        damage: roll(damage),
+        roll: roll(`1d20 ${hit.sign} ${hit.num || 0}`),
+        damage: roll(damage || '0'),
       }))}>
       <ActionRow
         key={actionName}
@@ -62,8 +62,8 @@ function ActionRow(props) {
     <tr className={styles.check} onClick={onCheck}>
       <td className={styles.actionName}>{name}</td>
       <td className={styles.range}>{range.long ? `${range.range} ${range.long}` : range.range}</td>
-      <td className={styles.bonus}>{bonus}</td>
-      <td className={styles.damage}>{damage}</td>
+      <td className={styles.bonus}>{bonus ? bonus : '--'}</td>
+      <td className={styles.damage}>{damage ? damage: '--'}</td>
     </tr>
   );
 }

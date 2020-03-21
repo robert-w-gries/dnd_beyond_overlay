@@ -15,6 +15,14 @@ const ActionsModel = (props) => {
     damage: scheme.stringRequired,
   });
 
+  // Handle empty values (on DnD Beyond they are represented as '--')
+  if (model.hit.num === '--') {
+    model.hit.num = '';
+  }
+  if (model.damage === '--') {
+    model.damage = '';
+  }
+
   return Object.freeze(model);
 };
 
