@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/actions.module.css';
 import Check from './Check';
+import RollModel from '../../models/roll';
 import Table from './Table';
 
 function ActionsTable({ actions, characterName }) {
@@ -10,20 +11,16 @@ function ActionsTable({ actions, characterName }) {
   }) => ((
     <Check
       key={actionName}
-      roll={{
-        characterName,
-        type: actionName,
-        roll: `1d20 ${hit.sign} ${hit.num}`,
-        damage,
-      }}
-    >
+      roll={RollModel(characterName, actionName, (roll) => ({
+        roll: roll(`1d20 ${hit.sign} ${hit.num}`),
+        damage: roll(damage),
+      }))}>
       <ActionRow
         key={actionName}
         bonus={`${hit.sign}${hit.num}`}
         name={actionName}
         range={range}
-        damage={damage}
-      />
+        damage={damage} />
     </Check>
   )));
 
@@ -36,8 +33,7 @@ function ActionsTable({ actions, characterName }) {
         { header: 'Range', width: 19, className: styles.range },
         { header: 'Hit', width: 14, className: styles.bonus },
         { header: 'Damage', width: 20, className: styles.damage },
-      ]}
-    />
+      ]} />
   );
 }
 

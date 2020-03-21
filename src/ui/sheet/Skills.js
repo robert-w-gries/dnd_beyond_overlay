@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from '../styles/skills.module.css';
 import Check from './Check';
 import Table from './Table';
+import RollModel from '../../models/roll';
 
 function SkillsTable({ skills, characterName }) {
   const skillRows = skills.map(({
@@ -10,13 +11,15 @@ function SkillsTable({ skills, characterName }) {
   }) => ((
     <Check
       key={skillName}
-      roll={{
-        characterName,
-        type: `${skillName} Check`,
-        roll: `1d20${bonus}`,
-      }}
-    >
-      <SkillRow key={skillName} attribute={attr} bonus={bonus} name={skillName} prof={prof} />
+      roll={RollModel(characterName, `${skillName} Check`, (roll) => ({
+        roll: roll(`1d20 ${bonus.sign} ${bonus.num}`),
+      }))}>
+      <SkillRow
+        key={skillName}
+        attribute={attr}
+        bonus={`${bonus.sign}${bonus.num}`}
+        name={skillName}
+        prof={prof} />
     </Check>
   )));
 
@@ -28,9 +31,8 @@ function SkillsTable({ skills, characterName }) {
         { header: 'Prof', width: 15 },
         { header: 'Attr', width: 15 },
         { header: 'Skill', width: 55, className: styles.skillName },
-        { header: 'Bonus', width: 15, className: styles.bonusScore },
-      ]}
-    />
+        { header: 'Bonus', width: 15, className: styles.bonus },
+      ]} />
   );
 }
 
@@ -59,23 +61,19 @@ function SkillRow(props) {
     'Not Proficient': String.fromCharCode(9675),
   };
 
-  const bonusScore = `${bonus.sign}${bonus.num}`;
   return (
     <tr className={styles.check} onClick={onCheck}>
       <td>{proficiencyChars[prof]}</td>
       <td>{attribute}</td>
       <td className={styles.skillName}>{name}</td>
-      <td className={styles.bonusScore}>{bonusScore}</td>
+      <td className={styles.bonusScore}>{bonus}</td>
     </tr>
   );
 }
 
 SkillRow.propTypes = {
   attribute: PropTypes.string.isRequired,
-  bonus: PropTypes.shape({
-    sign: PropTypes.string.isRequired,
-    num: PropTypes.string.isRequired,
-  }).isRequired,
+  bonus: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   prof: PropTypes.string.isRequired,
   onCheck: PropTypes.func.isRequired,

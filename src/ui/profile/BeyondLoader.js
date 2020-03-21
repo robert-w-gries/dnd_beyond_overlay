@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { parseBeyondStatus, parseBeyondSheet } from '../../utils/parseBeyondSheet';
 
-const BEYOND_MAX_RETRIES = 20;
+const BEYOND_MAX_RETRIES = 60;
 
 function BeyondLoader(props) {
   const { currentProfile, onBeyondLoaded } = props;

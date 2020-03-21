@@ -17,4 +17,5 @@ plugins:
   - react
 rules: {
   "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"]}]
+  "jsx-closing-bracket-location": [1, 'after-props']
 }

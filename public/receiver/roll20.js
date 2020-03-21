@@ -5,19 +5,23 @@ const input = {
   submit: chatNode.querySelector('.btn'),
 };
 
-const formatRoll = ({ characterName, type, ...props }) => {
+const formatRoll = ({ characterName, title, ...props }) => {
   const strs = [
     '&{template:default}',
     `{{name=${characterName}}}`,
-    `{{${type}=}}`,
+    `{{${title}=}}`,
   ];
-  Object.keys(props).forEach((key) => strs.push(`{{${key}=${props[key]}}}`));
-  console.log(strs);
+
+  // Roll = { roll: str }
+  // Label = { label: str }
+  Object.keys(props).forEach((key) => {
+    const val = props[key].roll ? `[[${props[key].roll}]]` : props[key].label;
+    strs.push(`{{${key}=${val}}}`);
+  });
   return strs.join(' ');
 };
 
 const sendRoll = (roll) => {
-  console.log("test");
   const savedText = input.text.value;
   input.text.value = formatRoll(roll);
   input.submit.click();

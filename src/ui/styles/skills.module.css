@@ -11,12 +11,12 @@
   text-align: left;
 }
 
-.bonusScore {
+.bonus {
   composes: bonusScore from './sheet.module.css';
   text-align: right;
 }
 
-td.bonusScore {
+td.bonus {
   font-family: 'Courier New', Courier, monospace;
 }
 

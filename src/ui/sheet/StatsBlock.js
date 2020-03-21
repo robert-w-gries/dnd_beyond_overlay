@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/stats.module.css';
 import Check from './Check';
+import RollModel from '../../models/roll';
 
 const statsProp = {
   name: PropTypes.string.isRequired,
@@ -54,12 +55,9 @@ Stat.propTypes = {
 function Attributes({ attributes, characterName }) {
   const stats = attributes.map(({ name: attrName, bonus }) => ((
     <Check
-      roll={{
-        characterName,
-        type: `${attrName} Check`,
-        roll: `1d20 ${bonus.sign} ${bonus.num}`,
-      }}
-    >
+      roll={RollModel(characterName, `${attrName} Check`, (roll) => ({
+        roll: roll(`1d20 ${bonus.sign} ${bonus.num}`),
+      }))}>
       <Stat className={styles.Attribute} name={attrName} bonus={`${bonus.sign}${bonus.num}`} />
     </Check>
   )));
@@ -78,12 +76,9 @@ Attributes.propTypes = {
 function SavingThrows({ savingThrows, characterName }) {
   const stats = savingThrows.map(({ name: throwName, bonus }) => ((
     <Check
-      roll={{
-        characterName,
-        type: `${throwName} Saving Throw`,
-        roll: `1d20 ${bonus.sign} ${bonus.num}`,
-      }}
-    >
+      roll={RollModel(characterName, `${throwName} Saving Throw`, (roll) => ({
+        roll: roll(`1d20 ${bonus.sign} ${bonus.num}`),
+      }))}>
       <Stat className={styles.SavingThrow} name={throwName} bonus={`${bonus.sign}${bonus.num}`} />
     </Check>
   )));
