@@ -5,19 +5,19 @@ const input = {
   submit: chatNode.querySelector('.btn'),
 };
 
-const formatRoll = ({ name, check, damage }) => {
+const formatRoll = ({ characterName, type, ...props }) => {
   const strs = [
     '&{template:default}',
-    `{{name=${name}}}`,
-    `{{roll=[[${check.dice}${check.bonus}]]}}`,
+    `{{name=${characterName}}}`,
+    `{{${type}=}}`,
   ];
-  if (damage && damage !== '--') {
-    strs.push(`{{damage=[[${damage}]]}}`);
-  }
+  Object.keys(props).forEach((key) => strs.push(`{{${key}=${props[key]}}}`));
+  console.log(strs);
   return strs.join(' ');
 };
 
 const sendRoll = (roll) => {
+  console.log("test");
   const savedText = input.text.value;
   input.text.value = formatRoll(roll);
   input.submit.click();

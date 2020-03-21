@@ -5,29 +5,24 @@ import PropTypes from 'prop-types';
 
 function Check(props) {
   const {
-    children, bonus, damage, dice, name,
+    children, roll,
   } = props;
 
   const sendRoll = () => {
-    chrome.runtime.sendMessage({
-      name,
-      check: {
-        dice,
-        bonus,
-      },
-      damage,
-    });
+    chrome.runtime.sendMessage(roll);
   };
 
-  return React.Children.map(children, (child) => React.cloneElement(child, { onClick: sendRoll }));
+  return React.Children.map(children, (child) => React.cloneElement(child, { onCheck: sendRoll }));
 }
 
 Check.propTypes = {
   children: PropTypes.element.isRequired,
-  bonus: PropTypes.string.isRequired,
-  damage: PropTypes.string,
-  dice: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  roll: PropTypes.shape({
+    characterName: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    roll: PropTypes.string.isRequired,
+    damage: PropTypes.string,
+  }),
 };
 
 Check.defaultProps = {

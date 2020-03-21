@@ -1,8 +1,12 @@
-.SkillsTableWrapper {
+.check {
+  composes: check from "./sheet.module.css";
+}
+
+.SkillsTable {
   composes: TableWrapper from './sheet.module.css';
 }
 
-.bonusName {
+.skillName {
   composes: bonusName from './sheet.module.css';
   text-align: left;
 }
@@ -16,10 +20,6 @@ td.bonusScore {
   font-family: 'Courier New', Courier, monospace;
 }
 
-td.bonusName, td.bonusScore {
+td.skillName, td.bonusScore {
   border-bottom: 1px solid rgba(255, 0, 0, 0.4);
-}
-
-.check {
-  composes: check from "./sheet.module.css";
 }

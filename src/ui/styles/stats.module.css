@@ -34,16 +34,16 @@
   user-select: none;
 }
 
-.bonusName {
+.statName {
   composes: bonusName from "./sheet.module.css";
 }
 
-.Attribute > div.bonusName {
+.Attribute > div.statName {
   border-bottom: 1px solid black;
   font-size: 14px;
 }
 
-.SavingThrow > div.bonusName {
+.SavingThrow > div.statName {
   padding-right: 5px;
   border-right: 1px solid black;
   font-size: 16px;

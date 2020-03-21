@@ -2,37 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/skills.module.css';
 import Check from './Check';
+import Table from './Table';
 
-function Skills(props) {
-  const { skills } = props;
-  const skillElements = skills.map((skillObj) => {
-    const {
-      attr, bonus, name, prof,
-    } = skillObj;
-    return <Skill key={name} attribute={attr} bonus={bonus} name={name} prof={prof} />;
-  });
+function SkillsTable({ skills, characterName }) {
+  const skillRows = skills.map(({
+    prof, attr, name: skillName, bonus,
+  }) => ((
+    <Check
+      key={skillName}
+      roll={{
+        characterName,
+        type: `${skillName} Check`,
+        roll: `1d20${bonus}`,
+      }}
+    >
+      <SkillRow key={skillName} attribute={attr} bonus={bonus} name={skillName} prof={prof} />
+    </Check>
+  )));
+
   return (
-    <div className={styles.SkillsTableWrapper}>
-      <table>
-        <colgroup>
-          <col style={{ width: '15%' }} />
-          <col style={{ width: '15%' }} />
-          <col style={{ width: '55%' }} />
-          <col style={{ width: '15%' }} />
-        </colgroup>
-        <tr>
-          <th>Prof</th>
-          <th>Attr</th>
-          <th className={styles.bonusName}>Skill</th>
-          <th className={styles.bonusScore}>Bonus</th>
-        </tr>
-        {skillElements}
-      </table>
-    </div>
+    <Table
+      rows={skillRows}
+      tableClass={styles.SkillsTable}
+      cols={[
+        { header: 'Prof', width: 15 },
+        { header: 'Attr', width: 15 },
+        { header: 'Skill', width: 55, className: styles.skillName },
+        { header: 'Bonus', width: 15, className: styles.bonusScore },
+      ]}
+    />
   );
 }
 
-Skills.propTypes = {
+SkillsTable.propTypes = {
+  characterName: PropTypes.string.isRequired,
   skills: PropTypes.arrayOf(PropTypes.shape({
     attr: PropTypes.string.isRequired,
     bonus: PropTypes.shape({
@@ -44,9 +47,9 @@ Skills.propTypes = {
   })).isRequired,
 };
 
-function Skill(props) {
+function SkillRow(props) {
   const {
-    attribute, bonus, name, prof,
+    attribute, bonus, name, prof, onCheck,
   } = props;
 
   const proficiencyChars = {
@@ -58,18 +61,16 @@ function Skill(props) {
 
   const bonusScore = `${bonus.sign}${bonus.num}`;
   return (
-    <Check dice="1d20" bonus={bonusScore} name={`${name} Check`}>
-      <tr className={styles.check}>
-        <td className="SkillsProfCol">{proficiencyChars[prof]}</td>
-        <td className="attr SkillsAttrCol">{attribute}</td>
-        <td className={styles.bonusName}>{name}</td>
-        <td className={styles.bonusScore}>{bonusScore}</td>
-      </tr>
-    </Check>
+    <tr className={styles.check} onClick={onCheck}>
+      <td>{proficiencyChars[prof]}</td>
+      <td>{attribute}</td>
+      <td className={styles.skillName}>{name}</td>
+      <td className={styles.bonusScore}>{bonusScore}</td>
+    </tr>
   );
 }
 
-Skill.propTypes = {
+SkillRow.propTypes = {
   attribute: PropTypes.string.isRequired,
   bonus: PropTypes.shape({
     sign: PropTypes.string.isRequired,
@@ -77,6 +78,7 @@ Skill.propTypes = {
   }).isRequired,
   name: PropTypes.string.isRequired,
   prof: PropTypes.string.isRequired,
+  onCheck: PropTypes.func.isRequired,
 };
 
-export default Skills;
+export default SkillsTable;

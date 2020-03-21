@@ -2,45 +2,47 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/actions.module.css';
 import Check from './Check';
+import Table from './Table';
 
-function Actions(props) {
-  const { actions } = props;
-  const actionElements = actions.map((actionObj) => {
-    const {
-      name, hit, range, damage,
-    } = actionObj;
-    return (
-      <Action
-        key={name}
+function ActionsTable({ actions, characterName }) {
+  const actionRows = actions.map(({
+    name: actionName, hit, range, damage,
+  }) => ((
+    <Check
+      key={actionName}
+      roll={{
+        characterName,
+        type: actionName,
+        roll: `1d20 ${hit.sign} ${hit.num}`,
+        damage,
+      }}
+    >
+      <ActionRow
+        key={actionName}
         bonus={`${hit.sign}${hit.num}`}
-        name={name}
+        name={actionName}
         range={range}
         damage={damage}
       />
-    );
-  });
+    </Check>
+  )));
+
   return (
-    <div className={styles.ActionsTableWrapper}>
-      <table>
-        <colgroup>
-          <col style={{ width: '47%' }} />
-          <col style={{ width: '19%' }} />
-          <col style={{ width: '14%' }} />
-          <col style={{ width: '20%' }} />
-        </colgroup>
-        <tr>
-          <th className={styles.bonusName}>Action</th>
-          <th>Range</th>
-          <th>Hit</th>
-          <th>Damage</th>
-        </tr>
-        {actionElements}
-      </table>
-    </div>
+    <Table
+      rows={actionRows}
+      tableClass={styles.ActionsTable}
+      cols={[
+        { header: 'Action', width: 47, className: styles.actionName },
+        { header: 'Range', width: 19, className: styles.range },
+        { header: 'Hit', width: 14, className: styles.bonus },
+        { header: 'Damage', width: 20, className: styles.damage },
+      ]}
+    />
   );
 }
 
-Actions.propTypes = {
+ActionsTable.propTypes = {
+  characterName: PropTypes.string.isRequired,
   actions: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     hit: PropTypes.shape({
@@ -56,23 +58,21 @@ Actions.propTypes = {
   })).isRequired,
 };
 
-function Action(props) {
+function ActionRow(props) {
   const {
-    name, bonus, range, damage,
+    name, bonus, range, damage, onCheck,
   } = props;
   return (
-    <Check dice="1d20" bonus={bonus} damage={damage} name={name}>
-      <tr className={styles.check}>
-        <td className={styles.actionName}>{name}</td>
-        <td className={styles.range}>{range.long ? `${range.range} ${range.long}` : range.range}</td>
-        <td className={styles.bonus}>{bonus}</td>
-        <td className={styles.damage}>{damage}</td>
-      </tr>
-    </Check>
+    <tr className={styles.check} onClick={onCheck}>
+      <td className={styles.actionName}>{name}</td>
+      <td className={styles.range}>{range.long ? `${range.range} ${range.long}` : range.range}</td>
+      <td className={styles.bonus}>{bonus}</td>
+      <td className={styles.damage}>{damage}</td>
+    </tr>
   );
 }
 
-Action.propTypes = {
+ActionRow.propTypes = {
   name: PropTypes.string.isRequired,
   bonus: PropTypes.string.isRequired,
   range: PropTypes.shape({
@@ -81,6 +81,7 @@ Action.propTypes = {
     reach: PropTypes.bool.isRequired,
   }).isRequired,
   damage: PropTypes.string.isRequired,
+  onCheck: PropTypes.func.isRequired,
 };
 
-export default Actions;
+export default ActionsTable;

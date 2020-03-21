@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/sheet.module.css';
-import Actions from './Actions';
+import ActionsTable from './Actions';
 import { Attributes, SavingThrows } from './StatsBlock';
-import Skills from './Skills';
+import SkillsTable from './Skills';
 import { TabsRow, TabContent } from '../tabs/TabsRow';
 
 function CharacterSheet(props) {
@@ -16,17 +16,18 @@ function CharacterSheet(props) {
   const {
     actions, attributes, health, name, savingThrows, skills,
   } = sheet;
+
   return (
     <div className={styles.CharacterSheet}>
       <CharacterHeader name={name} health={health} />
-      <Attributes attributes={attributes} />
-      <SavingThrows savingThrows={savingThrows} />
+      <Attributes attributes={attributes} characterName={name} />
+      <SavingThrows savingThrows={savingThrows} characterName={name} />
       <TabsRow defaultTab="Skills">
         <TabContent title="Skills">
-          <Skills skills={skills} />
+          <SkillsTable skills={skills} characterName={name} />
         </TabContent>
         <TabContent title="Actions">
-          <Actions actions={actions} />
+          <ActionsTable actions={actions} characterName={name} />
         </TabContent>
       </TabsRow>
     </div>

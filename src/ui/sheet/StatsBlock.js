@@ -11,81 +11,95 @@ const statsProp = {
   }).isRequired,
 };
 
-function Attributes(props) {
-  const { attributes } = props;
-
-  return (
-    <div className={styles.StatsBlockGrid}>
-      <StatsBlock stats={attributes} className={styles.Attribute} statType="Check" />
-    </div>
-  );
+function StatsGrid({ children }) {
+  return <div className={styles.StatsBlockGrid}>{children}</div>;
 }
 
-Attributes.propTypes = {
-  attributes: PropTypes.arrayOf(PropTypes.shape(statsProp)).isRequired,
+StatsGrid.propTypes = {
+  children: PropTypes.element.isRequired,
 };
 
-function SavingThrows(props) {
-  const { savingThrows } = props;
-
+function Stat(props) {
+  const {
+    className, name, bonus, onCheck,
+  } = props;
   return (
-    <div>
-      <h1 className={styles.StatsBlockHeader}>
-        Saving Throws
-      </h1>
-      <div className={styles.StatsBlockGrid}>
-        <StatsBlock stats={savingThrows} className={styles.SavingThrow} statType="Saving Throw" />
+    <div
+      role="button"
+      onClick={onCheck}
+      onKeyPress={onCheck}
+      tabIndex={0}
+      className={[className, styles.check].join(' ')}
+    >
+      <div className={styles.statName}>
+        {name}
+      </div>
+      <div className={styles.bonusScore}>
+        {bonus}
       </div>
     </div>
   );
 }
 
-SavingThrows.propTypes = {
-  savingThrows: PropTypes.arrayOf(PropTypes.shape(statsProp)).isRequired,
+Stat.propTypes = {
+  className: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  bonus: PropTypes.shape({
+    sign: PropTypes.string.isRequired,
+    num: PropTypes.number.isRequired,
+  }).isRequired,
+  onCheck: PropTypes.func.isRequired,
 };
 
-const abbrevToLong = {
-  str: 'Strength',
-  dex: 'Dexterity',
-  con: 'Constitution',
-  int: 'Intelligence',
-  wis: 'Wisdom',
-  cha: 'Charisma',
-};
-
-function StatsBlock(props) {
-  const { className, stats, statType } = props;
-
-  return stats.map(({ name, bonus }) => {
-    const bonusScore = `${bonus.sign}${bonus.num}`;
-
-    const statTypeName = () => {
-      if (statType === 'Check') {
-        return `${name} Check`;
-      }
-
-      return `${abbrevToLong[name]} Saving Throw`;
-    };
-
-    return (
-      <Check dice="1d20" bonus={bonusScore} name={statTypeName()}>
-        <div className={[className, styles.check].join(' ')}>
-          <div className={styles.bonusName}>
-            {name}
-          </div>
-          <div className={styles.bonusScore}>
-            {bonusScore}
-          </div>
-        </div>
-      </Check>
-    );
-  });
+function Attributes({ attributes, characterName }) {
+  const stats = attributes.map(({ name: attrName, bonus }) => ((
+    <Check
+      roll={{
+        characterName,
+        type: `${attrName} Check`,
+        roll: `1d20 ${bonus.sign} ${bonus.num}`,
+      }}
+    >
+      <Stat className={styles.Attribute} name={attrName} bonus={`${bonus.sign}${bonus.num}`} />
+    </Check>
+  )));
+  return (
+    <StatsGrid>
+      {stats}
+    </StatsGrid>
+  );
 }
 
-StatsBlock.propTypes = {
-  className: PropTypes.string.isRequired,
-  stats: PropTypes.arrayOf(PropTypes.shape(statsProp)).isRequired,
-  statType: PropTypes.string.isRequired,
+Attributes.propTypes = {
+  characterName: PropTypes.string.isRequired,
+  attributes: PropTypes.arrayOf(PropTypes.shape(statsProp)).isRequired,
+};
+
+function SavingThrows({ savingThrows, characterName }) {
+  const stats = savingThrows.map(({ name: throwName, bonus }) => ((
+    <Check
+      roll={{
+        characterName,
+        type: `${throwName} Saving Throw`,
+        roll: `1d20 ${bonus.sign} ${bonus.num}`,
+      }}
+    >
+      <Stat className={styles.SavingThrow} name={throwName} bonus={`${bonus.sign}${bonus.num}`} />
+    </Check>
+  )));
+  return (
+    <div>
+      <h1 className={styles.StatsBlockHeader}>Saving Throws</h1>
+      <StatsGrid>
+        {stats}
+      </StatsGrid>
+    </div>
+  );
+}
+
+SavingThrows.propTypes = {
+  characterName: PropTypes.string.isRequired,
+  savingThrows: PropTypes.arrayOf(PropTypes.shape(statsProp)).isRequired,
 };
 
 export {

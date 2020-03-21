@@ -1,9 +1,15 @@
-.ActionsTableWrapper {
+.ActionsTable {
   composes: TableWrapper from './sheet.module.css';
 }
 
-.ActionsTableWrapper > table {
+.ActionsTable > table {
   table-layout: fixed;
+}
+
+.ActionsTable > table > tr > td {
+  border-bottom: 1px solid rgba(255, 0, 0, 0.2);
+  vertical-align: middle;
+  word-break: break-word;
 }
 
 .actionName {
@@ -31,12 +37,6 @@ td.damage {
 td.range {
   font-family: 'Courier New', Courier, monospace;
   font-size: 14px;
-}
-
-.ActionsTableWrapper > table > tr > td {
-  border-bottom: 1px solid rgba(255, 0, 0, 0.2);
-  vertical-align: middle;
-  word-break: break-word;
 }
 
 .check {
