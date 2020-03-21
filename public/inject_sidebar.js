@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg === 'toggle') {
     toggle(iframe);
   } else if (msg === 'isAlive') {
-    sendResponse({ isAlive: 'true' });
+    sendResponse({ isAlive: true });
   }
 });
 

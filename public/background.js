@@ -20,8 +20,6 @@ function ensureSendMessage(tabId, message, callback) {
       }
       chrome.tabs.sendMessage(tabId, message, callback);
     });
-
-    chrome.tabs.executeScript(tabId, { file: 'roll20.js' });
   });
 }
 
