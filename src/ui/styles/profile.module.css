@@ -1,0 +1,194 @@
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-5%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.AddButtonsRow {
+  display: flex;
+  justify-content: space-between;
+  animation: slide-down 0.4s ease;
+}
+
+.AvatarWrapper {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
+
+.Avatar {
+  height: 100%;
+  width: 100%;
+}
+
+.CharacterProfile {
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: 1px solid white;
+  outline: 0;
+  padding: 0;
+}.selected {
+  outline: 4px solid #c53131;
+  border: 0;
+}
+
+.SelectableProfile {
+  composes: CharacterProfile;
+  cursor: pointer;
+}
+
+.CharacterTidbits {
+  width: 100%;
+  min-height: 32px;
+  color: black;
+  user-select: none;
+}
+
+.CharacterTidbits > div {
+  max-width: 130px;
+  padding-left: 2px;
+  padding-right: 2px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  margin: auto;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.ErrorMarker {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  color: rgba(255, 0, 0, 0.8);
+  font-size: 100px;
+  text-align: center;
+  user-select: none;
+}
+
+div.ErrorMsg {
+  margin-bottom: 5px;
+  padding: 2px 5px;
+  border: 2px solid red;
+  color: black;
+  background-color: yellow;
+  font-size: 14px;
+  font-weight: bold;
+  user-select: none;
+}
+
+.ErrorMsg > p {
+  margin: 0;
+}
+
+.Info {
+  padding: 5px;
+  color: black;
+  background-color: white;
+  border: 3px solid black;
+  font-size: 16px;
+  font-weight: bold;
+  user-select: none;
+}
+
+.InputForm {
+  animation: slide-up 0.4s ease;
+  margin-bottom: 5px;
+} @keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(5%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.InputForm > label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.InputForm > label > input {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.Loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 80px;
+  height: 80px;
+  margin: -40px 0px 0px -40px;
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+} @keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.ProfileButtons {
+  position: absolute;
+  display: flex;
+  flex-flow: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+.ProfileButtons > button {
+  font-size: 20px;
+  color: white;
+  height: 32px;
+  width: 32px;
+}
+
+.RemoveButton {
+  border: 0;
+  cursor: pointer;
+  box-shadow: inset 0 0 10px black;
+  background-color: red;
+}
+
+.RetryButton {
+  border: 0;
+  cursor: pointer;
+  box-shadow: inset 0 0 10px black;
+  background-color: #777;
+}
+
+.RetryButton > span {
+  vertical-align: 5px;
+}
+
+.Profiles {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-auto-rows: 180px;
+  gap: 10px;
+}
+
+iframe[title='charSheet'] {
+  height: 4000px;
+  width: 4000px;
+  position: fixed;
+  z-index: -1;
+}

@@ -1,0 +1,56 @@
+.CharacterHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.CharacterName {
+  margin-right: 10px;
+  flex: 1;
+  user-select: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.CharacterSheet {
+  min-height: 100%;
+}
+
+.bonusScore {
+  flex: 2;
+}
+
+.bonusName {
+  flex: 1;
+}
+
+.check {
+  vertical-align: bottom;
+  user-select: none;
+  cursor: pointer;
+}
+
+.check:hover {
+  background-color: rgb(207, 207, 207);
+}
+
+.TableWrapper {
+  background-color: white;
+  padding: 5px 10px;
+}
+
+table {
+  width: 100%;
+  color: black;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+th {
+  font-size: 12px;
+}
+
+th, td {
+  padding: 2px 5px 2px 5px;
+  user-select: none;
+}
