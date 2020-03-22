@@ -5,16 +5,16 @@
   "version": "0.1",
   "description": "Use the power of DnD Beyond from the comfort of your Roll20 session.",
   "icons": {
-    "16": "logo192.png",
-    "48": "logo192.png",
-    "128": "logo192.png"
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
   },
   "background": {
     "persistent": false,
     "scripts": ["background.js"]
   },
   "browser_action": {
-    "default_icon": "logo192.png"
+    "default_icon": "icon.png"
   },
   "content_security_policy": "script-src 'self' https://www.dndbeyond.com/js/ https://media.dndbeyond.com; object-src 'self'",
   "content_scripts": [{
