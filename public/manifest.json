@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "DnD Beyond Overlay",
   "author": "Rob Gries",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "Use the power of DnD Beyond from the comfort of your Roll20 session.",
   "icons": {
     "16": "icon.png",
