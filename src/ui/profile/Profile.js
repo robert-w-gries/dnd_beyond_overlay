@@ -9,24 +9,21 @@ const profileType = {
   name: PropTypes.string.isRequired,
 };
 
-function Profiles(props) {
-  const {
-    currentProfile, profiles, onRemoveProfile, onSelectProfile,
-  } = props;
-
+function Profiles({ currentId, profiles, onRemoveProfile, selectProfile }) {
   if (!profiles) {
     return null;
   }
 
   const profileViews = [];
-  profiles.forEach(({ profile, status }, id) => {
+  profiles.forEach(({ profile, status, onRetry }, id) => {
     profileViews.push((
       <CharacterProfile
         profile={profile}
-        selected={currentProfile && currentProfile.id === id}
+        selected={currentId === id}
         status={status}
         onRemoved={onRemoveProfile}
-        onSelected={onSelectProfile}
+        selectProfile={selectProfile}
+        onRetry={onRetry}
       />
     ));
   });
@@ -39,15 +36,15 @@ function Profiles(props) {
 }
 
 Profiles.propTypes = {
-  currentProfile: PropTypes.shape(profileType).isRequired,
+  currentProfileId: PropTypes.number.isRequired,
   profiles: PropTypes.arrayOf(PropTypes.shape(profileType)).isRequired,
   onRemoveProfile: PropTypes.func.isRequired,
-  onSelectProfile: PropTypes.func.isRequired,
+  selectProfile: PropTypes.func.isRequired,
 };
 
 function CharacterProfile(props) {
   const {
-    profile, selected, status, onRemoved, onSelected,
+    profile, selected, status, onRemoved, selectProfile, onRetry,
   } = props;
 
   const onRemove = (event) => {
@@ -55,14 +52,10 @@ function CharacterProfile(props) {
     onRemoved(profile.id);
   };
 
-  const onSelect = () => {
-    onSelected(profile);
-  };
-
   const wrapper = (content) => {
     if (status === 'loaded') {
       return (
-        <SelectableWrapper onSelect={onSelect} selected={selected}>
+        <SelectableWrapper onSelect={() => selectProfile(profile)} selected={selected}>
           {content}
         </SelectableWrapper>
       );
@@ -76,7 +69,7 @@ function CharacterProfile(props) {
   };
 
   const tidbits = (() => {
-    if (status === 'loading' && !profile.name) {
+    if (!profile.name) {
       return { name: `ID: ${profile.id}`, level: '' };
     }
 
@@ -84,7 +77,7 @@ function CharacterProfile(props) {
   })();
 
   return wrapper([
-    <ProfileButtons onRemove={onRemove} onRetry={onSelect} error={status === 'error'} />,
+    <ProfileButtons onRemove={onRemove} onRetry={onRetry} error={status === 'error'} />,
     <Avatar image={profile.avatar} error={status === 'error'} loading={status === 'loading'} />,
     <CharacterTidbits name={tidbits.name} level={tidbits.level} />,
   ]);

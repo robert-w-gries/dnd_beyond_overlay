@@ -17,14 +17,14 @@
   margin-bottom: 15px;
 }
 
-.NestedTabHeader {
+.Header {
   display: flex;
   align-items: center;
   background-color: #c53131;  
   user-select: none;
 }
 
-.NestedTabTitle {
+.Header > div {
   padding: 5px;
   background-color: #c53131;
   color: white;

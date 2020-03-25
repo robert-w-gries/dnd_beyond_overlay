@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/profile.module.css';
-import ProfileModel from '../../models/profile';
 import type from '../../utils/types';
 
 const BEYOND_ID_LENGTH = 8;
 
-function AddProfileForms(props) {
-  const { onAddProfile, onCancel, onError } = props;
+function AddProfileForms({ onAddProfile, onCancel, onError }) {
   const [charId, setCharId] = useState('');
 
   const validateInputId = (input) => {
@@ -27,39 +25,7 @@ function AddProfileForms(props) {
       return;
     }
 
-    const url = `https://www.dndbeyond.com/character/${id}/json`;
-
-    try {
-      onAddProfile(id, fetch(url)
-        .then((response) => response.json())
-        .catch(() => Promise.reject(new Error('Profile not found.')))
-        .then((jsonData) => {
-          if (jsonData.errorCode === 404) {
-            const strs = [
-              'Could not retrieve profile.',
-              'Please verify your character privacy is set to public.',
-            ];
-            throw new Error(strs.join('\n'));
-          }
-          const avatar = jsonData.avatarUrl || '';
-          const level = jsonData.classes.reduce((total, classObj) => {
-            const classLevel = parseInt(classObj.level, 10);
-            return total + classLevel;
-          }, 0);
-          return ProfileModel({
-            id,
-            name: jsonData.name,
-            avatar,
-            level,
-          });
-        }));
-    } catch (err) {
-      if (err.message === 'ALREADY_EXISTS') {
-        onError('Character already added.');
-      } else {
-        throw err;
-      }
-    }
+    onAddProfile(id);
   };
 
   return (
@@ -82,16 +48,14 @@ function AddProfileForms(props) {
         <button
           type="button"
           onClick={onCancel}
-          onKeyPress={onCancel}
-        >
+          onKeyPress={onCancel}>
           Cancel
         </button>
         <button
           className={styles.AddCharacterButton}
           type="submit"
           onClick={handleAddCharacter}
-          onKeyPress={handleAddCharacter}
-        >
+          onKeyPress={handleAddCharacter}>
           Add Character
         </button>
       </div>
@@ -105,8 +69,7 @@ AddProfileForms.propTypes = {
   onError: PropTypes.func.isRequired,
 };
 
-function AddProfile(props) {
-  const { addProfile, clearError, onError } = props;
+function AddProfile({ addProfile, clearError, onError }) {
   const [visible, setVisible] = useState(false);
 
   const triggerFormsButton = (
@@ -115,8 +78,8 @@ function AddProfile(props) {
     </button>
   );
 
-  const onAddProfile = (id, profilePromise) => {
-    addProfile(id, profilePromise);
+  const onAddProfile = (id) => {
+    addProfile(id);
     setVisible(false);
     clearError();
   };
@@ -127,7 +90,7 @@ function AddProfile(props) {
        and use the last 8 digits of the URL to get your ID.
     </p>,
     <AddProfileForms
-      onAddProfile={onAddProfile}
+    onAddProfile={onAddProfile}
       onCancel={() => {
         setVisible(false);
         clearError();

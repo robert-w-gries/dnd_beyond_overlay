@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/profile.module.css';
+import beyond from '../../utils/beyond';
 import AddProfile from './AddProfile';
-import BeyondLoader from './BeyondLoader';
 import Profiles from './Profile';
 
 const LoadedProfile = (profileModel) => ({
@@ -12,10 +12,10 @@ const LoadedProfile = (profileModel) => ({
   profile: profileModel,
 });
 
-const ErrorProfile = (error, profile) => ({
+const ErrorProfile = (profile, onRetry) => ({
   status: 'error',
-  error,
   profile,
+  onRetry,
 });
 
 const LoadingProfile = (profile) => ({
@@ -23,12 +23,13 @@ const LoadingProfile = (profile) => ({
   profile,
 });
 
-function ProfileSelection(props) {
-  const { onCharacterReady } = props;
+function ProfileSelection({ setSheet }) {
+  const [currentId, setCurrentId] = useState(null);
+  const [loadedSheets, setLoadedSheets] = useState({});
   const [profiles, setProfiles] = useState(new Map());
-  const [currentProfile, setCurrentProfile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
+  //TODO Replace with useChromeLocalStorage hook 
   useEffect(() => {
     chrome.storage.local.get('savedProfiles', (result) => {
       if (!result.savedProfiles) return;
@@ -38,54 +39,47 @@ function ProfileSelection(props) {
     });
   }, []);
 
-  const onAddProfile = (id, profilePromise) => {
+  const addProfile = async (id) => {
     if (profiles.has(id)) {
-      throw new Error('ALREADY_EXISTS');
+      setErrorMessage('Character already added.');
+      return;
     }
 
+    setErrorMessage('');
     // Add placeholder profile with id until loaded
-    setProfiles((map) => {
-      const newMap = new Map(Array.from(map.entries()));
-      newMap.set(id, LoadingProfile({ id }));
-      return newMap;
-    });
+    const tempProfile = LoadingProfile({ id });
+    setProfiles((map) => new Map([...map, [id, tempProfile]]));
 
-    profilePromise.then((profile) => {
-      setProfiles((map) => {
-        const newMap = new Map(Array.from(map.entries()));
-        newMap.set(id, LoadedProfile(profile));
-
-        // Append the loaded profile to list of saved profiles
-        chrome.storage.local.get('savedProfiles', (result) => {
-          const savedList = result.savedProfiles ? [...result.savedProfiles, profile] : [profile];
-          chrome.storage.local.set({ savedProfiles: savedList });
-        });
-
-        return newMap;
-      });
-    }).catch((err) => {
-      // Remove the unloadable profile
-      setProfiles((map) => {
-        const newMap = new Map(Array.from(map.entries()));
-        newMap.delete(id);
-        return newMap;
-      });
+    let characterData;
+    try {
+      characterData = await beyond.fetchCharacter(id);
+    } catch (err) {
+      const errProfile = ErrorProfile({ id }, () => addProfile(id));
+      setProfiles((map) => new Map([...map, [id, errProfile]]));
       setErrorMessage(err.message);
-      throw err;
+      return;
+    }
+
+    const profile = beyond.parseProfile(id, characterData);
+    setProfiles((map) => {
+      // Append the loaded profile to list of saved profiles
+      chrome.storage.local.get('savedProfiles', (result) => {
+        const savedList = result.savedProfiles ? [...result.savedProfiles, profile] : [profile];
+        chrome.storage.local.set({ savedProfiles: savedList });
+      });
+
+      return new Map([...map, [id, LoadedProfile(profile)]]);
     });
   };
 
   const onRemoveProfile = (id) => {
-    if (currentProfile && id === currentProfile.id) {
-      setCurrentProfile(null);
+    if (id === currentId) {
+      setCurrentId(null);
     }
 
     setErrorMessage('');
 
     setProfiles((map) => {
-      const newMap = new Map(Array.from(map.entries()));
-      newMap.delete(id);
-
       // Remove the profile from local storage if it was saved
       chrome.storage.local.get('savedProfiles', (result) => {
         if (!result.savedProfiles) return;
@@ -93,42 +87,33 @@ function ProfileSelection(props) {
         chrome.storage.local.set({ savedProfiles: newList });
       });
 
+      const newMap = new Map([...map]);
+      newMap.delete(id);
       return newMap;
     });
   };
 
-  const onSelectProfile = (profile) => {
-    if (currentProfile && profile.id === currentProfile.id) {
+  const selectProfile = async (profile) => {
+    if (profile.id === currentId) {
       return;
     }
     setProfiles((map) => {
-      const newMap = new Map(Array.from(map.entries()));
+      const newMap = new Map([...map]);
       newMap.set(profile.id, LoadingProfile(profile));
       return newMap;
     });
     setErrorMessage('');
-    setCurrentProfile(profile);
-  };
-
-  const onCharacterLoaded = (loadingPromise) => {
-    // Check if character sheet was successfully loaded
-    onCharacterReady(loadingPromise.then((result) => {
-      if (!result.success) {
-        throw new Error(result.errorMsg);
-      }
-      return result.data;
-    }).catch((err) => {
-      setCurrentProfile((profile) => {
-        setProfiles((map) => {
-          const newMap = new Map(Array.from(map.entries()));
-          newMap.set(profile.id, ErrorProfile(err.message, profile));
-          return newMap;
-        });
-        return null;
-      });
+    setCurrentId(profile.id);
+    let sheetData;
+    try {
+      sheetData = await beyond.fetchCharacter(profile.id);
+    } catch (err) {
+      setCurrentId(null);
+      const errorProfile = ErrorProfile(profile, () => selectProfile(profile));
+      setProfiles((map) => [...map, [profile.id, errorProfile]]);
       setErrorMessage(err.message);
-      return Promise.reject(err);
-    }));
+    }
+    beyond.parseSheet(sheetData);
   };
 
   const errorBox = (errorStr) => {
@@ -143,22 +128,16 @@ function ProfileSelection(props) {
 
   return (
     <div>
-      <BeyondLoader
-        currentProfile={currentProfile}
-        onBeyondLoaded={onCharacterLoaded}
-      />
       <AddProfile
-        addProfile={onAddProfile}
+        addProfile={addProfile}
         clearError={() => setErrorMessage('')}
-        onError={(errMsg) => setErrorMessage(errMsg)}
-      />
+        onError={(errMsg) => setErrorMessage(errMsg)} />
       {errorMessage ? errorBox(errorMessage) : null}
       <Profiles
-        currentProfile={currentProfile}
+        currentProfileId={currentId}
         profiles={profiles}
         onRemoveProfile={onRemoveProfile}
-        onSelectProfile={onSelectProfile}
-      />
+        selectProfile={selectProfile} />
     </div>
   );
 }
