@@ -23,9 +23,7 @@
   }],
   "permissions": [
     "activeTab",
-    "storage",
-    "*://app.roll20.net/editor/",
-    "*://*.dndbeyond.com/characters/*"
+    "storage"
   ],
   "web_accessible_resources": ["index.html"]
 }

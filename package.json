@@ -12,6 +12,7 @@
     "react-scripts": "3.4.0"
   },
   "scripts": {
+    "start:firefox": "web-ext run --source-dir ./build/",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
