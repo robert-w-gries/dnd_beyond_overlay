@@ -3,7 +3,7 @@
     // https://github.com/facebook/create-react-app/issues/8909#issuecomment-847966532
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "/src/*": ["./src/*"]
     }
   }
 }

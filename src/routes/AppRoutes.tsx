@@ -1,6 +1,6 @@
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { CharacterSelection } from '@/features/CharacterSelection';
-import { CharacterSheet } from '@/features/CharacterSheet';
+import { CharacterSelection } from '/src/features/CharacterSelection';
+import { CharacterSheet } from '/src/features/CharacterSheet';
 
 const AppRoutes = () => {
   return (

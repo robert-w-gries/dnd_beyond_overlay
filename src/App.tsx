@@ -1,4 +1,4 @@
-import { AppRoutes } from '@/routes';
+import { AppRoutes } from '/src/routes';
 
 const App = () => {
   return <AppRoutes />

@@ -3,18 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "craco": "^0.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0"
+    "react-router-dom": "^6.2.1"
+  },
+  "source": "src/index.html",
+  "targets": {
+    "webext-dev": {
+      "sourceMap": {
+        "inline": true,
+        "inlineSources": true
+      }
+    },
+    "webext-prod": {}
   },
   "scripts": {
-    "start:firefox": "web-ext run --source-dir ./build/",
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject"
+    "start": "parcel",
+    "build": "parcel build",
+    "build:webext": "parcel build src/manifest.json --target webext-prod --config @parcel/config-webextension",
+    "start:webext": "parcel src/manifest.json --host localhost --target webext-dev --config @parcel/config-webextension",
+    "watch:webext": "parcel watch src/manifest.json --target webext-prod --config @parcel/config-webextension",
+    "start:firefox": "web-ext run --source-dir ./dist/webext-prod"
   },
   "eslintConfig": {
     "extends": [
@@ -35,6 +44,8 @@
     ]
   },
   "devDependencies": {
+    "@parcel/config-webextension": "^2.0.1",
+    "@parcel/transformer-webmanifest": "^2.0.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -43,6 +54,7 @@
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "autoprefixer": "^10.4.0",
+    "parcel": "^2.0.1",
     "postcss": "^8.4.5",
     "tailwindcss": "^3.0.7",
     "typescript": "^4.5.4"

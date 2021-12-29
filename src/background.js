@@ -14,7 +14,7 @@ function ensureSendMessage(tabId, message, callback) {
     }
 
     // No listener on the other end; manually attempt to execute the sidebar injection
-    chrome.tabs.executeScript(tabId, { file: 'inject_sidebar.js' }, () => {
+    chrome.tabs.executeScript(tabId, { file: './inject_sidebar.js' }, () => {
       if (chrome.runtime.lastError) {
         throw Error(`Unable to inject sidebar into tab ${tabId}`);
       }
