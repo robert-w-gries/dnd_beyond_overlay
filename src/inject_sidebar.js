@@ -1,10 +1,8 @@
 /* eslint-disable no-param-reassign */
 function toggle(iframe) {
   if (iframe.style.width === '0px') {
-    console.log("ON");
     iframe.style.width = '300px';
   } else {
-    console.log("OFF");
     iframe.style.width = '0px';
   }
 }

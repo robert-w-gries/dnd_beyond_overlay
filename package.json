@@ -22,8 +22,8 @@
     "build": "parcel build",
     "build:webext": "parcel build src/manifest.json --target webext-prod --config @parcel/config-webextension",
     "start:webext": "parcel src/manifest.json --host localhost --target webext-dev --config @parcel/config-webextension",
-    "watch:webext": "parcel watch src/manifest.json --target webext-prod --config @parcel/config-webextension",
-    "start:firefox": "web-ext run --source-dir ./dist/webext-prod"
+    "watch:webext": "parcel watch src/manifest.json --target webext-dev --config @parcel/config-webextension",
+    "start:firefox": "web-ext run --source-dir ./dist/webext-dev"
   },
   "eslintConfig": {
     "extends": [

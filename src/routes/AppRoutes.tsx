@@ -6,9 +6,8 @@ const AppRoutes = () => {
   return (
     <MemoryRouter>
       <Routes>
-        <Route path="/" element={<CharacterSelection />}>
-          <Route path="character/:id" element={<CharacterSheet />} />
-        </Route>
+        <Route path="/" element={<CharacterSelection />} />
+        <Route path="character/:id" element={<CharacterSheet />} />
       </Routes>
     </MemoryRouter>
   );
